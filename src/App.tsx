@@ -1,11 +1,14 @@
+import React from "react";
 import AppRouter from "./AppRouter";
 
 
 function App() {
+
   return (
-   <div>
+    <>
       <AppRouter />
-   </div>
+      타입스크립트
+    </>
   );
 }
 

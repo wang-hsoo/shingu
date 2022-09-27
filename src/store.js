@@ -1,4 +1,6 @@
 import { createAction, createReducer, configureStore, createSlice } from "@reduxjs/toolkit";
+import createBoard from "./api";
+import updateBoard from "./api";
 
 
 const post = createSlice({
@@ -6,6 +8,7 @@ const post = createSlice({
     initialState: [],
     reducers: {
         add:(state, action) => {
+            //게시물 작성
             const writePost = {
                 board_title: action.payload.board_title, 
                 board_content: action.payload.board_content,
@@ -18,16 +21,18 @@ const post = createSlice({
             }
             state.push(writePost);
             //데이터베이스 저장
+            createBoard(JSON.stringify(writePost));
         },
         rootAdd: (state, action) =>{
+            //관리자 게시물 답변
             const answer = {
-                board_no: action.payload.board_no,
                 board_answer_content: action.board_answer_content,
                 board_answer_date: action.board_answer_date,
                 board_answer: action.payload.board_answer
             }
-            state.push(answer)    
-        }
+            state.push(answer);
+            updateBoard(action.payload.board_no, JSON.stringify(answer));
+        },
         
     }
 })
