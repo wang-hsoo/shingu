@@ -10,18 +10,19 @@ const post = createSlice({
         add:(state, action) => {
             //게시물 작성
             const writePost = {
-                board_title: action.payload.board_title, 
-                board_content: action.payload.board_content,
-                board_created: action.payload.board_created,
-                board_answer: action.payload.board_answer,
-                division_code: action.payload.division_code,
-                department_code: action.payload.department_code,
-                category_code: action.payload.category_code,
-                student_id: action.payload.student_id
+                board_title: action.payload.text, 
+                board_content: action.payload.department,
+                // board_created: action.payload.board_created,
+                // board_answer: action.payload.board_answer,
+                // division_code: action.payload.division_code,
+                // department_code: action.payload.department_code,
+                // category_code: action.payload.category_code,
+                // student_id: action.payload.student_id
             }
             state.push(writePost);
+            console.log(writePost);
             //데이터베이스 저장
-            createBoard(JSON.stringify(writePost));
+            // createBoard(JSON.stringify(writePost));
         },
         rootAdd: (state, action) =>{
             //관리자 게시물 답변
