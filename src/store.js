@@ -1,6 +1,6 @@
 import { createAction, createReducer, configureStore, createSlice } from "@reduxjs/toolkit";
-import createBoard from "./api";
-import updateBoard from "./api";
+import {createBoard} from "./service/BoardService";
+
 
 
 const post = createSlice({
@@ -10,19 +10,17 @@ const post = createSlice({
         add:(state, action) => {
             //게시물 작성
             const writePost = {
-                board_title: action.payload.text, 
-                board_content: action.payload.department,
-                // board_created: action.payload.board_created,
-                // board_answer: action.payload.board_answer,
-                // division_code: action.payload.division_code,
-                // department_code: action.payload.department_code,
-                // category_code: action.payload.category_code,
-                // student_id: action.payload.student_id
+                studentid: action.payload.studentid,
+                title: action.payload.title,
+                contents: action.payload.contents,
+                addboard: false,
+                category: action.payload.category,
+                divisioncode: action.payload.divisioncode,
             }
             state.push(writePost);
             console.log(writePost);
             //데이터베이스 저장
-            // createBoard(JSON.stringify(writePost));
+            createBoard(JSON.stringify(writePost));
         },
         rootAdd: (state, action) =>{
             //관리자 게시물 답변
@@ -32,7 +30,7 @@ const post = createSlice({
                 board_answer: action.payload.board_answer
             }
             state.push(answer);
-            updateBoard(action.payload.board_no, JSON.stringify(answer));
+            // updateBoard(action.payload.board_no, JSON.stringify(answer));
         },
         
     }

@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import {connect} from "react-redux";
 import { add } from "../store";
-import React, { Dispatch, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
+import { getBoad } from "../service/BoardService";
 
 
 interface IPostWrite{
@@ -37,8 +38,12 @@ function Write({add}:any){
     
     function onSubmit(e:React.FormEvent){
         e.preventDefault();
-        add({text: context, department: "IT소프트웨어"})
+        add({studentid: "2018133064", title: "ㅎㅇ", contents:"dsfsdf", category: "전체", divisioncode: "2" })
     }
+
+    useEffect(() => {
+        console.log(getBoad(0));
+    },[])
 
     return(
         <div>
