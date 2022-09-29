@@ -1,19 +1,41 @@
 import styled from "styled-components";
 import {connect} from "react-redux";
 import { add } from "../store";
-import React, { useState } from "react";
+import React, { Dispatch, useState } from "react";
 
 
+interface IPostWrite{
+    text: string,
+    department: string
+}
 
 
 function Write({add}:any){
     const [context, setContext] = useState<String>();
+    const [title, setTitle] = useState<String>();
+    const [hak, setHak] = useState<String>();
 
-    function onChange(e:any){
-        setContext(e.target.value);
+    function onChange(event:React.FormEvent<HTMLElement>){
+        const { value } = event.currentTarget as HTMLInputElement;
+        const { name } = event.target as HTMLInputElement;
+        
+
+        switch ( name ){
+            case "학번":
+                setHak(value);
+                break;
+
+            case "제목":
+                setTitle(value);
+                break;
+
+            case "내용":
+                setContext(value.replace("<br>","\r\n"));
+                break;
+        }
     }
     
-    function onSubmit(e:any){
+    function onSubmit(e:React.FormEvent){
         e.preventDefault();
         add({text: context, department: "IT소프트웨어"})
     }
@@ -21,9 +43,10 @@ function Write({add}:any){
     return(
         <div>
             <form onSubmit={onSubmit}>
-                <input type="text" onChange={onChange} />
-                <input type="text"  />
-                <input type="text"  />
+                <input type="text" placeholder="학번" name="학번" onChange={onChange} />
+                <input type="text" placeholder="제목" name="제목" onChange={onChange} />
+                <textarea placeholder="내용" name="내용" onChange={onChange} />
+                <button>작성하기</button>
             </form>
         </div>
     )
@@ -31,7 +54,7 @@ function Write({add}:any){
 
 function mapDispatchToProps(dispatch:any){
     return{
-        add: (context:any) => dispatch(add(context))
+        add: (context:IPostWrite) => dispatch(add(context))
     }
 }
 
