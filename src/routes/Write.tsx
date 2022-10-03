@@ -2,21 +2,20 @@ import styled from "styled-components";
 import {connect} from "react-redux";
 import { add } from "../store";
 import React, { Dispatch, useEffect, useState } from "react";
-import { getBoad } from "../service/BoardService";
+import { getCategory, Icategory, InewBoard } from "../service/BoardService";
 
 
-interface IPostWrite{
-    text: string,
-    department: string
-}
 
 
 function Write({add}:any){
     const [context, setContext] = useState<String>();
     const [title, setTitle] = useState<String>();
-    const [hak, setHak] = useState<String>();
+    const [hak, setHak] = useState<String>("");
+    const [category, setCategory] = useState<Icategory[]>();
+    const [selectCate, setSelectCate] = useState<string>();
 
     function onChange(event:React.FormEvent<HTMLElement>){
+        //학번 제목 내용을 useState에 저장
         const { value } = event.currentTarget as HTMLInputElement;
         const { name } = event.target as HTMLInputElement;
         
@@ -35,20 +34,45 @@ function Write({add}:any){
                 break;
         }
     }
+
+    function cateChange(event:React.ChangeEvent<HTMLSelectElement>){
+        //카테고리 저장
+        setSelectCate(event.target.value);
+    }
     
     function onSubmit(e:React.FormEvent){
+        //store.js로 데이터를 보냄
         e.preventDefault();
-        add({studentid: "2018133064", title: "ㅎㅇ", contents:"dsfsdf", category: "전체", divisioncode: "2" })
+        if(hak?.length < 10 || context?.length === 0 || title?.length === 0 || context === "" || title === ""){
+            console.log("오류")
+        }else{
+            add({studentid: hak, title: title, contents:context, category: selectCate, divisioncode: "2" })
+        }
+        
     }
 
     useEffect(() => {
-        console.log(getBoad(0));
-    },[])
+        setTimeout(() => {
+            getCategory().then((value => {
+                const cate = [];
+                console.log(value);
+                // setCategory(cate[0]);
+            }));
+        }, 100);
 
+        
+    },[]);
     return(
         <div>
             <form onSubmit={onSubmit}>
-                <input type="text" placeholder="학번" name="학번" onChange={onChange} />
+                <select onChange={cateChange} value={selectCate}>
+                    {category?.map((cate:Icategory, idx:number) => (
+                        // idx === 0 ? null :
+                        <option key={cate.category} value={cate.category}>{cate.category}</option>
+                    ))}
+                </select>
+        
+                <input type="number" placeholder="학번" name="학번" onChange={onChange} />
                 <input type="text" placeholder="제목" name="제목" onChange={onChange} />
                 <textarea placeholder="내용" name="내용" onChange={onChange} />
                 <button>작성하기</button>
@@ -59,7 +83,7 @@ function Write({add}:any){
 
 function mapDispatchToProps(dispatch:any){
     return{
-        add: (context:IPostWrite) => dispatch(add(context))
+        add: (context:InewBoard) => dispatch(add(context))
     }
 }
 

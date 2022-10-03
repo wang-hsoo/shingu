@@ -13,14 +13,13 @@ const post = createSlice({
                 studentid: action.payload.studentid,
                 title: action.payload.title,
                 contents: action.payload.contents,
-                addboard: false,
+                addboard: 0,
                 category: action.payload.category,
                 divisioncode: action.payload.divisioncode,
             }
             state.push(writePost);
-            console.log(writePost);
             //데이터베이스 저장
-            createBoard(JSON.stringify(writePost));
+            createBoard(writePost);
         },
         rootAdd: (state, action) =>{
             //관리자 게시물 답변
