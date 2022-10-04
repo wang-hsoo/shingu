@@ -15,7 +15,7 @@ function AppRouter(){
             <Routes>
                 <Route path="/" element = {<Home />} />
                 <Route path="/write" element = {<Write />} />
-                <Route path="/Post" element = {<Post />} />
+                <Route path={"/Post" || "/Post/:no"} element = {<Post />} />
                 <Route path="/DataChart" element = {<DataChart />} />    
             </Routes>
        </Router> 

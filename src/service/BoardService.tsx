@@ -35,6 +35,17 @@ export interface Icategory{
     return data;
 }
 
+export interface Idivision{
+    divisioncode: number,
+    divisionname: string,
+    upctg: number
+}
+
+export async function getDivision() {
+    const data = await (await axios.get(BOARD_API_BASE_URL+"/division")).data;
+    return data;
+}
+
 
 
 
