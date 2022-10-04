@@ -2,9 +2,32 @@ import styled from "styled-components";
 import {connect} from "react-redux";
 import { add } from "../store";
 import React, { Dispatch, useEffect, useState } from "react";
-import { getCategory, Icategory, InewBoard } from "../service/BoardService";
+import { getBoad, getCategory, Icategory, InewBoard } from "../service/BoardService";
 
+const Wrapper = styled.div`
+    
+`;
 
+const Form = styled.form`
+    
+`
+const Select = styled.select`
+    
+`
+
+const Option = styled.option`
+    
+`
+
+const Input = styled.input`
+    
+`
+const Text = styled.textarea`
+    
+`
+const Btn = styled.button`
+
+`
 
 
 function Write({add}:any){
@@ -55,29 +78,31 @@ function Write({add}:any){
         setTimeout(() => {
             getCategory().then((value => {
                 const cate = [];
+                cate.push(value);
                 console.log(value);
-                // setCategory(cate[0]);
+                setCategory(cate[0]);
             }));
+            getBoad();
         }, 100);
 
         
     },[]);
     return(
-        <div>
-            <form onSubmit={onSubmit}>
-                <select onChange={cateChange} value={selectCate}>
+        <Wrapper>
+            <Form onSubmit={onSubmit}>
+                <Select onChange={cateChange} value={selectCate}>
                     {category?.map((cate:Icategory, idx:number) => (
                         // idx === 0 ? null :
-                        <option key={cate.category} value={cate.category}>{cate.category}</option>
+                        <Option key={idx} value={cate.category}>{cate.category}</Option>
                     ))}
-                </select>
+                </Select>
         
-                <input type="number" placeholder="학번" name="학번" onChange={onChange} />
-                <input type="text" placeholder="제목" name="제목" onChange={onChange} />
-                <textarea placeholder="내용" name="내용" onChange={onChange} />
-                <button>작성하기</button>
-            </form>
-        </div>
+                <Input type="number" placeholder="학번" name="학번" onChange={onChange} />
+                <Input type="text" placeholder="제목" name="제목" onChange={onChange} />
+                <Text placeholder="내용" name="내용" onChange={onChange} />
+                <Btn>작성하기</Btn>
+            </Form>
+        </Wrapper>
     )
 }
 

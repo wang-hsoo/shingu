@@ -20,7 +20,8 @@ export async function createBoard(board:InewBoard) {
 
  export async function getBoad() {
         //게시물 받아오기
-        const data = await (await axios.get(BOARD_API_BASE_URL+"/board")).data.list;
+        const data = await (await axios.get(BOARD_API_BASE_URL+"/board")).data;
+        console.log(data);
         return data;
  }
 
@@ -31,7 +32,6 @@ export interface Icategory{
 
  export async function getCategory() {
     const data = await (await axios.get(BOARD_API_BASE_URL+"/category")).data;
-    //console.log(data);
     return data;
 }
 
