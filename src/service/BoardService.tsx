@@ -1,16 +1,22 @@
 import axios from 'axios'; 
 
 
+
 const BOARD_API_BASE_URL = "http://localhost:8080/api"; 
 
 
 export interface InewBoard{
+    no?:number,
     studentid: string
     title: string,
     contents: string,
-    addboard?: false,
+    addboard?: boolean,
     category: string,
     divisioncode: string,
+    createdtime?: string,
+    answer?:boolean,
+    answercontents?: string,
+    counts?: string,
 }
  
 export async function createBoard(board:InewBoard) {
@@ -18,12 +24,21 @@ export async function createBoard(board:InewBoard) {
      axios.post(BOARD_API_BASE_URL+"/board", board);
  }
 
+ export async function updateBoard(no:number, board:InewBoard) {
+    await axios.put(BOARD_API_BASE_URL + "/board/" + no, board);
+}
+
  export async function getBoad() {
-        //게시물 받아오기
+        //전체 게시물 받아오기
         const data = await (await axios.get(BOARD_API_BASE_URL+"/board")).data;
-        console.log(data);
         return data;
  }
+
+ export async function selectGetBoad(no:number) {
+    //게시물 받아오기
+    const data = await (await axios.get(BOARD_API_BASE_URL+"/board/" + no)).data;
+    return data;
+}
 
 export interface Icategory{
     category: string

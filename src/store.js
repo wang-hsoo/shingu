@@ -1,5 +1,5 @@
 import { createAction, createReducer, configureStore, createSlice } from "@reduxjs/toolkit";
-import {createBoard} from "./service/BoardService";
+import {createBoard, updateBoard} from "./service/BoardService";
 
 
 
@@ -24,12 +24,11 @@ const post = createSlice({
         rootAdd: (state, action) =>{
             //관리자 게시물 답변
             const answer = {
-                board_answer_content: action.board_answer_content,
-                board_answer_date: action.board_answer_date,
-                board_answer: action.payload.board_answer
+                answer: action.payload.answer,
+                answercontents: action.payload.answercontents,
             }
             state.push(answer);
-            // updateBoard(action.payload.board_no, JSON.stringify(answer));
+            updateBoard(Number(action.payload.no), answer);
         },
         
     }

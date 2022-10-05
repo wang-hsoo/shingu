@@ -89,11 +89,10 @@ function Write({add}:any){
     }
 
     useEffect(() => {
-        setTimeout(() => {
+        // setTimeout(() => {
             getCategory().then((value => {
                 const cate = [];
                 cate.push(value);
-                // console.log(value);
                 setCategory(cate[0]);
                 
             }));
@@ -103,7 +102,7 @@ function Write({add}:any){
                 divi.push(value);
                 setDivision(divi[0]);
             }));
-        }, 100);
+        // }, 100);
 
         
     },[]);
@@ -113,7 +112,7 @@ function Write({add}:any){
             <Form onSubmit={onSubmit}>
                 <Select onChange={cateChange} value={selectCate}>
                     {category?.map((cate:Icategory, idx:number) => (
-                        // idx === 0 ? null :
+                        idx === 0 ? null :
                         <Option key={idx} value={cate.category}>{cate.category}</Option>
                     ))}
                 </Select>
