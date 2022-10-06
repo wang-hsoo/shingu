@@ -2,7 +2,12 @@ import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { rootAdd } from "../store";
 import { getDivision, Idivision, InewBoard, selectGetBoad } from "../service/BoardService";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
+
+const Answer =styled.div`
+    white-space: pre-wrap;
+`
 
 
 function Post({post, rootAdd}:any){
@@ -14,6 +19,7 @@ function Post({post, rootAdd}:any){
     const [context, setContext] = useState<String>("");
     const [answer, setAnswer] = useState<boolean>(false);
     const { no } = useParams();
+    const navigate = useNavigate();
 
     function onChange(event:React.FormEvent<HTMLElement>){
         const { value } = event.currentTarget as HTMLInputElement;
@@ -24,7 +30,8 @@ function Post({post, rootAdd}:any){
         e.preventDefault();
         if(answer){
             setAnswer(false);
-            setContext(getPost?.answercontents+"");
+            const a = getPost?.answercontents?.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n')
+            setContext(a+"");
         }else{
             rootAdd({
                 no: no,
@@ -102,10 +109,10 @@ function Post({post, rootAdd}:any){
                 <div>{getPost?.contents}</div>
                 <div>{date}</div>
                 <div>{no === undefined ? 0 : getPost?.counts}</div>
-                {admin? answer ?   <div>{getPost?.answercontents?.replaceAll("<br>", "\r\n")}</div> : <textarea placeholder="내용" name="내용" value={context+""} onChange={onChange} /> :
+                {admin? answer ?   <Answer>{getPost?.answercontents?.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n')}</Answer> : <textarea placeholder="내용" name="내용" value={context+""} onChange={onChange} /> :
                 <div>{getPost?.answercontents === null || no === undefined ? "답변을 기다리는 중입니다" : getPost?.answercontents}</div>}
                 
-                <button>목록으로</button>
+                <button onClick={() => navigate('/')}>목록으로</button>
                 {admin? <button onClick={onClick}>{answer ? "수정하기" : "답변하기"}</button> : null}
             </div> : 
             <div>

@@ -68,12 +68,14 @@ function Write({add}:any){
     function cateChange(event:React.ChangeEvent<HTMLSelectElement>){
         //카테고리 저장
         setSelectCate(event.target.value);
+        console.log(event.target.value);
     }
     function divisionChange(event:React.ChangeEvent<HTMLSelectElement>){
         setSelectDivision(Number(event.target.value));
     }
     function diviChange(event:React.ChangeEvent<HTMLSelectElement>){
         setSelectDivi(event.target.value);
+        console.log(event.target.value);
     }
     
     function onSubmit(e:React.FormEvent){
