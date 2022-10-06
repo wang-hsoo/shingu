@@ -30,12 +30,18 @@ const post = createSlice({
             state.push(answer);
             updateBoard(Number(action.payload.no), answer);
         },
+        countAdd: (state, action) =>{
+            const count = {
+                counts : action.payload.counts
+            }
+            console.log(count);
+        }
         
     }
 })
 
 const store = configureStore({reducer: post.reducer})
 
-export const {add, rootAdd} = post.actions;
+export const {add, rootAdd, countAdd} = post.actions;
 
 export default store;

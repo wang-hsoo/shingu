@@ -61,6 +61,10 @@ export async function getDivision() {
     return data;
 }
 
+export async function updateCount(no:number, counts: string){
+    await axios.put(BOARD_API_BASE_URL + "/board/" + no, counts);
+}
+
 
 
 

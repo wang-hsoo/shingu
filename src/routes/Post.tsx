@@ -55,7 +55,7 @@ function Post({post, rootAdd}:any){
                     var dateString = year + '-' + month  + '-' + day;
                     setDate(dateString);
                 }else{
-                    console.log("잘못된 경로입니다.");
+                    navigate("/");
                 }   
                 
             }else{

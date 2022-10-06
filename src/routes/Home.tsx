@@ -2,19 +2,27 @@ import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { getBoad, getCategory, getDivision, Icategory, Idivision, InewBoard } from "../service/BoardService";
 import { useNavigate } from "react-router-dom";
+import { countAdd } from "../store";
 
 
 
-function Home(){
+function Home({countAdd}:any){
     const [post, setPost] = useState<InewBoard[]>();
     const [division, setDivision] = useState<Idivision[]>();
     const [category, setCategory] = useState<Icategory[]>();
     const [selectDivi, setSelectDivi] = useState<Idivision>();
     const [selectDivision, setSelectDivision] = useState<Idivision>();
     const [countPost, setCountPost] = useState<InewBoard[]>();
-    const [selectCate, setSelectCate] = useState<string>("전체");
+    const [selectCate, setSelectCate] = useState<string>();
     const[selectPost, setSelectPost] = useState<InewBoard[]>();
     const navigate = useNavigate();
+
+    function postClick(no:number, counts:string){
+        countAdd({counts : Number(counts) + 1, no : no})
+        navigate(`/post/${no}`)
+    }
+
+  
 
     function divisionChange(event:React.ChangeEvent<HTMLSelectElement>){
         const division = event.target.value.split(",");
@@ -52,10 +60,12 @@ function Home(){
         getBoad().then(value => {
             const getPost = [];
             getPost.push(value);
-
             setPost(getPost[0].list);
             setSelectPost(getPost[0].list);
+        });
 
+        getBoad().then(value => {
+            setCountPost(value.list?.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts))).slice(0,4));
         });
 
         getCategory().then((value => {
@@ -70,7 +80,8 @@ function Home(){
             divi.push(value);
             setDivision(divi[0]);
         }));
-        
+
+        setSelectCate("전체");
     },[])
 
     useEffect(() => {
@@ -78,14 +89,18 @@ function Home(){
             const get = [] as InewBoard[];
             if(selectCate === "전체"){
                 setSelectPost(post);
+                setCountPost(post?.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts))).slice(0,4));
             }else{
                 post?.map((post) =>{
                     if(post.category === selectCate){
                         get.push(post);
                     }
                 })
+                
+                setCountPost(get.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts))).slice(0,4));
                 setSelectPost(get);
             }
+
         }else{
             const get = [] as InewBoard[];
             post?.map((post)=>{
@@ -117,13 +132,15 @@ function Home(){
                     }
                 })
             })
-            // const countPost = value.list.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts))).slice(0,4)
-            // setCountPost(countPost);
-
+            setCountPost(get.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts))).slice(0,4));
             setSelectPost(get);
         }
 
     },[selectDivision,selectDivi,selectCate])
+
+    useEffect(() => {
+        setSelectCate("전체");
+    },[selectDivision,selectDivi])
 
     return(
         <div>
@@ -149,24 +166,28 @@ function Home(){
                     <button key={category.category} value={category.category} onClick={selectCategory} >{category.category}</button>
                 ))}
             </div>
-            {/* <div>
+            <div>
+                <h1>인기 게시물</h1>
                 {countPost?.map((post) => (
-                     <div key={post.no} onClick={() => navigate(`/post/${post.no}`)}>
+                    <div key={post.no} onClick={() => { postClick(Number(post.no), String(post.counts))}}>
                         <div>{post.title}</div>  
                         <div>{post.counts}</div>  
                     </div> 
                    
                 ))}
-            </div> */}
+            </div>
             <div>
-                
+                <h1>전체 게시물</h1>
                 {selectPost?.length !== 0 ? selectPost?.map((post) => (
-                     <div key={post.no} onClick={() => navigate(`/post/${post.no}`)}>
+                     <div key={post.no} onClick={() => {
+                        countAdd({counts : Number(post?.counts) + 1, no : post.no})
+                        navigate(`/post/${post.no}`)
+                    }}>
                         <h1>{post.no}</h1>
-                        {/* <div>{post.title}</div>  
+                        <div>{post.title}</div>  
                         <div>{post.counts}</div>  
                         <div>{post.createdtime?.split("T")[0]}</div>    
-                        <div>{post.answer ? "답변완료" : "답변대기"}</div>   */}
+                        <div>{post.answer ? "답변완료" : "답변대기"}</div>  
                     </div> 
                    
                 )) : "게시물이 없습니다"}
@@ -176,4 +197,10 @@ function Home(){
     )
 }
 
-export default Home;
+function mapDispatchToProps(dispatch:any){
+    return{
+        countAdd: (context:object) => dispatch(countAdd(context))
+    }
+}
+
+export default connect(null, mapDispatchToProps) (Home);
