@@ -61,10 +61,20 @@ export async function getDivision() {
     return data;
 }
 
-export async function updateCount(no:number, counts: string){
-    await axios.put(BOARD_API_BASE_URL + "/board/" + no, counts);
+export async function updateCount(no:number, board: InewBoard){
+    await axios.put(BOARD_API_BASE_URL + "/board/" + no, board);
 }
 
+export interface IAdmin{
+    adminid: string,
+    adminpwd: string,
+    divisioncode: number
+}
+
+export async function getAdmin() {
+    const data = await (await axios.get(BOARD_API_BASE_URL+"/admin")).data;
+    return data;
+}
 
 
 

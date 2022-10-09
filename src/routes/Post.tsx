@@ -37,6 +37,7 @@ function Post({post, rootAdd}:any){
                 no: no,
                 answer: 1,
                 answercontents: context.replace(/(?:\r\n|\r|\n)/g, '<br>'),
+                counts: getPost?.counts
             });
             window.location.reload();
         }

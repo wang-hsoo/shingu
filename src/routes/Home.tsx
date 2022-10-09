@@ -3,7 +3,25 @@ import React, { useEffect, useState } from "react";
 import { getBoad, getCategory, getDivision, Icategory, Idivision, InewBoard } from "../service/BoardService";
 import { useNavigate } from "react-router-dom";
 import { countAdd } from "../store";
+import Header from "../component/Header";
+import styled from "styled-components";
+import { useRecoilValue } from "recoil";
+import { isPopUp } from "../atom";
+import Login from "../component/Login";
 
+const Container = styled.div<{display:boolean}>`
+    /* top: -100px; //header 길이만큼 - */
+    width: 100%;
+    height: 200vh;
+    background-color: rgba(0,0,0,0.8);
+    position: relative;
+    z-index: 1;
+    display: ${(props) => props.display ? 'block' : 'none'};
+`
+const MainCon = styled.div`
+    position: absolute;
+    z-index: 0;
+`
 
 
 function Home({countAdd}:any){
@@ -16,6 +34,8 @@ function Home({countAdd}:any){
     const [selectCate, setSelectCate] = useState<string>();
     const[selectPost, setSelectPost] = useState<InewBoard[]>();
     const navigate = useNavigate();
+    const Pop = useRecoilValue(isPopUp);
+
 
     function postClick(no:number, counts:string){
         countAdd({counts : Number(counts) + 1, no : no})
@@ -144,54 +164,63 @@ function Home({countAdd}:any){
 
     return(
         <div>
-            <div>
-                <select onChange={divisionChange}>
-                    <option value="전체">전체학부</option>
-                    {division?.map((divi:Idivision) => ( 
-                        divi.upctg !== 0 ? null : 
-                        <option key={divi.divisioncode} value={[divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option> 
-                    ))}
-                </select>
+                <Header />
+                <MainCon>
+                    <div>
+                        <select onChange={divisionChange}>
+                            <option value="전체">전체학부</option>
+                            {division?.map((divi:Idivision) => ( 
+                                divi.upctg !== 0 ? null : 
+                                <option key={divi.divisioncode} value={[divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option> 
+                            ))}
+                        </select>
 
-                <select onChange={diviChange}>
-                    <option value="전체">전체학과</option>
-                    {division?.map((divi:Idivision) => (
-                        divi.upctg !== selectDivision?.divisioncode ? null :
-                        <option key={divi.divisioncode} value={ [divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option>
-                    ))}
-                </select>
-            </div>
-            <div>
-                {category?.map((category) => (
-                    <button key={category.category} value={category.category} onClick={selectCategory} >{category.category}</button>
-                ))}
-            </div>
-            <div>
-                <h1>인기 게시물</h1>
-                {countPost?.map((post) => (
-                    <div key={post.no} onClick={() => { postClick(Number(post.no), String(post.counts))}}>
-                        <div>{post.title}</div>  
-                        <div>{post.counts}</div>  
-                    </div> 
-                   
-                ))}
-            </div>
-            <div>
-                <h1>전체 게시물</h1>
-                {selectPost?.length !== 0 ? selectPost?.map((post) => (
-                     <div key={post.no} onClick={() => {
-                        countAdd({counts : Number(post?.counts) + 1, no : post.no})
-                        navigate(`/post/${post.no}`)
-                    }}>
-                        <h1>{post.no}</h1>
-                        <div>{post.title}</div>  
-                        <div>{post.counts}</div>  
-                        <div>{post.createdtime?.split("T")[0]}</div>    
-                        <div>{post.answer ? "답변완료" : "답변대기"}</div>  
-                    </div> 
-                   
-                )) : "게시물이 없습니다"}
-            </div>
+                        <select onChange={diviChange}>
+                            <option value="전체">전체학과</option>
+                            {division?.map((divi:Idivision) => (
+                                divi.upctg !== selectDivision?.divisioncode ? null :
+                                <option key={divi.divisioncode} value={ [divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        {category?.map((category) => (
+                            <button key={category.category} value={category.category} onClick={selectCategory} >{category.category}</button>
+                        ))}
+                    </div>
+                    <div>
+                        <h1>인기 게시물</h1>
+                        {countPost?.map((post) => (
+                            <div key={post.no} onClick={() => {
+                                countAdd({post : post, no : post.no})
+                                navigate(`/post/${post.no}`)
+                            }}>
+                                <div>{post.title}</div>  
+                                <div>{post.counts}</div>  
+                            </div> 
+                        
+                        ))}
+                    </div>
+                    <div>
+                        <h1>전체 게시물</h1>
+                        {selectPost?.length !== 0 ? selectPost?.map((post) => (
+                            <div key={post.no} onClick={() => {
+                                countAdd({post : post, no : post.no})
+                                navigate(`/post/${post.no}`)
+                            }}>
+                                <h1>{post.no}</h1>
+                                <div>{post.title}</div>  
+                                <div>{post.counts}</div>  
+                                <div>{post.createdtime?.split("T")[0]}</div>    
+                                <div>{post.answer ? "답변완료" : "답변대기"}</div>  
+                            </div> 
+                        
+                        )) : "게시물이 없습니다"}
+                    </div>
+                </MainCon>
+            <Container display={Pop}>
+                {Pop ? <Login /> : null}
+            </Container>
         </div>
         
     )

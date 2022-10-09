@@ -1,5 +1,5 @@
 import { createAction, createReducer, configureStore, createSlice } from "@reduxjs/toolkit";
-import {createBoard, updateBoard} from "./service/BoardService";
+import {createBoard, updateBoard, updateCount} from "./service/BoardService";
 
 
 
@@ -26,15 +26,19 @@ const post = createSlice({
             const answer = {
                 answer: action.payload.answer,
                 answercontents: action.payload.answercontents,
+                counts: Number(action.payload.counts)
             }
             state.push(answer);
             updateBoard(Number(action.payload.no), answer);
         },
         countAdd: (state, action) =>{
             const count = {
-                counts : action.payload.counts
+                counts : Number(action.payload.post.counts) + 1,
+                answer: action.payload.post.answer,
+                answercontents: action.payload.post.answercontents,
             }
-            console.log(count);
+            state.push(count);
+            updateCount(Number(action.payload.no), count);
         }
         
     }
