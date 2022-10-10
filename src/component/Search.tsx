@@ -16,14 +16,20 @@ function Search(){
 
     function onSubmit(event:React.FormEvent){
         event.preventDefault();
-        navigate(`/${clickSearch}`);
-        search();
+        if(clickSearch === undefined || clickSearch === " "){
+            console.log("오류ㅜ")
+        }else{
+            navigate(`/${clickSearch}`);
+            search();
+            window.location.reload();
+        }
     }
 
     return(
         <form onSubmit={onSubmit}>
             <input placeholder="무엇이 궁금하세요" onChange={onChange} />
             <button>검색</button>
+            <button onClick={search}>X</button>
         </form>
     )
 }

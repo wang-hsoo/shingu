@@ -9,6 +9,7 @@ import { useRecoilValue } from "recoil";
 import { isPopUp, isSearch } from "../atom";
 import Login from "../component/Login";
 import Search from "../component/Search";
+import { totalmem } from "os";
 
 const Container = styled.div<{display:boolean}>`
     /* top: -100px; //header 길이만큼 - */
@@ -40,6 +41,7 @@ function Home({countAdd}:any){
     const [pages, setPages] = useState<Number[]>([]);
     const [clickPage, setClickPage] = useState<Number>(1);
     const {title} = useParams();
+
 
     function pageCheck(post:InewBoard[]){
         const lastPage = Math.ceil(Number(post?.length) / 10);
@@ -89,9 +91,21 @@ function Home({countAdd}:any){
         getBoad().then(value => {
             const getPost = [];
             getPost.push(value);
-            setPost(getPost[0].list);
-            setSelectPost(getPost[0].list);
-            pageCheck(getPost[0].list);
+            const searchPost = [] as InewBoard[];
+            if(title){
+                for(let i = 0; i < getPost[0].list.length; i++){
+                    if(getPost[0].list[i].title.includes(title)){
+                        searchPost.push(getPost[0].list[i]);
+                    }
+                }
+                setPost(searchPost);
+                setSelectPost(searchPost);
+                pageCheck(searchPost);
+            }else{
+                setPost(getPost[0].list);
+                setSelectPost(getPost[0].list);
+                pageCheck(getPost[0].list);
+            }
         });
 
         getBoad().then(value => {
@@ -118,9 +132,11 @@ function Home({countAdd}:any){
         if(selectDivision?.divisionname === "전체" || selectDivision === undefined){
             const get = [] as InewBoard[];
             if(selectCate === "전체"){
-                setSelectPost(post);
-                setCountPost(post?.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts))).slice(0,4));
-                pageCheck(post as InewBoard[]);
+                
+                    setSelectPost(post);
+                    setCountPost(post?.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts))).slice(0,4));
+                    pageCheck(post  as InewBoard[]);
+                
             }else{
                 post?.map((post) =>{
                     if(post.category === selectCate){
@@ -130,7 +146,6 @@ function Home({countAdd}:any){
                 
                 setCountPost(get.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts))).slice(0,4));
                 setSelectPost(get);
-                pageCheck(get as InewBoard[]);
             }
 
         }else{
@@ -180,8 +195,9 @@ function Home({countAdd}:any){
         selectPost ? 
         <div>
             
-                <Header />
+                
                 <MainCon>
+                    <Header />
                     <div>
                         <select onChange={divisionChange}>
                             <option value="전체">전체학부</option>
@@ -238,6 +254,7 @@ function Home({countAdd}:any){
                             <div key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</div>
                         ))} 
                     </div>
+                    <button onClick={() => navigate('/write')}>작성하기</button>
                 </MainCon>
                 <Container display={Pop || search}>
                     {Pop ? <Login /> : null}

@@ -48,6 +48,7 @@ function Login(){
             <input placeholder="아이디" onChange={onChange} name="id" />
             <input type="password" placeholder="비밀번호"  onChange={onChange} name="pw" />
             <button>로그인</button>
+            <button onClick={() => setPopUp((prev) => !prev)}>X</button>
         </form>
     )
 }

@@ -4,6 +4,25 @@ import { rootAdd } from "../store";
 import { getDivision, Idivision, InewBoard, selectGetBoad } from "../service/BoardService";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import Header from "../component/Header";
+import Login from "../component/Login";
+import Search from "../component/Search";
+import { useRecoilValue } from "recoil";
+import { isPopUp, isSearch } from "../atom";
+
+const Container = styled.div<{display:boolean}>`
+    /* top: -100px; //header 길이만큼 - */
+    width: 100%;
+    height: 200vh;
+    background-color: rgba(0,0,0,0.8);
+    position: relative;
+    z-index: 1;
+    display: ${(props) => props.display ? 'block' : 'none'};
+`
+const MainCon = styled.div`
+    position: absolute;
+    z-index: 0;
+`
 
 const Answer =styled.div`
     white-space: pre-wrap;
@@ -20,6 +39,8 @@ function Post({post, rootAdd}:any){
     const [answer, setAnswer] = useState<boolean>(false);
     const { no } = useParams();
     const navigate = useNavigate();
+    const Pop = useRecoilValue(isPopUp);
+    const search = useRecoilValue(isSearch);
 
     function onChange(event:React.FormEvent<HTMLElement>){
         const { value } = event.currentTarget as HTMLInputElement;
@@ -101,8 +122,8 @@ function Post({post, rootAdd}:any){
     return(
         <>
             {getPost && getdivi ?
-            <div>
-                
+            <MainCon>
+                <Header />
                 <div>{division?.map((divi) => ( divi.divisioncode === getdivi?.upctg ? divi.divisionname : null))}</div>
                 <div>{getdivi?.divisionname}</div>
                 {admin ? <div>{getPost?.studentid}</div> : null}
@@ -115,10 +136,14 @@ function Post({post, rootAdd}:any){
                 
                 <button onClick={() => navigate('/')}>목록으로</button>
                 {admin? <button onClick={onClick}>{answer ? "수정하기" : "답변하기"}</button> : null}
-            </div> : 
-            <div>
+            </MainCon> : 
+            <MainCon>
                 "정보를 불러오지 못함"
-            </div>}
+            </MainCon>}
+            <Container display={Pop || search}>
+                    {Pop ? <Login /> : null}
+                    {search ? <Search />: null}
+            </Container>
         </>
     )
 }
