@@ -1,12 +1,14 @@
 import Shingu from "../img/shingu_logo.jpg";
 import { useSetRecoilState } from "recoil";
-import { isPopUp } from "../atom";
+import { isPopUp, isSearch } from "../atom";
 import { useEffect, useState } from "react";
 
 function Header(){
     const [login, setLogin] = useState(false);
     const setPopUp = useSetRecoilState(isPopUp);
     const popUp = () => setPopUp((prev) => !prev);
+    const setSearch = useSetRecoilState(isSearch);
+    const search = () => setSearch((prev) => !prev);
 
     function Log(){
         if(login){
@@ -31,7 +33,7 @@ function Header(){
             {login? <div>관리자 페이지</div> : null}
             <button onClick={Log}>{login ? "LOGOUT" : "LOGIN"}</button>
             <button>THEM</button>
-            <button onClick={popUp}>search</button>
+            <button onClick={search}>search</button>
         </div>
     )
 

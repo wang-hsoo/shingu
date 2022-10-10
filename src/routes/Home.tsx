@@ -1,13 +1,14 @@
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { getBoad, getCategory, getDivision, Icategory, Idivision, InewBoard } from "../service/BoardService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { countAdd } from "../store";
 import Header from "../component/Header";
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
-import { isPopUp } from "../atom";
+import { isPopUp, isSearch } from "../atom";
 import Login from "../component/Login";
+import Search from "../component/Search";
 
 const Container = styled.div<{display:boolean}>`
     /* top: -100px; //header 길이만큼 - */
@@ -35,11 +36,19 @@ function Home({countAdd}:any){
     const[selectPost, setSelectPost] = useState<InewBoard[]>();
     const navigate = useNavigate();
     const Pop = useRecoilValue(isPopUp);
+    const search = useRecoilValue(isSearch);
+    const [pages, setPages] = useState<Number[]>([]);
+    const [clickPage, setClickPage] = useState<Number>(1);
+    const {title} = useParams();
 
+    function pageCheck(post:InewBoard[]){
+        const lastPage = Math.ceil(Number(post?.length) / 10);
+        const pages = [];
+        for(let i = 1; i <= lastPage; i++){
+            pages.push(i);
+        }
+        setPages(pages);
 
-    function postClick(no:number, counts:string){
-        countAdd({counts : Number(counts) + 1, no : no})
-        navigate(`/post/${no}`)
     }
 
   
@@ -82,6 +91,7 @@ function Home({countAdd}:any){
             getPost.push(value);
             setPost(getPost[0].list);
             setSelectPost(getPost[0].list);
+            pageCheck(getPost[0].list);
         });
 
         getBoad().then(value => {
@@ -110,6 +120,7 @@ function Home({countAdd}:any){
             if(selectCate === "전체"){
                 setSelectPost(post);
                 setCountPost(post?.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts))).slice(0,4));
+                pageCheck(post as InewBoard[]);
             }else{
                 post?.map((post) =>{
                     if(post.category === selectCate){
@@ -119,6 +130,7 @@ function Home({countAdd}:any){
                 
                 setCountPost(get.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts))).slice(0,4));
                 setSelectPost(get);
+                pageCheck(get as InewBoard[]);
             }
 
         }else{
@@ -154,6 +166,7 @@ function Home({countAdd}:any){
             })
             setCountPost(get.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts))).slice(0,4));
             setSelectPost(get);
+            pageCheck(get as InewBoard[]);
         }
 
     },[selectDivision,selectDivi,selectCate])
@@ -162,8 +175,11 @@ function Home({countAdd}:any){
         setSelectCate("전체");
     },[selectDivision,selectDivi])
 
+
     return(
+        selectPost ? 
         <div>
+            
                 <Header />
                 <MainCon>
                     <div>
@@ -203,25 +219,31 @@ function Home({countAdd}:any){
                     </div>
                     <div>
                         <h1>전체 게시물</h1>
-                        {selectPost?.length !== 0 ? selectPost?.map((post) => (
+                        {selectPost?.length !== 0 ? selectPost?.map((post,idx) => (
+                
+                            (Number(clickPage) - 1) * 10 <= idx && Number(clickPage) * 10 - 1 >= idx ?
                             <div key={post.no} onClick={() => {
                                 countAdd({post : post, no : post.no})
                                 navigate(`/post/${post.no}`)
                             }}>
-                                <h1>{post.no}</h1>
+                                <h1>{idx}</h1>
                                 <div>{post.title}</div>  
                                 <div>{post.counts}</div>  
                                 <div>{post.createdtime?.split("T")[0]}</div>    
                                 <div>{post.answer ? "답변완료" : "답변대기"}</div>  
                             </div> 
-                        
+                        : null
                         )) : "게시물이 없습니다"}
+                        {pages.map((pages) => (
+                            <div key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</div>
+                        ))} 
                     </div>
                 </MainCon>
-            <Container display={Pop}>
-                {Pop ? <Login /> : null}
-            </Container>
-        </div>
+                <Container display={Pop || search}>
+                    {Pop ? <Login /> : null}
+                    {search ? <Search />: null}
+                </Container>
+        </div>  : null
         
     )
 }
