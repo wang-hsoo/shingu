@@ -9,3 +9,8 @@ export const isSearch = atom({
     key: "search",
     default: false
 })
+
+export const isUserPost = atom({
+    key: "studentId",
+    default: false
+})

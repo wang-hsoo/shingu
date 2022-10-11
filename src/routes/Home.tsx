@@ -5,11 +5,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { countAdd } from "../store";
 import Header from "../component/Header";
 import styled from "styled-components";
-import { useRecoilValue } from "recoil";
-import { isPopUp, isSearch } from "../atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isPopUp, isSearch, isUserPost } from "../atom";
 import Login from "../component/Login";
 import Search from "../component/Search";
-import { totalmem } from "os";
+import UserSearch from "../component/UserSearch";
 
 const Container = styled.div<{display:boolean}>`
     /* top: -100px; //header 길이만큼 - */
@@ -38,9 +38,16 @@ function Home({countAdd}:any){
     const navigate = useNavigate();
     const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
+    const userSearch = useRecoilValue(isUserPost);
     const [pages, setPages] = useState<Number[]>([]);
     const [clickPage, setClickPage] = useState<Number>(1);
     const {title} = useParams();
+    const setUserSearch = useSetRecoilState(isUserPost);
+    const setSearch = () => setUserSearch((prev) => !prev)
+
+    useEffect(() => {
+        console.log(Number(title));
+    },[])
 
 
     function pageCheck(post:InewBoard[]){
@@ -93,14 +100,26 @@ function Home({countAdd}:any){
             getPost.push(value);
             const searchPost = [] as InewBoard[];
             if(title){
-                for(let i = 0; i < getPost[0].list.length; i++){
-                    if(getPost[0].list[i].title.includes(title)){
-                        searchPost.push(getPost[0].list[i]);
+                if(Number(title) === NaN){
+                    for(let i = 0; i < getPost[0].list.length; i++){
+                        if(getPost[0].list[i].title.includes(title)){
+                            searchPost.push(getPost[0].list[i]);
+                        }
                     }
+                    setPost(searchPost);
+                    setSelectPost(searchPost);
+                    pageCheck(searchPost);
+                }else{
+                    for(let i = 0; i < getPost[0].list.length; i++){
+                        if(getPost[0].list[i].studentid === title){
+                            searchPost.push(getPost[0].list[i]);
+                        }
+                    }
+                    setPost(searchPost);
+                    setSelectPost(searchPost);
+                    pageCheck(searchPost);
                 }
-                setPost(searchPost);
-                setSelectPost(searchPost);
-                pageCheck(searchPost);
+    
             }else{
                 setPost(getPost[0].list);
                 setSelectPost(getPost[0].list);
@@ -255,10 +274,12 @@ function Home({countAdd}:any){
                         ))} 
                     </div>
                     <button onClick={() => navigate('/write')}>작성하기</button>
+                    <button onClick={setSearch}>내 게시물 찾기</button>
                 </MainCon>
-                <Container display={Pop || search}>
+                <Container display={Pop || search || userSearch}>
                     {Pop ? <Login /> : null}
                     {search ? <Search />: null}
+                    {userSearch ? <UserSearch /> : null}
                 </Container>
         </div>  : null
         
