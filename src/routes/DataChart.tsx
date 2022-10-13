@@ -40,7 +40,7 @@ function DataChart(){
             <button onClick={onClick} value="월별차트">월별차트</button>
             <button onClick={onClick} value="추천게시물">추천게시물</button>
 
-            {selectPage === "일별차트" ? <DateChart /> : null}
+            {selectPage === "일별차트" ? <DateChart division= {adminDivision?.divisionname+""} /> : null}
             {selectPage === "월별차트" ? <MonthChart /> : null}
             {selectPage === "추천게시물" ? <SelectPost /> : null}
         </div>

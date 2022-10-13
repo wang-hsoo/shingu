@@ -45,9 +45,7 @@ function Home({countAdd}:any){
     const setUserSearch = useSetRecoilState(isUserPost);
     const setSearch = () => setUserSearch((prev) => !prev)
 
-    useEffect(() => {
-        console.log(Number(title));
-    },[])
+   
 
 
     function pageCheck(post:InewBoard[]){
