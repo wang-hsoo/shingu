@@ -32,7 +32,7 @@ function Header(){
 
     return(
         <div>
-            <div><img src={Shingu} style={{width: "100px"}} /></div>
+            <div onClick={()=>navigate('/')}><img src={Shingu} style={{width: "100px"}} /></div>
             {login? <button onClick={()=>navigate('/DataChart')}>관리자 페이지</button> : null}
             <button onClick={Log}>{login ? "LOGOUT" : "LOGIN"}</button>
             <button>THEM</button>

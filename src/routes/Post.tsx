@@ -65,7 +65,7 @@ function Post({post, rootAdd}:any){
     }
     
     useEffect(() => {
-        
+            console.log(post);
             if(no === undefined){
                 if(post[0]){
                     setPost(post[0]);
@@ -88,6 +88,7 @@ function Post({post, rootAdd}:any){
                    
                 });
             }    
+            
     },[]);
 
     useEffect(() => {
@@ -110,8 +111,10 @@ function Post({post, rootAdd}:any){
             
             
         }));
-        const date = getPost?.createdtime?.split("T");
-        setDate(date ? date[0] : "null" );
+        if(no){
+            const date = getPost?.createdtime?.split("T");
+            setDate(date ? date[0] : "null" );
+        }
 
         if(getPost?.answer){
             setAnswer(true);

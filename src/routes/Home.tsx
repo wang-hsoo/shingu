@@ -11,6 +11,7 @@ import Login from "../component/Login";
 import Search from "../component/Search";
 import UserSearch from "../component/UserSearch";
 
+
 const Container = styled.div<{display:boolean}>`
     /* top: -100px; //header 길이만큼 - */
     width: 100%;
@@ -23,6 +24,12 @@ const Container = styled.div<{display:boolean}>`
 const MainCon = styled.div`
     position: absolute;
     z-index: 0;
+`
+const Div = styled.div`
+    background-color: beige;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
 `
 
 
@@ -98,11 +105,13 @@ function Home({countAdd}:any){
             getPost.push(value);
             const searchPost = [] as InewBoard[];
             if(title){
-                if(Number(title) === NaN){
+                console.log(typeof Number(title));
+                if(isNaN(Number(title))){
                     for(let i = 0; i < getPost[0].list.length; i++){
                         if(getPost[0].list[i].title.includes(title)){
                             searchPost.push(getPost[0].list[i]);
                         }
+                        
                     }
                     setPost(searchPost);
                     setSelectPost(searchPost);
@@ -240,13 +249,13 @@ function Home({countAdd}:any){
                     <div>
                         <h1>인기 게시물</h1>
                         {countPost?.map((post) => (
-                            <div key={post.no} onClick={() => {
+                            <Div key={post.no} onClick={() => {
                                 countAdd({post : post, no : post.no})
                                 navigate(`/post/${post.no}`)
                             }}>
                                 <div>{post.title}</div>  
-                                <div>{post.counts}</div>  
-                            </div> 
+                                <div>조회수: {post.counts}</div>  
+                            </Div> 
                         
                         ))}
                     </div>
@@ -255,16 +264,15 @@ function Home({countAdd}:any){
                         {selectPost?.length !== 0 ? selectPost?.map((post,idx) => (
                 
                             (Number(clickPage) - 1) * 10 <= idx && Number(clickPage) * 10 - 1 >= idx ?
-                            <div key={post.no} onClick={() => {
+                            <Div key={post.no} onClick={() => {
                                 countAdd({post : post, no : post.no})
                                 navigate(`/post/${post.no}`)
                             }}>
-                                <h1>{idx}</h1>
                                 <div>{post.title}</div>  
-                                <div>{post.counts}</div>  
+                                <div>조회수: {post.counts}</div>  
                                 <div>{post.createdtime?.split("T")[0]}</div>    
                                 <div>{post.answer ? "답변완료" : "답변대기"}</div>  
-                            </div> 
+                            </Div> 
                         : null
                         )) : "게시물이 없습니다"}
                         {pages.map((pages) => (

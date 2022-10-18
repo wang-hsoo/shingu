@@ -1,6 +1,5 @@
 import { createAction, createReducer, configureStore, createSlice } from "@reduxjs/toolkit";
-import {createBoard, updateBoard, updateCount} from "./service/BoardService";
-
+import {createBoard, getBoad, updateBoard, updateCount} from "./service/BoardService";
 
 
 const post = createSlice({
