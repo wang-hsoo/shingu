@@ -102,14 +102,15 @@ function Home({countAdd}:any){
     useEffect(() => {
         getBoad().then(value => {
             const getPost = [];
+            
             getPost.push(value);
             const searchPost = [] as InewBoard[];
             if(title){
                 console.log(typeof Number(title));
                 if(isNaN(Number(title))){
-                    for(let i = 0; i < getPost[0].list.length; i++){
-                        if(getPost[0].list[i].title.includes(title)){
-                            searchPost.push(getPost[0].list[i]);
+                    for(let i = 0; i < getPost.length; i++){
+                        if(getPost[i].title.includes(title)){
+                            searchPost.push(getPost[i]);
                         }
                         
                     }
@@ -117,9 +118,9 @@ function Home({countAdd}:any){
                     setSelectPost(searchPost);
                     pageCheck(searchPost);
                 }else{
-                    for(let i = 0; i < getPost[0].list.length; i++){
-                        if(getPost[0].list[i].studentid === title){
-                            searchPost.push(getPost[0].list[i]);
+                    for(let i = 0; i < getPost.length; i++){
+                        if(getPost[i].studentid === title){
+                            searchPost.push(getPost[i]);
                         }
                     }
                     setPost(searchPost);
@@ -128,9 +129,9 @@ function Home({countAdd}:any){
                 }
     
             }else{
-                setPost(getPost[0].list);
-                setSelectPost(getPost[0].list);
-                pageCheck(getPost[0].list);
+                setPost(getPost[0]);
+                setSelectPost(getPost[0]);
+                pageCheck(getPost[0]);
             }
         });
 
