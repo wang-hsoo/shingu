@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { rootAdd } from "../store";
 import { getDivision, Idivision, InewBoard, selectGetBoad } from "../service/BoardService";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -157,7 +156,7 @@ function mapStateToProps(state:InewBoard){
 
 function mapDispatchToProps(dispatch:any){
     return{
-        rootAdd: (context:InewBoard) => dispatch(rootAdd(context))
+        
     }
 }
 

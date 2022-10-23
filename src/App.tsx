@@ -1,6 +1,9 @@
-import React from "react";
+import React,{ useEffect } from "react";
 import AppRouter from "./AppRouter";
 import { createGlobalStyle } from "styled-components";
+import { getBoad, InewBoard } from "./service/BoardService";
+import { connect } from "react-redux";
+import { setPost } from "./store";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -67,7 +70,13 @@ a {
 `;
 
 
-function App() {
+function App({add}:any) {
+  
+  useEffect(()=>{
+    getBoad().then(value => {
+      add(value);
+    })
+  })
 
   return (
     <>
@@ -77,4 +86,10 @@ function App() {
   );
 }
 
-export default App;
+function mapDispatchToProps(dispatch:any){
+  return{
+      add: (context:InewBoard[]) => dispatch(setPost(context))
+  }
+}
+
+export default connect(null, mapDispatchToProps) (App);
