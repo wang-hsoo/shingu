@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
@@ -70,13 +70,13 @@ function DateChart({division,post}:any){
     }
     function dateSort(DATE:string){
         const todayPost = [] as InewBoard[];
-        
         post?.map((post:InewBoard) => {
             const postDate = post.createdtime?.split('T') as string[];
             if(postDate[0] === DATE){
                 todayPost.push(post);
             }
         })
+
         cateSort(todayPost);
         setSelectPost(todayPost);
     }
@@ -85,22 +85,29 @@ function DateChart({division,post}:any){
         const today = new Date().toLocaleDateString().replace(" ","").replace(" ","").split('.');
         const DATE = `${today[0]}-${today[1]}-${today[2]}`;
         dateSort(DATE);
-
+        
         getCategory().then((value => {
-         
             setCategory(value);
         }));
         
-    },[]);
 
+    },[post]);
+  
     useEffect(()=>{
-        const selDate = selectDate?.replace(" ","").replace(". ",".").split('.') as string[];
-        const DATE = `${selDate[0]}-${selDate[1]}-${selDate[2]}`;
-        dateSort(DATE);
-      
-    },[selectDate])
-    
+        
+        if(selectDate === null || selectDate === undefined){
 
+        }else{
+            const selDate = selectDate?.replace(" ","").replace(". ",".").split('.') as string[];
+            const DATE = `${selDate[0]}-${selDate[1]}-${selDate[2]}`;
+            dateSort(DATE);
+           
+            
+        }
+        
+    },[selectDate])
+   
+    
     return(
         <div>
             일별 차트
@@ -117,52 +124,52 @@ function DateChart({division,post}:any){
             />
             <div style={{width: "500px"}}>
             <ApexChart 
-                    type="donut" 
-                    series={catePost ? [ catePost.cate1.length,catePost.cate2.length, catePost.cate3.length,  catePost.cate4.length, catePost.cate5.length, catePost.cate6.length] : []}
-                    options={{
-                        theme:{
-                            mode:"light"
-                        },
-                        chart : {
-                            height: 100,
-                            width: 100,
-                            toolbar: {
-                                show: false
+                        type="donut" 
+                        series={catePost ? [ catePost.cate1.length,catePost.cate2.length, catePost.cate3.length,  catePost.cate4.length, catePost.cate5.length, catePost.cate6.length] : []}
+                        options={{
+                            theme:{
+                                mode:"light"
                             },
-                            background: "transparent",
-                        },
-                        
-                        stroke: {
-                            curve: "smooth",
-                            width: 3
-                        },
-                        plotOptions:{
-                            pie:{
-                                donut:{
-                                    labels:{
-                                        show:true,
-                                        total:{
-                                            showAlways: true,
+                            chart : {
+                                height: 100,
+                                width: 100,
+                                toolbar: {
+                                    show: false
+                                },
+                                background: "transparent",
+                            },
+                            
+                            stroke: {
+                                curve: "smooth",
+                                width: 3
+                            },
+                            plotOptions:{
+                                pie:{
+                                    donut:{
+                                        labels:{
                                             show:true,
-                                            label: "총 게시물 수",
-                                            fontSize:"24px",
-                                            color: "black"
-                                        },
-                                        value:{
-                                            color: "black",
+                                            total:{
+                                                showAlways: true,
+                                                show:true,
+                                                label: "총 게시물 수",
+                                                fontSize:"24px",
+                                                color: "black"
+                                            },
+                                            value:{
+                                                color: "black",
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        },
+                            },
+                            
                         
-                       
-                        labels:[`${category[1].category}`,`${category[2].category}`,`${category[3].category}`,`${category[4].category}`,`${category[5].category}`,`${category[6].category}`],
+                            labels:[`${category[1]?.category}`,`${category[2]?.category}`,`${category[3]?.category}`,`${category[4]?.category}`,`${category[5]?.category}`,`${category[6]?.category}`],
+                            
+                            colors: ["#0fbcf9", "#a3a3a3" ,"#ea2020","black","#ea2020","#ea2020"],
                         
-                        colors: ["#0fbcf9", "#a3a3a3" ,"#ea2020","black","#ea2020","#ea2020"],
-                       
-                    }} 
-                />
+                        }} 
+                    />
 
             </div>
 
@@ -177,7 +184,10 @@ function DateChart({division,post}:any){
 }
 
 function mapStateToProps(state:InewBoard[]){
-    return {post: state[0]}
+    const post = state[0];
+    return {post: post}
+
+    
 }
 
-export default connect(mapStateToProps) (DateChart);
+export default connect(mapStateToProps) (React.memo(DateChart));
