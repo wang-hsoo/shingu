@@ -7,24 +7,29 @@ function AllPost({post, divi, division, category, AllDivision}:any){
     const [selectPost, setPost] = useState<InewBoard[]>();
     const navigate = useNavigate();
 
-
     function categoryPost(post:InewBoard[]){
         let catePost = [] as InewBoard[];
-        post.map((post)=>{
+        post?.map((post)=>{
             if(post.category === category){
                 catePost.push(post);
             }
         })
         setPost(catePost)
     }
-
+    
     useEffect(()=>{
-        setPost(post);
-    },[])
+        setTimeout(()=>{
+            setPost(post);
+        },1000);
+    },[post]);
 
     useEffect(()=>{
         if(division?.divisionname === "전체" || division === undefined){
-            setPost(post);
+            if(category === "전체"){
+                setPost(post);
+            }else{
+                categoryPost(post);
+            }
         }else{
 
             let divisionKey = 0;
@@ -76,13 +81,17 @@ function AllPost({post, divi, division, category, AllDivision}:any){
 
     return(
         <div>
-            <h1>전체 게시물</h1>
-            {selectPost?.map((post)=>(
-                <div onClick={() => navigate(`/post/${post.no}`)}>
-                    <h1>{post.title}</h1>
-                    <div>{post.divisioncode}</div>
-                </div>
-            ))}
+            {post && selectPost ? 
+            <>
+                <h1>전체 게시물</h1>
+                {selectPost?.map((post)=>(
+                    <div onClick={() => navigate(`/post/${post.no}`)} key={post.no}>
+                        <h1>{post.title}</h1>
+                        <div>{post.divisioncode}</div>
+                    </div>
+                ))}
+            </> : <div>데이터 없음</div>}
+        
         </div>
     )
 }

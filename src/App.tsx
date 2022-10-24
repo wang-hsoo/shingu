@@ -76,7 +76,7 @@ function App({add}:any) {
     getBoad().then(value => {
       add(value);
     })
-  })
+  },[])
 
   return (
     <>

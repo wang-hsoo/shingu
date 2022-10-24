@@ -41,7 +41,7 @@ function Home(){
     const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
 
-
+    
 
   
 
