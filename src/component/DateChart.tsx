@@ -16,7 +16,7 @@ interface IcateBoard{
 }
 
 
-function DateChart({division,post}:any){
+function DateChart({post}:any){
     const [date, setDate] = useState<Date>(new Date());
     const [selectDate, setSelectDate] = useState<string>();
     const [category, setCategory] = useState<Icategory[]>([]);
