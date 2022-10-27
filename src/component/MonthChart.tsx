@@ -6,10 +6,20 @@ import { connect } from "react-redux";
 import { getCategory, Icategory, InewBoard } from "../service/BoardService";
 import { type } from "@testing-library/user-event/dist/type";
 
+interface ISortPost{
+    cate1: Number[],
+    cate2: Number[],
+    cate3: Number[],
+    cate4: Number[],
+    cate5: Number[],
+    cate6: Number[],
+}
+
 function MonthChart({post}:any){
     const [startDate, setStartDate] = useState(new Date());
-    const [sortPost, setSortPost] = useState();
+    const [sortPost, setSortPost] = useState<InewBoard[][]>();
     const [category, setCategory] = useState<Icategory[]>([]);
+    const [chartSortPost, setChartSortPost] = useState<ISortPost>();
 
 
     useEffect(()=>{
@@ -28,6 +38,82 @@ function MonthChart({post}:any){
         const getPost =  monthSort(allPost);
         setSortPost(getPost);
     },[startDate])
+
+    useEffect(()=>{
+        const cate1 = [] as Number[];
+        const cate2 = [] as Number[];
+        const cate3 = [] as Number[];
+        const cate4 = [] as Number[];
+        const cate5 = [] as Number[];
+        const cate6 = [] as Number[];
+
+        
+
+        sortPost?.map((post:InewBoard[])=>{
+            let cate1L = 0;
+            let cate2L = 0;
+            let cate3L = 0;
+            let cate4L = 0;
+            let cate5L = 0;
+            let cate6L = 0;
+            
+
+            if(post.length === 0){
+
+            }else{
+                post.map((Opost:InewBoard) => {
+                    switch(Opost.category){
+                        case `건물`:
+                            cate1L += 1;
+                            break;
+
+                        case `기숙사`:
+                            cate2L += 1;
+                            break;
+
+                        case `휴학/복학`:
+                            cate3L += 1;
+                            break;
+
+                        case `편의시설`:
+                            cate4L += 1;
+                            break;
+                            
+                        case `주차장`:
+                            cate5L += 1;
+                            break;
+
+                        case `기타`:
+                            cate6L += 1;
+                            break;
+                    }
+                })
+                 
+            }
+                cate1.push(cate1L)
+                cate2.push(cate2L)
+                cate3.push(cate3L)
+                cate4.push(cate4L)
+                cate5.push(cate5L)
+                cate6.push(cate6L) 
+
+            
+        })
+
+        const ALL = {
+            cate1: cate1,
+            cate2: cate2,
+            cate3: cate3,
+            cate4: cate4,
+            cate5: cate5,
+            cate6: cate6,
+        }
+        setChartSortPost(ALL);
+        
+        
+    },[sortPost])
+
+
 
     useEffect(()=>{
         getCategory().then((value => {
@@ -52,22 +138,22 @@ function MonthChart({post}:any){
                         height= "800"
                         series={[{
                             name: `${category[1]?.category}`,
-                            data: [44, 55, 41, 37, 22, 43, 21]
+                            data: chartSortPost?.cate1.map((post) => Number(post)) || []
                           }, {
                             name: `${category[2]?.category}`,
-                            data: [53, 32, 33, 52, 13, 43, 32]
+                            data: chartSortPost?.cate2.map((post) => Number(post)) || []
                           }, {
                             name: `${category[3]?.category}`,
-                            data: [12, 17, 11, 9, 15, 11, 20]
+                            data: chartSortPost?.cate3.map((post) => Number(post)) || []
                           }, {
                             name: `${category[4]?.category}`,
-                            data: [9, 7, 5, 8, 6, 9, 4]
+                            data: chartSortPost?.cate4.map((post) => Number(post)) || []
                           }, {
                             name: `${category[5]?.category}`,
-                            data: [25, 12, 19, 32, 25, 24, 10]
+                            data: chartSortPost?.cate5.map((post) => Number(post)) || []
                           },{
                             name: `${category[6]?.category}`,
-                            data: [25, 12, 19, 32, 25, 24, 10]
+                            data: chartSortPost?.cate6.map((post) => Number(post)) || []
                           }
                         ]}
 
@@ -107,7 +193,7 @@ function MonthChart({post}:any){
                                 }
                             },
                             xaxis:{
-                                categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                                categories: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
                             },
                             legend: {
                                 position: 'top',
@@ -133,8 +219,10 @@ function mapStateToProps(state:InewBoard[]){
     return {post: post}
 }
 
+
+
 function monthSort(post:InewBoard[]){
-    let sortPost = [[],[],[],[],[],[],[],[],[],[],[],[]] as any;
+    let sortPost = [[],[],[],[],[],[],[],[],[],[],[],[]] as InewBoard[][];
 
    
     post.map((post:InewBoard)=>{
