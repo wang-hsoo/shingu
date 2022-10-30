@@ -14,6 +14,7 @@
     "apexcharts": "^3.36.0",
     "axios": "^0.27.2",
     "date-fns": "^2.29.3",
+    "framer-motion": "^7.6.2",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-datepicker": "^4.8.0",
@@ -52,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-datepicker": "^4.4.2",
     "@types/styled-components": "^5.1.26",
     "file-loader": "^6.2.0",

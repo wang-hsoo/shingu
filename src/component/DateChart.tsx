@@ -5,6 +5,18 @@ import { ko } from "date-fns/esm/locale";
 import ApexChart from "react-apexcharts";
 import { getBoad, getCategory, Icategory, InewBoard } from "../service/BoardService";
 import { connect } from "react-redux";
+import { AnimatePresence, motion } from "framer-motion";
+import styled from "styled-components";
+
+const CateDiv = styled.div`
+    display: flex;
+    div{
+        width: 100px;
+        margin-right: 10px;
+    }
+`
+const CatePost = styled(motion.div)`
+`
 
 interface IcateBoard{
     cate1: InewBoard[],
@@ -22,6 +34,10 @@ function DateChart({post}:any){
     const [category, setCategory] = useState<Icategory[]>([]);
     const [selectPost, setSelectPost] = useState<InewBoard[]>(); // 해당 날짜 게시물
     const [catePost, setCatePost] = useState<IcateBoard>(); // 카테고리 별로 정리
+    const [c, setC] = useState(false);
+
+    const checkC = () => {setC((prev) => !prev)};
+
 
     function cateSort(post:InewBoard[]){
         const cateSele:IcateBoard = {
@@ -106,6 +122,9 @@ function DateChart({post}:any){
         }
         
     },[selectDate])
+
+   
+    
    
     
     return(
@@ -172,12 +191,26 @@ function DateChart({post}:any){
                     />
 
             </div>
+            
+            <CateDiv>
+               {category.map((cate:Icategory, idx)=>(
+                    idx !==0 ?
+                    <motion.div layoutId={cate.category} onClick={checkC}>{cate.category}</motion.div> : null
+               ))}
+            </CateDiv>
 
-            {selectPost?.map((value:InewBoard) => (
-                <div key={value.no}>
-                    <div>{value.title}</div>
+            <AnimatePresence>
+                <div>
+                    {c && <CatePost layoutId="건물">
+                        {catePost?.cate1.map((post:InewBoard) => (
+                            <div>{post.title}</div>
+                        ))}
+                    </CatePost>}
                 </div>
-            ))}
+            </AnimatePresence>
+
+            
+            
             
         </div>
     )
