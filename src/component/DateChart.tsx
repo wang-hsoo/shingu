@@ -34,9 +34,6 @@ function DateChart({post}:any){
     const [category, setCategory] = useState<Icategory[]>([]);
     const [selectPost, setSelectPost] = useState<InewBoard[]>(); // 해당 날짜 게시물
     const [catePost, setCatePost] = useState<IcateBoard>(); // 카테고리 별로 정리
-    const [c, setC] = useState(false);
-
-    const checkC = () => {setC((prev) => !prev)};
 
 
     function cateSort(post:InewBoard[]){
@@ -191,23 +188,26 @@ function DateChart({post}:any){
                     />
 
             </div>
-            
             <CateDiv>
-               {category.map((cate:Icategory, idx)=>(
-                    idx !==0 ?
-                    <motion.div layoutId={cate.category} onClick={checkC}>{cate.category}</motion.div> : null
-               ))}
+                {category.map((category, idx) => (
+                    idx !== 0 && idx < 4 ? 
+                    <div>
+                        {category.category}
+                    </div> : null
+                ))}
+                {catePost?.cate1.map((post)=>(
+                    <div>{post.title}</div>
+                ))}
             </CateDiv>
-
-            <AnimatePresence>
-                <div>
-                    {c && <CatePost layoutId="건물">
-                        {catePost?.cate1.map((post:InewBoard) => (
-                            <div>{post.title}</div>
-                        ))}
-                    </CatePost>}
-                </div>
-            </AnimatePresence>
+            <CateDiv>
+                {category.map((category, idx) => (
+                     idx > 3 ? 
+                    <div>
+                        {category.category}
+                    </div> : null
+                ))}
+            </CateDiv>
+            
 
             
             

@@ -2,9 +2,18 @@ import { connect } from "react-redux";
 import { Idivision, InewBoard } from "../service/BoardService";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+const Page = styled.div`
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 10px;
+`
 
 function AllPost({post, divi, division, category, AllDivision}:any){
     const [selectPost, setPost] = useState<InewBoard[]>();
+    const [pages, setPages] = useState<Number[]>([]);
+    const [clickPage, setClickPage] = useState<Number>(1);
     const navigate = useNavigate();
 
     function categoryPost(post:InewBoard[]){
@@ -79,17 +88,33 @@ function AllPost({post, divi, division, category, AllDivision}:any){
         
     },[divi, category])//학과
 
+   
+
+    useEffect(()=>{
+        const lastPage = Math.ceil(Number(selectPost?.length) / 10);
+        const pages = [];
+        for(let i = 1; i <= lastPage; i++){
+            pages.push(i);
+        }
+        setPages(pages);
+        
+    },[selectPost])
+
     return(
         <div>
             {post && selectPost ? 
             <>
                 <h1>전체 게시물</h1>
-                {selectPost?.map((post)=>(
+                {selectPost?.map((post, idx)=>(
+                    (Number(clickPage) - 1) * 10 <= idx && Number(clickPage) * 10 - 1 >= idx ?
                     <div onClick={() => navigate(`/post/${post.no}`)} key={post.no}>
                         <h1>{post.title}</h1>
                         <div>{post.divisioncode}</div>
-                    </div>
+                    </div> : null
                 ))}
+                {pages.map((pages) => (
+                            <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page>
+                        ))} 
             </> : <div>데이터 없음</div>}
         
         </div>
