@@ -107,7 +107,7 @@ function AllPost({post, divi, division, category, AllDivision}:any){
                 <h1>전체 게시물</h1>
                 {selectPost?.map((post, idx)=>(
                     (Number(clickPage) - 1) * 10 <= idx && Number(clickPage) * 10 - 1 >= idx ?
-                    <div onClick={() => navigate(`/post/${post.no}`)} key={post.no}>
+                    <div onClick={() => navigate(`/post/${post.no}`)} key={idx}>
                         <h1>{post.title}</h1>
                         <div>{post.divisioncode}</div>
                     </div> : null

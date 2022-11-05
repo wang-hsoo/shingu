@@ -6,17 +6,15 @@ const BOARD_API_BASE_URL = "http://localhost:8080/api";
 
 
 export interface InewBoard{
-    no?:number,
-    studentid: string
-    title: string,
-    contents: string,
-    addboard?: boolean,
-    category: string,
-    divisioncode: string,
-    createdtime?: string,
-    answer?:boolean,
-    answercontents?: string,
-    counts?: string,
+    no?: Number,
+    divisioncode: String,
+    category: String,
+    title: String,
+    contents: String,
+    addboard: boolean,
+    studentid: Number,
+    createdtime?: String,
+    counts: Number
 }
  
 export async function createBoard(board:InewBoard) {
