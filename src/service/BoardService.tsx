@@ -74,6 +74,22 @@ export async function getAdmin() {
     return data;
 }
 
+export interface Iuser{
+    no?: Number,
+    studentid: String,
+    username: String,
+    password: String,
+    divisioncode: String
+}
+
+export async function getUser(id:string) {
+    const data = await (await axios.get(BOARD_API_BASE_URL+"/member/" + id)).data;
+    return data;
+}
+
+export async function createUser( user: Iuser){
+    await axios.put(BOARD_API_BASE_URL + "/member/", user);
+}
 
 
 

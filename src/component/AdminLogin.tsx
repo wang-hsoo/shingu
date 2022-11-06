@@ -6,7 +6,6 @@ import React, { useState } from "react";
 function AdminLogin(){
     const [id, setId] = useState<string>();
     const [pw, setPw] = useState<string>();
-    const [chUse, setChUse] = useState<boolean>(false);
 
     function onChange(event:React.ChangeEvent<HTMLInputElement>){
         const { value } = event.target as HTMLInputElement;
@@ -28,7 +27,6 @@ function AdminLogin(){
         if(id === undefined || pw === undefined){
             console.log("오류");
         }else{
-            if(chUse){
                 getAdmin().then(value => {
                     value.map((check:IAdmin) => {
                         if(check.adminid === id && check.adminpwd === pw){
@@ -39,10 +37,6 @@ function AdminLogin(){
                         }
                     })
                 })
-
-            }else{
-                
-            }
         }
     }
 
