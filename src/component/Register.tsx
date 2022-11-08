@@ -4,6 +4,7 @@ import React, { useState,useEffect } from "react";
 function Register(){
     const [id, setId] = useState<string>();
     const [pw, setPw] = useState<string>();
+    const [name, setName] = useState<string>();
     const [division, setDivision] = useState<Idivision[]>();
     const [selectDivi, setSelectDivi] = useState<string>();
     const [selectDivision, setSelectDivision] = useState<Idivision>();
@@ -37,21 +38,29 @@ function Register(){
             case "pw":
                 setPw(value);
                 break;
+
+            case "name":
+                setName(value);
+                break;
+
         }
     }
 
     function onSubmit(e:React.FormEvent){
         e.preventDefault();
-        console.log(id, pw,selectDivi )
+        
         if(id !== " " && id !== undefined && pw !== " " && pw !== undefined && selectDivi !== " " && selectDivi !== "전체"){
             const user = {
-                studentid: id,
-                username: "왕현수",
+                no: Number(id),
+                username: name,
                 password: pw,
-                divisioncode: selectDivi
-            } as Iuser;
+                divisioncode: selectDivi,
+                studentid: id,
+            }as Iuser;
+     
 
             createUser(user);
+            
         }
     }
 
@@ -69,8 +78,10 @@ function Register(){
     return(
         <form onSubmit={onSubmit}>
             <h1>회원가입</h1>
+            <input type="text" placeholder="이름"  onChange={onChange} name="name" />
             <input placeholder="학번" onChange={onChange} name="id" />
             <input type="password" placeholder="비밀번호"  onChange={onChange} name="pw" />
+
 
             <select onChange={divisionChange}>
                 <option value="전체">전체학부</option>

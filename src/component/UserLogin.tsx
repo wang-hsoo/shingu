@@ -27,15 +27,12 @@ function UserLogin(){
             console.log("오류");
         }else{
                 getUser(id).then(value => {
-                    // value.map((check:Iuser) => {
-                    //     if(check.adminid === id && check.adminpwd === pw){
-                    //         localStorage.setItem("admin", check.divisioncode+"");
-                    //         window.location.reload();
-                    //     }else{
+                    if(value.studentid === id && value.password === pw){
+                            console.log("참");
+                    }else{
     
-                    //     }
-                    // })
-                    console.log(value);
+                    }
+               
                 })
         }
     }

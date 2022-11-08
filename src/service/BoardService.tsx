@@ -88,7 +88,8 @@ export async function getUser(id:string) {
 }
 
 export async function createUser( user: Iuser){
-    await axios.put(BOARD_API_BASE_URL + "/member/", user);
+    console.log(JSON.stringify(user));
+    axios.post(BOARD_API_BASE_URL + "/member", user);
 }
 
 
