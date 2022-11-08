@@ -82,14 +82,19 @@ export interface Iuser{
     divisioncode: String
 }
 
-export async function getUser(id:string) {
+export async function getUser(id:Number) {
     const data = await (await axios.get(BOARD_API_BASE_URL+"/member/" + id)).data;
     return data;
 }
 
 export async function createUser( user: Iuser){
-    console.log(JSON.stringify(user));
-    axios.post(BOARD_API_BASE_URL + "/member", user);
+    axios.post(BOARD_API_BASE_URL + "/member/", user);
+    
+}
+
+export async function getOneMemberFromUserId(id:Number) {
+    const data =  await (await axios.get(BOARD_API_BASE_URL + "/member" + "?id=" + id)).data
+    return data
 }
 
 

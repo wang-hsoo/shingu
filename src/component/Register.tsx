@@ -51,7 +51,6 @@ function Register(){
         
         if(id !== " " && id !== undefined && pw !== " " && pw !== undefined && selectDivi !== " " && selectDivi !== "전체"){
             const user = {
-                no: Number(id),
                 username: name,
                 password: pw,
                 divisioncode: selectDivi,
@@ -59,7 +58,9 @@ function Register(){
             }as Iuser;
      
 
+            
             createUser(user);
+
             
         }
     }

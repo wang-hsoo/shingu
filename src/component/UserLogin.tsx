@@ -1,4 +1,4 @@
-import { getUser, Iuser } from "../service/BoardService";
+import { getOneMemberFromUserId, getUser, Iuser } from "../service/BoardService";
 import React, { useState } from "react";
 
 
@@ -26,13 +26,12 @@ function UserLogin(){
         if(id === undefined || pw === undefined){
             console.log("오류");
         }else{
-                getUser(id).then(value => {
+                
+
+                getOneMemberFromUserId(Number(id)).then((value:Iuser) => {
                     if(value.studentid === id && value.password === pw){
-                            console.log("참");
-                    }else{
-    
+                        console.log("참");
                     }
-               
                 })
         }
     }

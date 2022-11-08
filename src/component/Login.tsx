@@ -23,9 +23,11 @@ function Login(){
         if(innerHTML === "관리자 로그인"){
             setUser(false);
             setAdmin(true);
+            setRegister(false);
         }else{
             setAdmin(false);
             setUser(true);
+            setRegister(false);
         }
     }
 
