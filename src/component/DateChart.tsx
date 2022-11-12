@@ -90,13 +90,17 @@ function DateChart({post}:any){
             }
         })
 
+       
+
         cateSort(todayPost);
         setSelectPost(todayPost);
     }
  
     useEffect(()=>{
         const today = new Date().toLocaleDateString().replace(" ","").replace(" ","").split('.');
-        const DATE = `${today[0]}-${today[1]}-${today[2]}`;
+        const month = Number(today[1]) < 10 ? 0 + `${today[1]}` : today[1];
+        const day = Number(today[2]) < 10 ? 0 + `${today[2]}` : today[2];
+        const DATE = `${today[0]}-${month}-${day}`;
         dateSort(DATE);
         
         getCategory().then((value => {
@@ -182,7 +186,7 @@ function DateChart({post}:any){
                         
                             labels:[`${category[1]?.category}`,`${category[2]?.category}`,`${category[3]?.category}`,`${category[4]?.category}`,`${category[5]?.category}`,`${category[6]?.category}`],
                             
-                            colors: ["#0fbcf9", "#a3a3a3" ,"#ea2020","black","#ea2020","#ea2020"],
+                            colors:["#006ad5", "#2a92d5" ,"#fae5c7","#abd558","#5b8307","#1d2d0f"],
                         
                         }} 
                     />

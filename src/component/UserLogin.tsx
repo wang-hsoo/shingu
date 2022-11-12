@@ -30,7 +30,12 @@ function UserLogin(){
 
                 getOneMemberFromUserId(Number(id)).then((value:Iuser) => {
                     if(value.studentid === id && value.password === pw){
-                        console.log("참");
+                        const user = {
+                            id: value.studentid,
+                            division: value.divisioncode
+                        };
+                        sessionStorage.setItem("user", JSON.stringify(user));
+                        window.location.reload();
                     }
                 })
         }

@@ -30,7 +30,7 @@ function AdminLogin(){
                 getAdmin().then(value => {
                     value.map((check:IAdmin) => {
                         if(check.adminid === id && check.adminpwd === pw){
-                            localStorage.setItem("admin", check.divisioncode+"");
+                            sessionStorage.setItem("admin", check.divisioncode+"");
                             window.location.reload();
                         }else{
     

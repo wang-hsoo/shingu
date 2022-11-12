@@ -9,6 +9,7 @@ import Login from "../component/Login";
 import Search from "../component/Search";
 import TopPost from "../component/TopPost";
 import AllPost from "../component/AllPost";
+import { useNavigate } from "react-router-dom";
 
 
 const Container = styled.div<{display:boolean}>`
@@ -38,8 +39,10 @@ function Home(){
     const [selectDivi, setSelectDivi] = useState<Idivision>();
     const [selectDivision, setSelectDivision] = useState<Idivision>();
     const [selectCate, setSelectCate] = useState<string>();
+    const [userLogin, setUserLogin] = useState(false);
     const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
+    const navigate = useNavigate();
 
     
 
@@ -92,6 +95,13 @@ function Home(){
         }));
 
         setSelectCate("전체");
+
+        const admin = sessionStorage.getItem("admin");
+        const user = sessionStorage.getItem("user");
+        
+        if(user){
+            setUserLogin(true);
+        }
     },[])
 
     
@@ -127,6 +137,9 @@ function Home(){
                         {category?.map((category) => (
                             <button key={category.category} value={category.category} onClick={selectCategory} >{category.category}</button>
                         ))}
+                    </div>
+                    <div>
+                        {userLogin ? <button onClick={()=> navigate('/write')}>게시물작성</button> : null}
                     </div>
                     <TopPost />
                     <AllPost divi={selectDivi} category={selectCate} division={selectDivision} AllDivision = {division} />

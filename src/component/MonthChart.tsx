@@ -205,7 +205,7 @@ function MonthChart({post}:any){
                         
                             labels:[],
                             
-                            colors: ["#0fbcf9", "#a3a3a3" ,"#ea2020","black","#ea2020","#ea2020"],
+                            colors: ["#006ad5", "#2a92d5" ,"#fae5c7","#abd558","#5b8307","#1d2d0f"],
                         
                         }} 
                     />

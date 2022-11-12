@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function Header(){
     const [login, setLogin] = useState(false);
+    const [adminLogIn, setAdminLogin] = useState(false);
     const setPopUp = useSetRecoilState(isPopUp);
     const popUp = () => setPopUp((prev) => !prev);
     const setSearch = useSetRecoilState(isSearch);
@@ -14,7 +15,8 @@ function Header(){
 
     function Log(){
         if(login){
-            localStorage.removeItem("admin");
+            sessionStorage.removeItem("admin");
+            sessionStorage.removeItem("user");
             setLogin(false);
             navigate('/');
         }else{
@@ -23,8 +25,12 @@ function Header(){
     }
     
     useEffect(() => {
-        const loginCheck = localStorage.getItem("admin");
-        if(loginCheck){
+        const admin = sessionStorage.getItem("admin");
+        const user = sessionStorage.getItem("user");
+        if(admin){
+            setAdminLogin((prev) => !prev);
+            setLogin((prev) => !prev);
+        }else if(user){
             setLogin((prev) => !prev);
         }
     },[])
@@ -33,7 +39,7 @@ function Header(){
     return(
         <div>
             <div onClick={()=>navigate('/')}><img src={Shingu} style={{width: "100px"}} /></div>
-            {login? <button onClick={()=>navigate('/DataChart')}>관리자 페이지</button> : null}
+            {adminLogIn? <button onClick={()=>navigate('/DataChart')}>관리자 페이지</button> : null}
             <button onClick={Log}>{login ? "LOGOUT" : "LOGIN"}</button>
             <button>THEM</button>
             <button onClick={search}>search</button>
