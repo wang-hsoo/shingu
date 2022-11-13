@@ -1,4 +1,4 @@
-import { createUser, getDivision, Idivision, Iuser } from "../service/BoardService";
+import { createUser, getDivision, getOneMemberFromUserId, Idivision, Iuser } from "../service/BoardService";
 import React, { useState,useEffect } from "react";
 
 function Register(){
@@ -19,11 +19,13 @@ function Register(){
             }
             setSelectDivision(selectdivi);
             
+            
     }
 
     function diviChange(event:React.ChangeEvent<HTMLSelectElement>){
         const division = event.target.value.split(",");
             setSelectDivi(division[0]);
+           
     }
 
     function onChange(event:React.ChangeEvent<HTMLInputElement>){
@@ -50,16 +52,26 @@ function Register(){
         e.preventDefault();
         
         if(id !== " " && id !== undefined && pw !== " " && pw !== undefined && selectDivi !== " " && selectDivi !== "전체"){
+            
+            
             const user = {
                 username: name,
                 password: pw,
-                divisioncode: selectDivi,
+                divisioncode: `${selectDivision?.divisionname},${selectDivi}`,
                 studentid: id,
             }as Iuser;
-     
-
             
-            createUser(user);
+            getOneMemberFromUserId(Number(id)).then((value:Iuser) => {
+                if(value.studentid === id){
+                    console.log("아이디 있음");
+                }else{
+                    createUser(user);
+                }
+            })
+            
+            
+            
+            
 
             
         }

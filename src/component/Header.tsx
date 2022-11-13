@@ -2,7 +2,7 @@ import Shingu from "../img/shingu_logo.jpg";
 import { useSetRecoilState } from "recoil";
 import { isPopUp, isSearch } from "../atom";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation  } from "react-router-dom";
 
 function Header(){
     const [login, setLogin] = useState(false);
@@ -11,7 +11,10 @@ function Header(){
     const popUp = () => setPopUp((prev) => !prev);
     const setSearch = useSetRecoilState(isSearch);
     const search = () => setSearch((prev) => !prev);
+    const [btnName, setBtnName] = useState("홈으로");
+    const [btnUrl, setBtnUrl] = useState("/DataChart");
     const navigate = useNavigate();
+    const location = useLocation();
 
     function Log(){
         if(login){
@@ -37,11 +40,21 @@ function Header(){
         }
     },[])
 
+    useEffect(()=>{
+        if(location.pathname === '/DataChart'){
+            setBtnName("Main");
+            setBtnUrl('/');
+        }else{
+            setBtnName("관리자 페이지");
+            setBtnUrl('/DataChart');
+        }
+    }, [location])
+
 
     return(
         <div>
             <div onClick={()=>navigate('/')}><img src={Shingu} style={{width: "100px"}} /></div>
-            {adminLogIn? <button onClick={()=>navigate('/DataChart')}>관리자 페이지</button> : null}
+            {adminLogIn? <button onClick={()=>navigate(btnUrl)}>{btnName}</button> : null}
             <button onClick={Log}>{login ? "LOGOUT" : "LOGIN"}</button>
             <button>THEM</button>
             <button onClick={search}>search</button>

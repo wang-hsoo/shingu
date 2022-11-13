@@ -9,117 +9,122 @@ const Page = styled.div`
     cursor: pointer;
     margin-top: 10px;
 `
-
-function AllPost({post, divi, division, category, AllDivision}:any){
+                               
+function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivision}:any){
     const [selectPost, setPost] = useState<InewBoard[]>();
+    const [firstPost, setFirstPost] = useState<InewBoard[]>();
     const [pages, setPages] = useState<Number[]>([]);
     const [clickPage, setClickPage] = useState<Number>(1);
     const navigate = useNavigate();
     const {title} = useParams();
+    
+    function resetPost(){
+        const getPost = [...post].reverse();
+        setPost(getPost);
+    }
 
-    function categoryPost(post:InewBoard[]){
-        let catePost = [] as InewBoard[];
-        post?.map((post)=>{
+    function categpryPost(getPost:InewBoard[], category:string){
+        const selPost = [] as InewBoard[];
+        getPost.map((post:InewBoard) => {
             if(post.category === category){
-                catePost.push(post);
+                selPost.push(post);
             }
         })
-        setPost(catePost.reverse())
+
+        setPost(selPost);
     }
-    
+
     useEffect(()=>{
-        setTimeout(()=>{
-            if(title){
-                
+        
+        const getPost = [...post].reverse();
+        const searchPost = [] as InewBoard[];
+        if(title){
+            
+            getPost.map((post:InewBoard) => {
+                console.log(post.title);
+                if(post.title.includes(title)){
+                    searchPost.push(post);
+                }
+            })
+            setFirstPost(searchPost);
+            if(category === "전체"){
+                setPost(searchPost);
             }else{
-                const sortPost = [...post].reverse();
-                setPost(sortPost);
-                
+                categpryPost(searchPost, category);
+            }
+        }else{
+            setFirstPost(getPost);
+            if(category === "전체"){
+                setPost(getPost);
+            }else{
+                categpryPost(getPost, category);
             }
             
-        },1000);
-        
-    },[post]);
+            
+        }
+    },[post,category]);
 
     useEffect(()=>{
-        if(division?.divisionname === "전체" || division === undefined){
-            if(category === "전체"){
-                setPost([...post].reverse());
-            }else{
-                categoryPost(post);
-            }
-        }else{
-
-            let divisionKey = 0;
-            let divionArray = [] as String[];
-            AllDivision?.map((divi:Idivision)=>{
-                if(division.divisionname === divi.divisionname){
-                    divisionKey = divi.divisioncode;
+        const divisionPost = [] as InewBoard[];
+        
+        if(division?.divisionname === "전체"){
+           
+        }else if(division !== undefined  || divi?.divisionname === "전체"){
+            firstPost?.map((post:InewBoard)=> {
+                const dd = post.divisioncode.split(',');
+                if(dd[0] === division.divisionname){
+                    divisionPost.push(post);
                 }
-                if(divi.upctg === divisionKey){
-                    divionArray.push(divi.divisionname);
-                }
-            })
-            let selectPost = [] as InewBoard[];
-            post?.map((post:InewBoard)=>{
-                divionArray?.map((division)=>{
-                    if(post.divisioncode === division){
-                        selectPost.push(post);
-                    }
-                })
             })
             if(category === "전체"){
-                setPost(selectPost.reverse());
+                setPost(divisionPost);
             }else{
-                categoryPost(selectPost);
+                categpryPost(divisionPost, category);
             }
 
+            
         }
-
-    },[division,category])//학부
+    },[division, divi, category])
 
     useEffect(()=>{
-        if(divi?.divisionname === "전체" || divi === undefined){
+        const divisionPost = [] as InewBoard[];
 
-        }else{
-            let selPost = [] as InewBoard[];
-            post?.map((post:InewBoard)=>{
-                if(post.divisioncode === divi.divisionname){
-                    selPost.push(post);
+        if(divi !== undefined && divi.divisionname !== "전체"){
+
+            post.map((post:InewBoard)=>{
+                
+                const dd = post.divisioncode.split(',');
+
+                if(dd[1] === divi?.divisionname){
+                    
+                    divisionPost.push(post);
                 }
             })
-             if(category === "전체"){
-                 setPost(selPost.reverse());
-             }else{
-                categoryPost(selPost);
-             }
+
+            if(category === "전체"){
+                setPost(divisionPost.reverse());
+            }else{
+                categpryPost(divisionPost, category);
+            }
+
+            
         }
-        
-    },[divi, category])//학과
+    },[divi])
 
-   
+    
+    
 
-    useEffect(()=>{
-        const lastPage = Math.ceil(Number(selectPost?.length) / 10);
-        const pages = [];
-        for(let i = 1; i <= lastPage; i++){
-            pages.push(i);
-        }
-        setPages(pages);
-        
-    },[selectPost])
- 
-
+    
     return(
         <div>
-            {post && selectPost ? 
+            <h1>전체 게시물</h1>
+            {selectPost?.length !== 0 ? 
             <>
-                <h1>전체 게시물</h1>
                 {selectPost?.map((post, idx)=>(
                     (Number(clickPage) - 1) * 10 <= idx && Number(clickPage) * 10 - 1 >= idx ?
                     <div onClick={() => navigate(`/post/${post.no}`)} key={idx}>
                         <h1>{post.title}</h1>
-                        <div>{post.divisioncode}</div>
+                        <div>{post.divisioncode.split(',')[1]}</div>
                     </div> : null
                 ))}
                 {pages.map((pages) => (

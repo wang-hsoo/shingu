@@ -11,6 +11,10 @@ export interface Ianswer{
 }
 
 export async function createAnswer(answer:Ianswer) {
-    //새로운 게시물 업데이트 
+    //새로운 답변 업데이트 
      axios.post(BOARD_API_BASE_URL, answer);
+ }
+
+ export async function getAnswer(no:number){
+    axios.get(BOARD_API_BASE_URL + `/${no}`);
  }

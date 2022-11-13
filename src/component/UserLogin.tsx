@@ -26,7 +26,7 @@ function UserLogin(){
         if(id === undefined || pw === undefined){
             console.log("오류");
         }else{
-                
+            
 
                 getOneMemberFromUserId(Number(id)).then((value:Iuser) => {
                     if(value.studentid === id && value.password === pw){

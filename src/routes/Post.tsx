@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { getDivision, Idivision, InewBoard, selectGetBoad } from "../service/BoardService";
+import { getCategory, getDivision, Icategory, Idivision, InewBoard, selectGetBoad } from "../service/BoardService";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../component/Header";
@@ -8,7 +8,7 @@ import Login from "../component/Login";
 import Search from "../component/Search";
 import { useRecoilValue } from "recoil";
 import { isPopUp, isSearch } from "../atom";
-import { createAnswer, Ianswer } from "../service/AnswerService";
+import { createAnswer, getAnswer, Ianswer } from "../service/AnswerService";
 
 const Container = styled.div<{display:boolean}>`
     /* top: -100px; //header 길이만큼 - */
@@ -74,7 +74,7 @@ function Post({post, rootAdd}:any){
         const user = sessionStorage.getItem("user");
         const admin = sessionStorage.getItem("admin");
 
-
+       
 
         if(user || admin){
             
@@ -85,13 +85,24 @@ function Post({post, rootAdd}:any){
                     setLoginCheck(u.id);
                 }
             }else if(admin){
-                if(admin === selectPost?.divisioncode){
-                    setLoginCheck(admin);
-                }
+                getDivision().then((value:Idivision[] )=> {
+                    value.map((division:Idivision) => {
+                        if(division.divisioncode === Number(admin)){
+                            setLoginCheck(division.divisionname);
+                        }
+                    })
+                    
+                })
             }
         }
 
     },[selectPost]);
+
+    useEffect(()=>{
+        getAnswer(Number(no)).then(value => {
+            console.log(value);
+        })
+    },[])
 
     function onChange(event:React.FormEvent<HTMLElement>){
         //학번 제목 내용을 useState에 저장
@@ -112,6 +123,8 @@ function Post({post, rootAdd}:any){
         } as Ianswer;
 
         createAnswer(answer);
+        setContext("");
+        
     }
         
     return(
@@ -129,7 +142,7 @@ function Post({post, rootAdd}:any){
 
                     {loginCheck !== "" ? 
                     <form onSubmit={onSubmit}>
-                        <textarea placeholder="답변" onChange={onChange} />
+                        <textarea placeholder="답변" onChange={onChange} value={context} />
                         <button>답변하기</button>
                     </form> : null}
 
