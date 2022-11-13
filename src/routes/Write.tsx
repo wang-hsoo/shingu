@@ -52,12 +52,10 @@ const Btn = styled.button`
 function Write({add}:any){
     const [context, setContext] = useState<String>();
     const [title, setTitle] = useState<String>();
-    const [hak, setHak] = useState<String>("");
     const [category, setCategory] = useState<Icategory[]>();
-    const [division, setDivision] = useState<Idivision[]>();
     const [selectCate, setSelectCate] = useState<string>("건물");
-    const [selectDivision, setSelectDivision] = useState<number>(1);
-    const [selectDivi, setSelectDivi] = useState<string>("영상디자인과");
+    const [id, setId] = useState<string>();
+    const [division, setDivision] = useState<string>();
     const navigate = useNavigate();
     const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
@@ -71,16 +69,12 @@ function Write({add}:any){
         
 
         switch ( name ){
-            case "학번":
-                setHak(value);
-                break;
-
             case "제목":
                 setTitle(value);
                 break;
 
             case "내용":
-                setContext(value.replace("<br>","\r\n"));
+                setContext(value.replace(/(?:\r\n|\r|\n)/g, '<br/>'));
                 break;
         }
     }
@@ -89,40 +83,35 @@ function Write({add}:any){
         //카테고리 저장
         setSelectCate(event.target.value);
     }
-    function divisionChange(event:React.ChangeEvent<HTMLSelectElement>){
-        setSelectDivision(Number(event.target.value));
-    }
-    function diviChange(event:React.ChangeEvent<HTMLSelectElement>){
-        setSelectDivi(event.target.value);
-    }
+   
     
     function onSubmit(e:React.FormEvent){
         //store.js로 데이터를 보냄
         e.preventDefault();
-        if(hak?.length < 10 || context?.length === 0 || title?.length === 0 || context === "" || title === ""){
+        if(context?.length === 0 || title?.length === 0 || context === "" || title === ""){
             console.log("오류");
         }else{
-            add({studentid: hak, title: title, contents:context, category: selectCate, divisioncode: selectDivi });
+            add({studentid: id, title: title, contents:context, category: selectCate, divisioncode: division });
             navigate("/post");
         }
         
     }
 
     useEffect(() => {
-        // setTimeout(() => {
-            getCategory().then((value => {
-                const cate = [];
-                cate.push(value);
-                setCategory(cate[0]);
-                
-            }));
+        getCategory().then((value => {
+            const cate = [];
+            cate.push(value);
+            setCategory(cate[0]);
+            
+        }));
 
-            getDivision().then((value => {
-                const divi = [];
-                divi.push(value);
-                setDivision(divi[0]);
-            }));
-        // }, 100);
+        const user = sessionStorage.getItem("user");
+        if(user){
+            setId(JSON.parse(user).id);
+            setDivision(JSON.parse(user).division);
+            
+        }
+
 
         
     },[]);
@@ -138,20 +127,7 @@ function Write({add}:any){
                             <Option key={idx} value={cate.category}>{cate.category}</Option>
                         ))}
                     </Select>
-                    <Select onChange={divisionChange} value={selectDivision}>
-                        {division?.map((divi:Idivision) => (
-                            divi.upctg !== 0 ? null : 
-                            <Option key={divi.divisioncode} value={divi.divisioncode}>{divi.divisionname}</Option> 
-                        ))}
-                    </Select>
-                    <Select onChange={diviChange} value={selectDivi}>
-                        {division?.map((divi:Idivision) => (
-                            divi.upctg !== selectDivision ? null :
-                            <Option key={divi.divisioncode} value={divi.divisionname}>{divi.divisionname}</Option>
-                        ))}
-                    </Select>
             
-                    <Input type="number" placeholder="학번" name="학번" onChange={onChange} />
                     <Input type="text" placeholder="제목" name="제목" onChange={onChange} />
                     <Text placeholder="내용" name="내용" onChange={onChange} />
                     <Btn>작성하기</Btn>

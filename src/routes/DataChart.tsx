@@ -17,7 +17,7 @@ function DataChart(){
     }
 
     useEffect(() => {
-        const admin = localStorage.getItem("admin");
+        const admin = sessionStorage.getItem("admin");
 
         if(!admin){
             navigate('/');

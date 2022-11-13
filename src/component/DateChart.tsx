@@ -221,7 +221,7 @@ function DateChart({post}:any){
 }
 
 function mapStateToProps(state:InewBoard[]){
-    const post = state[0];
+    const post = state;
     return {post: post}
 
     

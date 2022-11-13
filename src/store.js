@@ -9,12 +9,13 @@ const post = createSlice({
         add:(state, action) => {
             //게시물 작성
             const writePost = {
-                studentid: action.payload.studentid,
+                studentid: Number(action.payload.studentid),
                 title: action.payload.title,
                 contents: action.payload.contents,
                 addboard: 0,
                 category: action.payload.category,
                 divisioncode: action.payload.divisioncode,
+                counts: 0,
             }
             state.push(writePost);
             //데이터베이스 저장
@@ -22,10 +23,11 @@ const post = createSlice({
         },
 
         setPost:(state, action) => {
-            state.push(action.payload);
+            state.push(...action.payload);
         }
     }
 })
+
 
 const store = configureStore({reducer: post.reducer})
 

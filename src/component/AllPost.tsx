@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { Idivision, InewBoard } from "../service/BoardService";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const Page = styled.div`
@@ -15,6 +15,7 @@ function AllPost({post, divi, division, category, AllDivision}:any){
     const [pages, setPages] = useState<Number[]>([]);
     const [clickPage, setClickPage] = useState<Number>(1);
     const navigate = useNavigate();
+    const {title} = useParams();
 
     function categoryPost(post:InewBoard[]){
         let catePost = [] as InewBoard[];
@@ -23,19 +24,27 @@ function AllPost({post, divi, division, category, AllDivision}:any){
                 catePost.push(post);
             }
         })
-        setPost(catePost)
+        setPost(catePost.reverse())
     }
     
     useEffect(()=>{
         setTimeout(()=>{
-            setPost(post);
+            if(title){
+                
+            }else{
+                const sortPost = [...post].reverse();
+                setPost(sortPost);
+                
+            }
+            
         },1000);
+        
     },[post]);
 
     useEffect(()=>{
         if(division?.divisionname === "전체" || division === undefined){
             if(category === "전체"){
-                setPost(post);
+                setPost([...post].reverse());
             }else{
                 categoryPost(post);
             }
@@ -60,7 +69,7 @@ function AllPost({post, divi, division, category, AllDivision}:any){
                 })
             })
             if(category === "전체"){
-                setPost(selectPost);
+                setPost(selectPost.reverse());
             }else{
                 categoryPost(selectPost);
             }
@@ -80,7 +89,7 @@ function AllPost({post, divi, division, category, AllDivision}:any){
                 }
             })
              if(category === "전체"){
-                 setPost(selPost);
+                 setPost(selPost.reverse());
              }else{
                 categoryPost(selPost);
              }
@@ -99,6 +108,7 @@ function AllPost({post, divi, division, category, AllDivision}:any){
         setPages(pages);
         
     },[selectPost])
+ 
 
     return(
         <div>
@@ -122,7 +132,7 @@ function AllPost({post, divi, division, category, AllDivision}:any){
 }
 
 function mapStateToProps(state:InewBoard[]){
-    return {post: state[0]}
+    return {post: state}
 }
 
 export default connect(mapStateToProps) (AllPost);

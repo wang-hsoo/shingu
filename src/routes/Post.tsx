@@ -8,6 +8,7 @@ import Login from "../component/Login";
 import Search from "../component/Search";
 import { useRecoilValue } from "recoil";
 import { isPopUp, isSearch } from "../atom";
+import { createAnswer, Ianswer } from "../service/AnswerService";
 
 const Container = styled.div<{display:boolean}>`
     /* top: -100px; //header 길이만큼 - */
@@ -23,129 +24,116 @@ const MainCon = styled.div`
     z-index: 0;
 `
 
+const Context = styled.div`
+    white-space: pre-wrap;
+`
+
 const Answer =styled.div`
     white-space: pre-wrap;
 `
 
 
 function Post({post, rootAdd}:any){
-    // const [getPost, setPost] = useState<InewBoard>();
-    // const [division, setDivision] = useState<Idivision[]>();
-    // const [getdivi, setDivi] = useState<Idivision>();
-    // const [date, setDate] = useState<string>();
-    // const [admin, setAdmin] = useState<boolean>(false);
-    // const [context, setContext] = useState<String>("");
-    // const [answer, setAnswer] = useState<boolean>(false);
-    // const { no } = useParams();
-    // const navigate = useNavigate();
-    // const Pop = useRecoilValue(isPopUp);
-    // const search = useRecoilValue(isSearch);
+    const [selectPost, setSelectPost] = useState<InewBoard>();
+    const [today, setToday] = useState<string>();
+    const [loginCheck, setLoginCheck] = useState<string>("");
+    const {no} = useParams();
+    const [context, setContext] = useState<string>("");
 
-    // function onChange(event:React.FormEvent<HTMLElement>){
-    //     const { value } = event.currentTarget as HTMLInputElement;
-    //     setContext(value);
-    // }
-
-    // function onClick(e:React.FormEvent){
-    //     e.preventDefault();
-    //     if(answer){
-    //         setAnswer(false);
-    //         const a = getPost?.answercontents?.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n')
-    //         setContext(a+"");
-    //     }else{
-    //         rootAdd({
-    //             no: no,
-    //             answer: 1,
-    //             answercontents: context.replace(/(?:\r\n|\r|\n)/g, '<br>'),
-    //             counts: getPost?.counts
-    //         });
-    //         window.location.reload();
-    //     }
-    // }
+    useEffect(()=>{
+        if(post.length !== 0){
+            if(no){
+                post?.map((post:InewBoard)=>{
+                   if(post.no === Number(no)){
+                    setSelectPost(post);
+                    const today = post.createdtime?.split("T");
+                    setToday(today ? today[0] : "null");
+                   }
+                })
+            }else{
+                setSelectPost(post[post.length - 1])
     
-    // useEffect(() => {
-    //         console.log(post);
-    //         if(no === undefined){
-    //             if(post[0]){
-    //                 setPost(post[0]);
-    //                 var today = new Date();
+                let today = new Date();   
+    
+                let year = today.getFullYear(); // 년도
+                let month = today.getMonth() + 1;  // 월
+                let date = today.getDate();  // 날짜
+    
+                setToday(`${year}-${month}-${date}`);
+            }
+        }else{
+            selectGetBoad(Number(no)).then(value => {
+                setSelectPost(value);
+            })
+        }
 
-    //                 var year = today.getFullYear();
-    //                 var month = ('0' + (today.getMonth() + 1)).slice(-2);
-    //                 var day = ('0' + today.getDate()).slice(-2);
-    //                 var dateString = year + '-' + month  + '-' + day;
-    //                 setDate(dateString);
-    //             }else{
-    //                 navigate("/");
-    //             }   
-                
-    //         }else{
-    //             selectGetBoad(Number(no)).then(value => {
-    //                 const post = [];
-    //                 post.push(value);
-    //                 setPost(post[0]);
-                   
-    //             });
-    //         }    
-            
-    // },[]);
-
-    // useEffect(() => {
-    //     const admin = Number(localStorage.getItem("admin"));
-    //     getDivision().then((value => {
-    //         const cate = [];
-    //         cate.push(value);
-    //         setDivision(cate[0]);
-    //         value.reduce(
-    //             (previousValue:any, currentValue:any) => {
-    //                 if(getPost?.divisioncode === currentValue.divisionname){
-    //                     setDivi(currentValue);
-    //                     if(admin === currentValue.divisioncode){
-    //                         setAdmin(true);
-    //                     }
-    //                 }
-
-    //             }
-    //         )
-            
-            
-    //     }));
-    //     if(no){
-    //         const date = getPost?.createdtime?.split("T");
-    //         setDate(date ? date[0] : "null" );
-    //     }
-
-    //     if(getPost?.answer){
-    //         setAnswer(true);
-    //     }
         
-    // }, [getPost])
-    
+    },[])
+
+    useEffect(()=>{
+        const user = sessionStorage.getItem("user");
+        const admin = sessionStorage.getItem("admin");
+
+
+
+        if(user || admin){
+            
+            if(user){
+                const u = JSON.parse(user);
+                
+                if(u.id === selectPost?.studentid+""){
+                    setLoginCheck(u.id);
+                }
+            }else if(admin){
+                if(admin === selectPost?.divisioncode){
+                    setLoginCheck(admin);
+                }
+            }
+        }
+
+    },[selectPost]);
+
+    function onChange(event:React.FormEvent<HTMLElement>){
+        //학번 제목 내용을 useState에 저장
+        const { value } = event.currentTarget as HTMLInputElement;
+        
+        setContext(value.replace(/(?:\r\n|\r|\n)/g, '<br/>'));
+            
+    }
+
+    function onSubmit(e:React.FormEvent<HTMLFormElement>){
+        e.preventDefault();
+
+
+        const answer = {
+            no: Number(selectPost?.no),
+            studentid: loginCheck,
+            answercontents: context
+        } as Ianswer;
+
+        createAnswer(answer);
+    }
+        
     return(
         <>
-            {/* {getPost && getdivi ?
-            <MainCon>
-                <Header />
-                <div>{division?.map((divi) => ( divi.divisioncode === getdivi?.upctg ? divi.divisionname : null))}</div>
-                <div>{getdivi?.divisionname}</div>
-                {admin ? <div>{getPost?.studentid}</div> : null}
-                <h1>{getPost?.title}</h1>
-                <div>{getPost?.contents}</div>
-                <div>{date}</div>
-                <div>{no === undefined ? 0 : getPost?.counts}</div>
-                {admin? answer ?   <Answer>{getPost?.answercontents?.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n')}</Answer> : <textarea placeholder="내용" name="내용" value={context+""} onChange={onChange} /> :
-                <div>{getPost?.answercontents === null || no === undefined ? "답변을 기다리는 중입니다" : getPost?.answercontents}</div>}
-                
-                <button onClick={() => navigate('/')}>목록으로</button>
-                {admin? <button onClick={onClick}>{answer ? "수정하기" : "답변하기"}</button> : null}
-            </MainCon> : 
-            <MainCon>
-                "정보를 불러오지 못함"
-            </MainCon>}
-            <Container display={Pop || search}>
-                    {Pop ? <Login /> : null}
-                    {search ? <Search />: null}
-            </Container> */}
+            {selectPost ? 
+                <div>
+                    <Header />
+                    <div>{selectPost.category}</div>
+                    <div>{selectPost.title}</div>
+                    <div>작성자 {selectPost.divisioncode}</div>
+                    <div>등록일 {today}</div>
+                    <div>조회수 {selectPost.counts+""}</div>
+                    <Context>{selectPost?.contents.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n')}</Context>
+                  
+
+                    {loginCheck !== "" ? 
+                    <form onSubmit={onSubmit}>
+                        <textarea placeholder="답변" onChange={onChange} />
+                        <button>답변하기</button>
+                    </form> : null}
+
+                </div> : <div>데이터 없음</div>}
         </>
     )
 }

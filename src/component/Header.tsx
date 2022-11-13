@@ -18,7 +18,9 @@ function Header(){
             sessionStorage.removeItem("admin");
             sessionStorage.removeItem("user");
             setLogin(false);
+            window.location.reload();
             navigate('/');
+            
         }else{
             popUp();
         }
