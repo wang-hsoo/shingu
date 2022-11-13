@@ -15,13 +15,14 @@ function Header(){
     const [btnUrl, setBtnUrl] = useState("/DataChart");
     const navigate = useNavigate();
     const location = useLocation();
+    const [user, setUser] = useState(false);
 
     function Log(){
         if(login){
             sessionStorage.removeItem("admin");
             sessionStorage.removeItem("user");
             setLogin(false);
-            window.location.reload();
+            setUser(false);
             navigate('/');
             
         }else{
@@ -37,6 +38,7 @@ function Header(){
             setLogin((prev) => !prev);
         }else if(user){
             setLogin((prev) => !prev);
+            setUser(true);
         }
     },[])
 
@@ -56,7 +58,7 @@ function Header(){
             <div onClick={()=>navigate('/')}><img src={Shingu} style={{width: "100px"}} /></div>
             {adminLogIn? <button onClick={()=>navigate(btnUrl)}>{btnName}</button> : null}
             <button onClick={Log}>{login ? "LOGOUT" : "LOGIN"}</button>
-            <button>THEM</button>
+            {user ? <button onClick={() => navigate('/Mypage')}>내정보</button> : null}
             <button onClick={search}>search</button>
         </div>
     )

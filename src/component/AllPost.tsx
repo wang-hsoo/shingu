@@ -111,6 +111,15 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
         }
     },[divi])
 
+    useEffect(()=>{
+        const lastPage = Math.ceil(Number(selectPost?.length) / 10);
+        const pages = [];
+        for(let i = 1; i <= lastPage; i++){
+            pages.push(i);
+        }
+        setPages(pages);
+        
+    },[selectPost])
     
     
 

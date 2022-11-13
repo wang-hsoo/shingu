@@ -4,11 +4,8 @@ import { getCategory, getDivision, Icategory, Idivision, InewBoard, selectGetBoa
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../component/Header";
-import Login from "../component/Login";
-import Search from "../component/Search";
-import { useRecoilValue } from "recoil";
-import { isPopUp, isSearch } from "../atom";
 import { createAnswer, getAnswer, Ianswer } from "../service/AnswerService";
+
 
 const Container = styled.div<{display:boolean}>`
     /* top: -100px; //header 길이만큼 - */
@@ -28,9 +25,6 @@ const Context = styled.div`
     white-space: pre-wrap;
 `
 
-const Answer =styled.div`
-    white-space: pre-wrap;
-`
 
 
 function Post({post, rootAdd}:any){
@@ -39,6 +33,22 @@ function Post({post, rootAdd}:any){
     const [loginCheck, setLoginCheck] = useState<string>("");
     const {no} = useParams();
     const [context, setContext] = useState<string>("");
+    const [selectAnswer, setSelectAnswer] = useState<Ianswer[]>();
+    const [admin, setAdmin] = useState<string>();
+
+    useEffect(()=>{
+        let answerAll = [] as Ianswer[];
+        getAnswer().then(value => {
+            value?.map((answer:Ianswer)=>{
+                if(answer.no === Number(no)){
+                    answerAll.push(answer)
+                }
+            })
+            setSelectAnswer(answerAll);
+            
+        })
+    },[])
+    
 
     useEffect(()=>{
         if(post.length !== 0){
@@ -66,14 +76,12 @@ function Post({post, rootAdd}:any){
                 setSelectPost(value);
             })
         }
-
-        
     },[])
 
     useEffect(()=>{
         const user = sessionStorage.getItem("user");
         const admin = sessionStorage.getItem("admin");
-
+        
        
 
         if(user || admin){
@@ -85,10 +93,14 @@ function Post({post, rootAdd}:any){
                     setLoginCheck(u.id);
                 }
             }else if(admin){
+                
                 getDivision().then((value:Idivision[] )=> {
                     value.map((division:Idivision) => {
                         if(division.divisioncode === Number(admin)){
-                            setLoginCheck(division.divisionname);
+                            if(division.divisionname === selectPost?.divisioncode.split(",")[1]){
+                                setLoginCheck(division.divisionname);
+                            }
+                            
                         }
                     })
                     
@@ -98,11 +110,8 @@ function Post({post, rootAdd}:any){
 
     },[selectPost]);
 
-    useEffect(()=>{
-        getAnswer(Number(no)).then(value => {
-            console.log(value);
-        })
-    },[])
+
+    
 
     function onChange(event:React.FormEvent<HTMLElement>){
         //학번 제목 내용을 useState에 저장
@@ -124,8 +133,11 @@ function Post({post, rootAdd}:any){
 
         createAnswer(answer);
         setContext("");
+
+        window.location.reload();
         
     }
+
         
     return(
         <>
@@ -138,6 +150,16 @@ function Post({post, rootAdd}:any){
                     <div>등록일 {today}</div>
                     <div>조회수 {selectPost.counts+""}</div>
                     <Context>{selectPost?.contents.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n')}</Context>
+
+                   
+                    <div>
+                        {selectAnswer ? selectAnswer?.map((answer:Ianswer) => (
+                            <div key={answer.noanswerboard}>
+                                <div>{answer.studentid}</div>
+                                <div>{answer.answercontents}</div>
+                            </div>
+                        )):  <div> 답변을 기다리는 중 </div>}
+                    </div> 
                   
 
                     {loginCheck !== "" ? 

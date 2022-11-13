@@ -5,6 +5,7 @@ import {
   } from "react-router-dom";
 import DataChart from "./routes/DataChart";
 import Home from "./routes/Home";
+import Mypage from "./routes/Mypage";
 import Post from "./routes/Post";
 import Write from "./routes/Write";
 
@@ -19,6 +20,7 @@ function AppRouter(){
                 <Route path="/Post" element = {<Post />} />
                 <Route path="/Post/:no" element = {<Post />} />
                 <Route path="/DataChart" element = {<DataChart />} />    
+                <Route path="/Mypage" element = {<Mypage />} />    
             </Routes>
        </Router> 
     )

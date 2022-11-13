@@ -1,5 +1,6 @@
 import { createUser, getDivision, getOneMemberFromUserId, Idivision, Iuser } from "../service/BoardService";
 import React, { useState,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register(){
     const [id, setId] = useState<string>();
@@ -8,6 +9,7 @@ function Register(){
     const [division, setDivision] = useState<Idivision[]>();
     const [selectDivi, setSelectDivi] = useState<string>();
     const [selectDivision, setSelectDivision] = useState<Idivision>();
+    const [regiSucess, setRegiSucess] = useState<boolean>(false);
 
     function divisionChange(event:React.ChangeEvent<HTMLSelectElement>){
         const division = event.target.value.split(",");
@@ -66,7 +68,8 @@ function Register(){
                     console.log("아이디 있음");
                 }else{
                     createUser(user);
-                }
+                    setRegiSucess(true);
+                }   
             })
             
             
@@ -90,28 +93,33 @@ function Register(){
 
     return(
         <form onSubmit={onSubmit}>
-            <h1>회원가입</h1>
-            <input type="text" placeholder="이름"  onChange={onChange} name="name" />
-            <input placeholder="학번" onChange={onChange} name="id" />
-            <input type="password" placeholder="비밀번호"  onChange={onChange} name="pw" />
+            {regiSucess ? <div>정상적으로 회원가입을 완료하였습니다.</div> :
+            <div>
+                <h1>회원가입</h1>
+                <input type="text" placeholder="이름"  onChange={onChange} name="name" />
+                <input placeholder="학번" onChange={onChange} name="id" />
+                <input type="password" placeholder="비밀번호"  onChange={onChange} name="pw" />
 
 
-            <select onChange={divisionChange}>
-                <option value="전체">전체학부</option>
-                {division?.map((divi:Idivision) => ( 
-                    divi.upctg !== 0 ? null : 
-                    <option key={divi.divisioncode} value={[divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option> 
-                ))}
-            </select>
+                <select onChange={divisionChange}>
+                    <option value="전체">전체학부</option>
+                    {division?.map((divi:Idivision) => ( 
+                        divi.upctg !== 0 ? null : 
+                        <option key={divi.divisioncode} value={[divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option> 
+                    ))}
+                </select>
 
-            <select onChange={diviChange}>
-                <option value="전체">전체학과</option>
-                {division?.map((divi:Idivision) => (
-                    divi.upctg !== selectDivision?.divisioncode ? null :
-                    <option key={divi.divisioncode} value={ [divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option>
-                ))}
-            </select>
-            <button>가입하기</button>
+                <select onChange={diviChange}>
+                    <option value="전체">전체학과</option>
+                    {division?.map((divi:Idivision) => (
+                        divi.upctg !== selectDivision?.divisioncode ? null :
+                        <option key={divi.divisioncode} value={ [divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option>
+                    ))}
+                </select>
+                <button>가입하기</button>
+            </div>}
+            
+            
         </form>
     )
 }
