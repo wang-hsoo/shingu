@@ -17,11 +17,6 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
     const [clickPage, setClickPage] = useState<Number>(1);
     const navigate = useNavigate();
     const {title} = useParams();
-    
-    function resetPost(){
-        const getPost = [...post].reverse();
-        setPost(getPost);
-    }
 
     function categpryPost(getPost:InewBoard[], category:string){
         const selPost = [] as InewBoard[];
@@ -63,6 +58,7 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
             
         }
     },[post,category]);
+   
 
     useEffect(()=>{
         const divisionPost = [] as InewBoard[];
@@ -149,4 +145,4 @@ function mapStateToProps(state:InewBoard[]){
     return {post: state}
 }
 
-export default connect(mapStateToProps) (AllPost);
+export default connect(mapStateToProps) (React.memo(AllPost));

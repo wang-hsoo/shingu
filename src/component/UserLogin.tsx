@@ -31,6 +31,7 @@ function UserLogin(){
                 getOneMemberFromUserId(Number(id)).then((value:Iuser) => {
                     if(value.studentid === id && value.password === pw){
                         const user = {
+                            name: value.username,
                             id: value.studentid,
                             division: value.divisioncode
                         };
@@ -45,7 +46,7 @@ function UserLogin(){
     return(
         <form onSubmit={onSubmit}>
             <h1>유저 로그인</h1>
-            <input placeholder="아이디" onChange={onChange} name="id" />
+            <input placeholder="아이디" autoComplete="off" onChange={onChange} name="id" />
             <input type="password" placeholder="비밀번호"  onChange={onChange} name="pw" />
             <button>로그인</button>
         </form>

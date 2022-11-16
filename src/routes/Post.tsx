@@ -35,6 +35,7 @@ function Post({post, rootAdd}:any){
     const [context, setContext] = useState<string>("");
     const [selectAnswer, setSelectAnswer] = useState<Ianswer[]>();
     const [admin, setAdmin] = useState<string>();
+    const navigate = useNavigate();
 
     useEffect(()=>{
         let answerAll = [] as Ianswer[];
@@ -167,6 +168,10 @@ function Post({post, rootAdd}:any){
                         <textarea placeholder="답변" onChange={onChange} value={context} />
                         <button>답변하기</button>
                     </form> : null}
+                    <button onClick={()=> {
+                        navigate('/');
+                        window.location.reload();
+                    }}>목록으로</button>
 
                 </div> : <div>데이터 없음</div>}
         </>

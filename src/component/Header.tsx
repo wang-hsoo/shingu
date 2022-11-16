@@ -1,8 +1,69 @@
-import Shingu from "../img/shingu_logo.jpg";
+import Shingu from "../img/shingu_logo_white.png";
+import ShinguBlack from "../img/shingu_logo_black.png";
 import { useSetRecoilState } from "recoil";
 import { isPopUp, isSearch } from "../atom";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation  } from "react-router-dom";
+import styled from "styled-components";
+import SearchPNG from "../img/search_white.png";
+import SearchPNGBlack from "../img/search_black.png";
+import { motion, useAnimation, useViewportScroll } from "framer-motion";
+
+const Wraaper = styled(motion.div)`
+    width: 100vw;
+    height: 80px;
+    top: 0;
+    z-index: 99;
+    position: fixed;
+`
+
+const LayOut = styled.div`
+    height: 100%;
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+`
+const Box = styled.div<{scroll:boolean}>`
+    display: flex;
+    align-items: center;
+    button{
+        margin-left: 5px;
+        color: ${(props) => props.scroll ? '#333333' : '#ffffff'};
+    }
+    
+`
+
+const Logo = styled.div`
+    img{
+        width: 159px;
+    }
+    cursor: pointer;
+`
+
+const LoginBtn = styled.button<{scroll:boolean}>`
+    color: ${(props) => props.scroll ? '#333333' : '#ffffff'};
+
+    
+`
+const SearchBtn = styled.button`
+    img{
+        width: 16px;
+        height: 16px;
+    }
+`
+
+const navVariants = {
+    top:{
+        backgroundColor: "rgba(255, 255, 255, 0)",
+        boxShadow: "none"
+    },
+    scroll:{
+      backgroundColor:"rgba(255, 255, 255, 1)",
+      boxShadow: "0 4px 4px -4px black"
+    }
+  }
 
 function Header(){
     const [login, setLogin] = useState(false);
@@ -16,6 +77,21 @@ function Header(){
     const navigate = useNavigate();
     const location = useLocation();
     const [user, setUser] = useState(false);
+    const navAnimation = useAnimation();
+    const { scrollY } = useViewportScroll();
+    const [scroll, setScroll] = useState(false);
+
+    useEffect(() => {
+        scrollY.onChange(() => {
+          if(scrollY.get() > 80){
+              navAnimation.start("scroll");
+              setScroll(true);
+          }else{
+            navAnimation.start("top");
+            setScroll(false);
+          }
+        })
+      },[])
 
     function Log(){
         if(login){
@@ -24,6 +100,7 @@ function Header(){
             setLogin(false);
             setUser(false);
             navigate('/');
+            window.location.reload();
             
         }else{
             popUp();
@@ -54,13 +131,28 @@ function Header(){
 
 
     return(
-        <div>
-            <div onClick={()=>navigate('/')}><img src={Shingu} style={{width: "100px"}} /></div>
-            {adminLogIn? <button onClick={()=>navigate(btnUrl)}>{btnName}</button> : null}
-            <button onClick={Log}>{login ? "LOGOUT" : "LOGIN"}</button>
-            {user ? <button onClick={() => navigate('/Mypage')}>내정보</button> : null}
-            <button onClick={search}>search</button>
-        </div>
+        <Wraaper 
+            variants={navVariants}
+            initial="top" 
+            animate={navAnimation} >
+            <LayOut>
+                <Logo onClick={()=>{
+                    navigate('/');
+                    window.location.reload();
+                }}>
+                    <img src={scroll ? ShinguBlack : Shingu} style={{width: "100px"}} />
+                </Logo>
+
+                <Box scroll ={scroll}>
+                    {adminLogIn? <button onClick={()=>navigate(btnUrl)} >{btnName}</button> : null}
+                    <LoginBtn onClick={Log} scroll ={scroll}>{login ? "LOGOUT" : "LOGIN"}</LoginBtn>
+                    {user ? <button onClick={() => navigate('/Mypage')} >내정보</button> : null}
+                    <SearchBtn onClick={search}><img src={scroll ? SearchPNGBlack : SearchPNG} /></SearchBtn>
+                </Box>
+                
+            </LayOut>
+            
+        </Wraaper>
     )
 
 }
