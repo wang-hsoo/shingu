@@ -11,11 +11,12 @@ import TopPost from "../component/TopPost";
 import AllPost from "../component/AllPost";
 import { useNavigate } from "react-router-dom";
 import BannerImg from "../img/main_banner9.png";
+import arrow from "../img/arrow.jpg";
 import { motion } from "framer-motion";
+import Footer from "../component/Fotoer";
 
 
 const Container = styled.div<{display:boolean}>`
-    /* top: -100px; //header 길이만큼 - */
     width: 100%;
     height: 200vh;
     background-color: rgba(0,0,0,0.8);
@@ -23,15 +24,20 @@ const Container = styled.div<{display:boolean}>`
     z-index: 1;
     display: ${(props) => props.display ? 'block' : 'none'};
 `
+const Wrapper = styled.div`
+    width: 100vw;
+`
 const MainCon = styled.div`
+    width: 100%;
     position: absolute;
     z-index: 0;
 `
 
 const Banner = styled.div<{bg:string}>`
-    width: 100vw;
+    width: 100%;
     height: 618px;
     background-image: url(${(props)=> props.bg});
+    background-position: center;
     background-size: cover;
     display: flex;
     overflow: hidden;
@@ -56,6 +62,95 @@ const GreenBar = styled(motion.div)`
     margin-top: -100px;
     margin-left: 180px;
     background-color: rgba(149, 201, 74, 0.5);
+`
+
+const SelectDivi = styled.div`
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid #C9C9C9;
+`
+
+const SelectBox = styled.div`
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+`
+
+const Select = styled.select`
+    width: 200px;
+    height: 100%;
+    padding: .8em .5em; 
+    border: 1px solid #999;
+    border-bottom: none;
+    font-family: inherit;  
+    background: url(${arrow}) no-repeat 95% 50%; 
+    border-radius: 0px; 
+    -webkit-appearance: none; 
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    font-weight: bold;
+
+    &::-ms-expand {
+        display: none;
+    }
+   
+    
+`
+
+const AllBox = styled.div`
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+`
+
+const AllTitle = styled.div`
+    width: 200px;
+    font-size: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 700;
+    
+    div{
+        margin-top: 5px;
+        width: 100px;
+        border-bottom: 3px solid #333333;
+    }
+`
+
+const CateBox = styled.div`
+    margin-top: 20px;
+    width: 40%;
+    display: flex;
+    justify-content: space-around;
+    button{
+        font-size: 16px;
+        color: #989B9C;
+        font-weight: 600;
+
+        &:hover{
+            color: #333333;
+            transition: .3s;
+        }
+    }
+`
+
+const WriteBtn = styled.div`
+    width: 80%;
+    margin-top: -30px;
+    display: flex;
+    justify-content: flex-end;
+    & > button{
+        font-size: 14px;
+        padding: 8px 20px;
+        background-color: #F36700;
+        color: #ffffff;
+        border-radius: 15px;
+    }
 `
 const transition = {
     duration: 0.8,
@@ -167,7 +262,7 @@ function Home(){
 
     return(
         true ? 
-        <div>
+        <Wrapper>
                 <MainCon>
                     
                     <Banner bg={BannerImg}>
@@ -196,39 +291,59 @@ function Home(){
                          animate="animate"
                          transition={transition} />
                     </Banner>
-                    <div>
-                        <select onChange={divisionChange}>
-                            <option value="전체">전체학부</option>
-                            {division?.map((divi:Idivision) => ( 
-                                divi.upctg !== 0 ? null : 
-                                <option key={divi.divisioncode} value={[divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option> 
-                            ))}
-                        </select>
 
-                        <select onChange={diviChange}>
-                            <option value="전체">전체학과</option>
-                            {division?.map((divi:Idivision) => (
-                                divi.upctg !== selectDivision?.divisioncode ? null :
-                                <option key={divi.divisioncode} value={ [divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option>
+                    <SelectDivi>
+                        <SelectBox>
+                            <Select onChange={divisionChange}>
+                                <option value="전체">전체학부</option>
+                                {division?.map((divi:Idivision) => ( 
+                                    divi.upctg !== 0 ? null : 
+                                    <option key={divi.divisioncode} value={[divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option> 
+                                ))}
+                            </Select>
+
+                            <Select onChange={diviChange}>
+                                <option value="전체">전체학과</option>
+                                {division?.map((divi:Idivision) => (
+                                    divi.upctg !== selectDivision?.divisioncode ? null :
+                                    <option key={divi.divisioncode} value={ [divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option>
+                                ))}
+                            </Select>
+
+                        </SelectBox>
+                        
+                    </SelectDivi>
+
+                    <TopPost divi={selectDivi} category={selectCate} division={selectDivision} />
+
+                    <AllBox>
+                        <AllTitle>전체 게시물 <div /></AllTitle>
+
+
+                        <CateBox>
+                            {category?.map((category) => (
+                                <button key={category.category} value={category.category} onClick={selectCategory} >{category.category}</button>
                             ))}
-                        </select>
-                    </div>
-                    <div>
-                        {category?.map((category) => (
-                            <button key={category.category} value={category.category} onClick={selectCategory} >{category.category}</button>
-                        ))}
-                    </div>
-                    <div>
-                        {userLogin ? <button onClick={()=> navigate('/write')}>게시물작성</button> : null}
-                    </div>
-                    <TopPost />
-                    <AllPost divi={selectDivi} category={selectCate} division={selectDivision} AllDivision = {division} />
+                        </CateBox>
+                        
+
+                        <AllPost divi={selectDivi} category={selectCate} division={selectDivision} AllDivision = {division} />
+
+                        <WriteBtn>
+                            {userLogin ? <button onClick={()=> navigate('/write')}>작성하기</button> : null}
+                        </WriteBtn>
+
+                    </AllBox>
+
+                    <Footer />
+                    
                 </MainCon>
+                
                 <Container display={Pop || search}>
                     {Pop ? <Login /> : null}
                     {search ? <Search />: null}
                 </Container>
-        </div>  : null
+        </Wrapper>  : null
         
     )
 }

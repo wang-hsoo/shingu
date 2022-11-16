@@ -4,10 +4,60 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
-const Page = styled.div`
-    display: inline-block;
+const Wrraper = styled.div`
+    margin-top: 40px;
+    width: 80%;
+`
+
+const PostBox = styled.div`
+    width: 100%;
+`
+
+const Title = styled.div`
+    width: 100%;
+    height: 50px;
+    background-color: #95C94A;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+
+    & > div:nth-child(1){
+        width: 30%;
+        text-align: center;
+    }
+`
+
+const Post = styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid #C9C9C9;
+    justify-content: space-around;
     cursor: pointer;
-    margin-top: 10px;
+    & > h1{
+        width: 27%;
+        text-align: center;
+    }
+`
+const PageBox = styled.div`
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+const Page = styled.div`
+    cursor: pointer;
+    margin-right: 13px;
+`
+
+const NoData = styled.div`
+    width: 100%;
+    height: 500px;
+    background-color: #ffffff;
+    text-align: center;
 `
                                
 function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivision}:any){
@@ -36,7 +86,7 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
         if(title){
             
             getPost.map((post:InewBoard) => {
-                console.log(post.title);
+                
                 if(post.title.includes(title)){
                     searchPost.push(post);
                 }
@@ -64,7 +114,11 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
         const divisionPost = [] as InewBoard[];
         
         if(division?.divisionname === "전체"){
-           
+            if(category === "전체"){
+                setPost(post);
+            }else{
+                categpryPost(post, category);
+            }
         }else if(division !== undefined  || divi?.divisionname === "전체"){
             firstPost?.map((post:InewBoard)=> {
                 const dd = post.divisioncode.split(',');
@@ -121,23 +175,33 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
 
     
     return(
-        <div>
-            <h1>전체 게시물</h1>
-            {selectPost?.length !== 0 ? 
-            <>
-                {selectPost?.map((post, idx)=>(
-                    (Number(clickPage) - 1) * 10 <= idx && Number(clickPage) * 10 - 1 >= idx ?
-                    <div onClick={() => navigate(`/post/${post.no}`)} key={idx}>
-                        <h1>{post.title}</h1>
-                        <div>{post.divisioncode.split(',')[1]}</div>
-                    </div> : null
-                ))}
-                {pages.map((pages) => (
-                            <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page>
-                        ))} 
-            </> : <div>데이터 없음</div>}
+        <Wrraper>
+            
+            <PostBox>
+                <Title>
+                    <div>제목</div>
+                    <div>작성 날짜</div>
+                    <div>조회수</div>
+                </Title>
+                {selectPost?.length !== 0 ? 
+                <div>
+                    {selectPost?.map((post, idx)=>(
+                        (Number(clickPage) - 1) * 10 <= idx && Number(clickPage) * 10 - 1 >= idx ?
+                        <Post onClick={() => navigate(`/post/${post.no}`)} key={idx}>
+                            <h1>{post.title}</h1>
+                            <div>{post?.createdtime?.split('T')[0]}</div>
+                            <div>{post?.counts+""}</div>
+                        </Post> : null
+                    ))}
+                    <PageBox>
+                        {pages.map((pages) => (
+                                    <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page>
+                                ))} 
+                    </PageBox>
+                </div> : <NoData>데이터 없음</NoData>}
+            </PostBox> 
         
-        </div>
+        </Wrraper>
     )
 }
 

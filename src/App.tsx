@@ -24,7 +24,7 @@ time, mark, audio, video {
   padding: 0;
   border: 0;
   font-size: 100%;
-  font: inherit;
+  font: 15px/1.5 'Noto Sans KR', 'Nanum Gothic', '맑은고딕','Malgun Gothic','나눔고딕','nanumgothic',굴림,Gulim,돋움,Dotum, Sans-serif;
   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
