@@ -115,7 +115,7 @@ const AllTitle = styled.div`
     align-items: center;
     font-weight: 700;
     
-    div{
+    & > div{
         margin-top: 5px;
         width: 100px;
         border-bottom: 3px solid #333333;
@@ -127,7 +127,7 @@ const CateBox = styled.div`
     width: 40%;
     display: flex;
     justify-content: space-around;
-    button{
+    & > button{
         font-size: 16px;
         color: #989B9C;
         font-weight: 600;

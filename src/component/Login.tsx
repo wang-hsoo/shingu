@@ -15,10 +15,16 @@ const Wrraper = styled.div`
     align-items: center;
     justify-content: center;
 `
+const DelBtn = styled.button`
+    font-size: 40px;
+    color: white;
+    margin-top: -400px;
+    margin-right: -100px;
+`
 
 const LoginBox = styled.div`
     width: 469px;
-    height: 330px;
+    padding: 45px;
     background-color: #ffffff;
     border-radius: 15px;
     display: flex;
@@ -30,7 +36,8 @@ const LoginBox = styled.div`
 const LoginChange = styled.button`
     background-color: #95C94A;
     color: white;
-    padding: 10px 108px;
+    width: 300px;
+    padding: 10px 0;
     margin-top: 10px;
 `
 
@@ -68,16 +75,16 @@ function Login(){
 
     return(
         <Wrraper>
-            <button onClick={() => setPopUp((prev) => !prev)}>X</button>
+            
             <LoginBox>
                 {user && <UserLogin />}
                 {admin && <AdminLogin />}
                 {register && <Register />}
-                <LoginChange onClick={changeUse}>{user ? "관리자 로그인" : "유저 로그인" }</LoginChange>
+                <LoginChange onClick={changeUse}>{user ? "관리자 로그인" : `\u00A0\u00A0유저\u00A0 로그인` }</LoginChange>
                 <RegisterBtn onClick = {reg}>회원가입</RegisterBtn>
                 
             </LoginBox>
-            
+            <DelBtn onClick={() => setPopUp((prev) => !prev)}>X</DelBtn>
         </Wrraper>
     )
 }

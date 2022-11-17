@@ -1,6 +1,34 @@
 import { getAdmin, IAdmin } from "../service/BoardService";
 import React, { useState } from "react";
+import styled from "styled-components";
 
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+    h1{
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    input{
+        width: 300px;
+        height: 40px;
+        padding: 0 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ABABAB;
+    }
+
+    button{
+        background-color: #95C94A;
+        color: white;
+        width: 300px;
+        padding: 10px 0;
+    }
+
+`
 
 
 function AdminLogin(){
@@ -42,12 +70,12 @@ function AdminLogin(){
 
 
     return(
-        <form onSubmit={onSubmit}>
+        <Form onSubmit={onSubmit}>
             <h1>관리자 로그인</h1>
             <input placeholder="아이디" autoComplete="off" onChange={onChange} name="id" />
             <input type="password" placeholder="비밀번호"  onChange={onChange} name="pw" />
             <button>로그인</button>
-        </form>
+        </Form>
     )
 
 }
