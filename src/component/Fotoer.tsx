@@ -4,7 +4,7 @@ const Wrraper = styled.div`
     width: 100%;
     height: 150px;
     background-color: #353541;
-    margin-top: 40px;
+    margin-top: 60px;
 
     ul{
         width: 65%;
@@ -51,7 +51,7 @@ function Footer(){
         <ul>
 			
             <li>
-                <a href="/cms/FR_CON/index.do?MENU_ID=300" target="_self" title="">개인정보처리방침</a>
+                <a href="https://www.shingu.ac.kr/cms/FR_CON/index.do?MENU_ID=300" target="_blank" title="">개인정보처리방침</a>
             </li>
         
             <li>
@@ -59,23 +59,23 @@ function Footer(){
             </li>
         
             <li>
-                <a href="/cms/FR_CON/index.do?MENU_ID=1960" target="_self" title="">대학자체평가</a>
+                <a href="https://www.shingu.ac.kr/cms/FR_CON/index.do?MENU_ID=1960" target="_blank" title="">대학자체평가</a>
             </li>
         
             <li>
-                <a href="/cms/FR_CON/index.do?MENU_ID=1950" target="_self" title="">이메일주소무단수집거부</a>
+                <a href="https://www.shingu.ac.kr/cms/FR_CON/index.do?MENU_ID=1950" target="_blank" title="">이메일주소무단수집거부</a>
             </li>
         
             <li>
-                <a href="/cms/FR_CON/index.do?MENU_ID=1420" target="_self" title="">입찰정보</a>
+                <a href="https://www.shingu.ac.kr/cms/FR_CON/index.do?MENU_ID=1420" target="_blank" title="">입찰정보</a>
             </li>
         
             <li>
-                <a href="/cms/FR_CON/index.do?MENU_ID=1430" target="_self" title="">채용정보</a>
+                <a href="https://www.shingu.ac.kr/cms/FR_CON/index.do?MENU_ID=1430" target="_blank" title="">채용정보</a>
             </li>
         
             <li>
-                <a href="/cms/FR_CON/index.do?MENU_ID=2030" target="_self" title="">예결산공고</a>
+                <a href="https://www.shingu.ac.kr/cms/FR_CON/index.do?MENU_ID=2030" target="_blank" title="">예결산공고</a>
             </li>
         
             <li>
@@ -83,7 +83,7 @@ function Footer(){
             </li>
         
             <li>
-                <a href="/attach/202003/1584404113393_0.pdf" target="_blank" title="새창열림">영상정보처리기기운영관리방침</a>
+                <a href="https://www.shingu.ac.kr/attach/202003/1584404113393_0.pdff" target="_blank" title="새창열림">영상정보처리기기운영관리방침</a>
             </li>
         
         </ul>

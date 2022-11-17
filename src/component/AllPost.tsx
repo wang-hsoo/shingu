@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const Wrraper = styled.div`
     margin-top: 40px;
-    width: 80%;
+    width: 60%;
 `
 
 const PostBox = styled.div`
@@ -23,7 +23,12 @@ const Title = styled.div`
     color: white;
 
     & > div:nth-child(1){
-        width: 30%;
+        width: 320px;
+        text-align: center;
+    }
+
+    & > div{
+        width: 100px;
         text-align: center;
     }
 `
@@ -37,7 +42,11 @@ const Post = styled.div`
     justify-content: space-around;
     cursor: pointer;
     & > h1{
-        width: 27%;
+        width: 320px;
+        text-align: center;
+    }
+    & > div{
+        width: 100px;
         text-align: center;
     }
 `

@@ -121,7 +121,7 @@ function Register(){
         setCheck((props) => !props);
         const { innerText} = event.target as HTMLElement;
 
-        console.log(innerText);
+        
         if(!innerText.includes('&')){
             let code = 0 as Number;
 
@@ -138,7 +138,7 @@ function Register(){
                 divisioncode: Number(code),
                 upctg: Number(code)
             }
-            console.log()
+            setSelectDivi("전체학과");
             setSelectDivision(selectdivi);
             
 

@@ -9,9 +9,12 @@ import { isPopUp, isSearch } from "../atom";
 import Login from "../component/Login";
 import Search from "../component/Search";
 import Header from "../component/Header";
+import arrow from "../img/arrow.jpg";
 
 const Wrapper = styled.div`
-    
+    width: 100vw;
+    height: 100vh;
+
 `;
 const Container = styled.div<{display:boolean}>`
     /* top: -100px; //header 길이만큼 - */
@@ -23,14 +26,45 @@ const Container = styled.div<{display:boolean}>`
     display: ${(props) => props.display ? 'block' : 'none'};
 `
 const MainCon = styled.div`
+    width: 100%;
     position: absolute;
     z-index: 0;
 `
 
 const Form = styled.form`
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
     
 `
+
+const TitleForm = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+`
 const Select = styled.select`
+    width: 200px;
+    height: 45px;
+    padding: 0 15px;
+    border: 1px solid #999;
+    background: url(${arrow}) no-repeat 95% 50%; 
+    border-radius: 0px; 
+    -webkit-appearance: none; 
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: #333333;
+
+    &::-ms-expand {
+        display: none;
+    }
     
 `
 
@@ -39,12 +73,55 @@ const Option = styled.option`
 `
 
 const Input = styled.input`
+    color: #333333;
+    width: 70%;
+    height: 8vh;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #797979;
+    font-size: 1.8em;
+    font-weight: 700;
+
+    &:focus {outline: none;}
+     margin-right: 20px;
     
 `
 const Text = styled.textarea`
+    margin-top: 50px;
+    width: 100%;
+	height: 300px;
+	padding: 10px;
+	box-sizing: border-box;
+    border: none;
+	border-radius: 5px;
+	font-size: 16px;
+	resize: none;
+    box-shadow: 2px 4px 4px 1px rgba(0,0,0,0.4); 
+    background-color: #EEEEEE;
+    &:focus {
+        outline: solid 2px #95C94A;
+    }
     
 `
 const Btn = styled.button`
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+
+    & > button{
+            font-size: 14px;
+            padding: 8px 20px;
+            background-color: #F36700;
+            color: #ffffff;
+            border-radius: 15px;
+            margin-right: 10px;
+    }
+    
+    & > button:nth-child(1){
+        background: #95C94A;
+    }
+
 
 `
 
@@ -59,6 +136,7 @@ function Write({add}:any){
     const navigate = useNavigate();
     const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
+    const ff = false as boolean;
     
 
     function onChange(event:React.FormEvent<HTMLElement>){
@@ -119,19 +197,28 @@ function Write({add}:any){
     return(
         <Wrapper>
             <MainCon>
-                <Header />
+                <Header check = {false} />
                 <Form onSubmit={onSubmit}>
-                    <Select onChange={cateChange} value={selectCate}>
-                        {category?.map((cate:Icategory, idx:number) => (
-                            idx === 0 ? null :
-                            <Option key={idx} value={cate.category}>{cate.category}</Option>
-                        ))}
-                    </Select>
+                    <TitleForm>
+                        <Input type="text" placeholder="제목" name="제목" onChange={onChange} autoComplete="off"  />
+                        <Select onChange={cateChange} value={selectCate}>
+                            {category?.map((cate:Icategory, idx:number) => (
+                                idx === 0 ? null :
+                                <Option key={idx} value={cate.category}>{cate.category}</Option>
+                            ))}
+                        </Select>
+                    </TitleForm>
+                    
+                   
+                    <Text placeholder="내용을 입력하세요" name="내용" onChange={onChange} />
+                    
             
-                    <Input type="text" placeholder="제목" name="제목" onChange={onChange} />
-                    <Text placeholder="내용" name="내용" onChange={onChange} />
-                    <Btn>작성하기</Btn>
-                    <Btn onClick={() => navigate('/')}>목록으로</Btn>
+                    <Btn>
+                        <button onClick={() => navigate('/')}>목록으로</button>
+                        <button>작성하기</button>
+                    </Btn>
+                    
+                    
                 </Form>
             </MainCon>
             <Container display={Pop || search}>

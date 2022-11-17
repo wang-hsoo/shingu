@@ -57,7 +57,7 @@ const SearchBtn = styled.button`
 const navVariants = {
     top:{
         backgroundColor: "rgba(255, 255, 255, 0)",
-        boxShadow: "none"
+        boxShadow: "none",
     },
     scroll:{
       backgroundColor:"rgba(255, 255, 255, 1)",
@@ -65,7 +65,7 @@ const navVariants = {
     }
   }
 
-function Header(){
+function Header({check}:any){
     const [login, setLogin] = useState(false);
     const [adminLogIn, setAdminLogin] = useState(false);
     const setPopUp = useSetRecoilState(isPopUp);
@@ -82,15 +82,22 @@ function Header(){
     const [scroll, setScroll] = useState(false);
 
     useEffect(() => {
-        scrollY.onChange(() => {
-          if(scrollY.get() > 80){
-              navAnimation.start("scroll");
-              setScroll(true);
-          }else{
-            navAnimation.start("top");
-            setScroll(false);
-          }
-        })
+        if(check){
+            scrollY.onChange(() => {
+                if(scrollY.get() > 80){
+                    navAnimation.start("scroll");
+                    setScroll(true);
+                }else{
+                  navAnimation.start("top");
+                  setScroll(false);
+                }
+              })
+
+        }else{
+            navAnimation.start("scroll");
+            setScroll(true);
+        }   
+        
       },[])
 
     function Log(){

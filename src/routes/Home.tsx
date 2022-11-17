@@ -12,7 +12,7 @@ import AllPost from "../component/AllPost";
 import { useNavigate } from "react-router-dom";
 import BannerImg from "../img/main_banner9.png";
 import arrow from "../img/arrow.jpg";
-import { motion } from "framer-motion";
+import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import Footer from "../component/Fotoer";
 
 
@@ -64,14 +64,17 @@ const GreenBar = styled(motion.div)`
     background-color: rgba(149, 201, 74, 0.5);
 `
 
-const SelectDivi = styled.div`
+const SelectDivi = styled(motion.div)<{scroll:boolean}>`
     width: 100%;
     height: 50px;
     border-bottom: 1px solid #C9C9C9;
+    background-color: white;
+    position: ${(props) => props.scroll ? "fixed" : "relative"};
+
 `
 
 const SelectBox = styled.div`
-    width: 80%;
+    width: 60%;
     height: 100%;
     margin: 0 auto;
 `
@@ -99,7 +102,7 @@ const Select = styled.select`
 `
 
 const AllBox = styled.div`
-    width: 95%;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -128,6 +131,7 @@ const CateBox = styled.div`
     display: flex;
     justify-content: space-around;
     & > button{
+        width: 100px;
         font-size: 16px;
         color: #989B9C;
         font-weight: 600;
@@ -140,7 +144,7 @@ const CateBox = styled.div`
 `
 
 const WriteBtn = styled.div`
-    width: 80%;
+    width: 60%;
     margin-top: -30px;
     display: flex;
     justify-content: flex-end;
@@ -181,6 +185,19 @@ const transition = {
     },
   };
 
+  const navVariants = {
+    top:{
+        backgroundColor: "rgba(255, 255, 255, 0)",
+        boxShadow: "none",
+        top: "0"
+    },
+    scroll:{
+      backgroundColor:"rgba(255, 255, 255, 1)",
+      boxShadow: "0 4px 4px -4px black",
+      top: "80px"
+    }
+  }
+
 
 function Home(){
     const [division, setDivision] = useState<Idivision[]>();
@@ -192,6 +209,22 @@ function Home(){
     const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
     const navigate = useNavigate();
+    const { scrollY } = useViewportScroll();
+    const navAnimation = useAnimation();
+    const [scroll, setScroll] = useState(false);
+
+    useEffect(()=>{
+        scrollY.onChange(() => {
+            if(scrollY.get() > 580){
+                navAnimation.start("scroll");
+                setScroll(true);
+                
+            }else{
+                navAnimation.start("top");
+                  setScroll(false);
+            }
+          })
+    },[]);
 
     
 
@@ -266,7 +299,7 @@ function Home(){
                 <MainCon>
                     
                     <Banner bg={BannerImg}>
-                        <Header />
+                        <Header check={true} />
                         <TextBox>
                             <BannerText 
                                 variants={textReveal}
@@ -292,7 +325,11 @@ function Home(){
                          transition={transition} />
                     </Banner>
 
-                    <SelectDivi>
+                    <SelectDivi 
+                        variants={navVariants}
+                        initial="top" 
+                        animate={navAnimation}
+                        scroll={scroll as boolean} >
                         <SelectBox>
                             <Select onChange={divisionChange}>
                                 <option value="전체">전체학부</option>
@@ -350,4 +387,4 @@ function Home(){
 
 
 
-export default Home;
+export default React.memo(Home);
