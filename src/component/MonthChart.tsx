@@ -214,11 +214,6 @@ function MonthChart({post}:any){
     )
 }
 
-function mapStateToProps(state:InewBoard[]){
-    const post = state;
-    return {post: post}
-}
-
 
 
 function monthSort(post:InewBoard[]){
@@ -233,4 +228,4 @@ function monthSort(post:InewBoard[]){
     return sortPost;
 }
 
-export default connect(mapStateToProps) (React.memo(MonthChart));
+export default MonthChart;

@@ -78,11 +78,7 @@ button{
 
 function App({add}:any) {
   
-  useEffect(()=>{
-    getBoad().then(value => {
-      add(value);
-    })
-  },[])
+  
 
   return (
     <>

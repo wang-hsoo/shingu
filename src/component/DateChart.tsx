@@ -220,11 +220,5 @@ function DateChart({post}:any){
     )
 }
 
-function mapStateToProps(state:InewBoard[]){
-    const post = state;
-    return {post: post}
 
-    
-}
-
-export default connect(mapStateToProps) (React.memo(DateChart));
+export default React.memo(DateChart);

@@ -79,42 +79,41 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
 
     function categpryPost(getPost:InewBoard[], category:string){
         const selPost = [] as InewBoard[];
-        getPost.map((post:InewBoard) => {
+        getPost?.map((post:InewBoard) => {
             if(post.category === category){
                 selPost.push(post);
             }
         })
 
-        setPost(selPost);
+        setPost(selPost.reverse());
     }
 
     useEffect(()=>{
         
-        const getPost = [...post].reverse();
-        const searchPost = [] as InewBoard[];
-        if(title){
-            
-            getPost.map((post:InewBoard) => {
+        if(post){
+            const searchPost = [] as InewBoard[];
+            if(title){
                 
-                if(post.title.includes(title)){
-                    searchPost.push(post);
+                post?.map((post:InewBoard) => {
+                    
+                    if(post.title.includes(title)){
+                        searchPost.push(post);
+                    }
+                })
+                setFirstPost(searchPost);
+                if(category === "전체"){
+                    setPost(searchPost.reverse());
+                }else{
+                    categpryPost(searchPost, category);
                 }
-            })
-            setFirstPost(searchPost);
-            if(category === "전체"){
-                setPost(searchPost);
             }else{
-                categpryPost(searchPost, category);
+                setFirstPost(post);
+                if(category === "전체"){
+                    setPost(post.reverse());
+                }else{
+                    categpryPost(post, category);
+                }
             }
-        }else{
-            setFirstPost(getPost);
-            if(category === "전체"){
-                setPost(getPost);
-            }else{
-                categpryPost(getPost, category);
-            }
-            
-            
         }
     },[post,category]);
    
@@ -122,26 +121,29 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
     useEffect(()=>{
         const divisionPost = [] as InewBoard[];
         
-        if(division?.divisionname === "전체"){
-            if(category === "전체"){
-                setPost(post);
-            }else{
-                categpryPost(post, category);
-            }
-        }else if(division !== undefined  || divi?.divisionname === "전체"){
-            firstPost?.map((post:InewBoard)=> {
-                const dd = post.divisioncode.split(',');
-                if(dd[0] === division.divisionname){
-                    divisionPost.push(post);
-                }
-            })
-            if(category === "전체"){
-                setPost(divisionPost);
-            }else{
-                categpryPost(divisionPost, category);
-            }
+        if(post){
 
-            
+            if(division?.divisionname === "전체"){
+                if(category === "전체"){
+                    setPost(post.reverse());
+                }else{
+                    categpryPost(post, category);
+                }
+            }else if(division !== undefined  || divi?.divisionname === "전체"){
+                firstPost?.map((post:InewBoard)=> {
+                    const dd = post.divisioncode.split(',');
+                    if(dd[0] === division.divisionname){
+                        divisionPost.push(post);
+                    }
+                })
+                if(category === "전체"){
+                    setPost(divisionPost.reverse());
+                }else{
+                    categpryPost(divisionPost, category);
+                }
+
+                
+            }
         }
     },[division, divi, category])
 
@@ -214,8 +216,6 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
     )
 }
 
-function mapStateToProps(state:InewBoard[]){
-    return {post: state}
-}
 
-export default connect(mapStateToProps) (React.memo(AllPost));
+
+export default React.memo(AllPost);

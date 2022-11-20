@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { getCategory, getDivision, Icategory, Idivision, InewBoard, selectGetBoad } from "../service/BoardService";
+import { getCategory, getDivision, Icategory, Idivision, InewBoard, selectGetBoad, updateBoard } from "../service/BoardService";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../component/Header";
@@ -11,6 +11,9 @@ import Login from "../component/Login";
 import Search from "../component/Search";
 import BannerImg from "../img/board_banner.png";
 import Footer from "../component/Fotoer";
+import favorite from "../img/favorite_border_black.png"
+import favoriteB from "../img/favorite_fill_black.png"
+import { AnimatePresence, motion } from "framer-motion";
 
 
 const Container = styled.div<{display:boolean}>`
@@ -80,8 +83,16 @@ const TItle = styled.div`
 const Info = styled.div`
     width: 100%;
     display: flex;
-    justify-content: flex-start;
-    & > div{
+    justify-content: space-between;
+
+    & > div:nth-child(1){
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+
+    }
+
+    & > div > div{
         color: #7D7D7D;
         font-size: 18px;
         margin-right: 10px;
@@ -90,6 +101,7 @@ const Info = styled.div`
 
 const PostBox = styled.div`
     width: 100%;
+    margin-bottom: 50px;
     margin-top: 20px;
 `
 const Context = styled.div<{answer:boolean}>`
@@ -171,10 +183,19 @@ const Btn = styled.button`
     }
 
 `
+const FavoriteBtn = styled(motion.div)`
+    width: 40px;
+    height: 40px;
+    & > img{
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+`
 
 
 
-function Post({post, rootAdd}:any){
+function Post({post, GetPost, rootAdd}:any){
     const [selectPost, setSelectPost] = useState<InewBoard>();
     const [today, setToday] = useState<string>();
     const [loginCheck, setLoginCheck] = useState<string>("");
@@ -185,6 +206,47 @@ function Post({post, rootAdd}:any){
     const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
     const navigate = useNavigate();
+    const [faCheck, setFavoriteCheck] = useState(false);
+
+    function favoriteClick(){
+        setFavoriteCheck((prev) => !prev);
+
+        console.log(faCheck);
+
+        if(faCheck){
+            //true 빼기
+            const post = {
+                no: selectPost?.no,
+                divisioncode: selectPost?.divisioncode,
+                category: selectPost?.category,
+                title: selectPost?.title,
+                contents: selectPost?.contents,
+                addboard: false,
+                studentid: selectPost?.studentid,
+                createdtime: selectPost?.createdtime,
+                counts: selectPost?.counts
+            }as InewBoard;
+
+            updateBoard(Number(no), post);
+
+            
+        }else{
+            //false 등록
+            const post = {
+                no: selectPost?.no,
+                divisioncode: selectPost?.divisioncode,
+                category: selectPost?.category,
+                title: selectPost?.title,
+                contents: selectPost?.contents,
+                addboard: true,
+                studentid: selectPost?.studentid,
+                createdtime: selectPost?.createdtime,
+                counts: selectPost?.counts
+            }as InewBoard;
+
+            updateBoard(Number(no), post);
+        }
+    }
 
     useEffect(()=>{
         let answerAll = [] as Ianswer[];
@@ -201,17 +263,17 @@ function Post({post, rootAdd}:any){
     
 
     useEffect(()=>{
-        if(post.length !== 0){
             if(no){
-                post?.map((post:InewBoard)=>{
-                   if(post.no === Number(no)){
-                    setSelectPost(post);
-                    const today = post.createdtime?.split("T");
+                selectGetBoad(Number(no)).then(value => {
+                    setSelectPost(value);
+                    const today = value.createdtime?.split("T");
+                    setFavoriteCheck(value.addboard);
                     setToday(today ? today[0] : "null");
-                   }
+                    
+
                 })
             }else{
-                setSelectPost(post[post.length - 1])
+                setSelectPost(GetPost[GetPost.length - 1])
     
                 let today = new Date();   
     
@@ -221,11 +283,7 @@ function Post({post, rootAdd}:any){
     
                 setToday(`${year}-${month}-${date}`);
             }
-        }else{
-            selectGetBoad(Number(no)).then(value => {
-                setSelectPost(value);
-            })
-        }
+        
     },[])
 
     useEffect(()=>{
@@ -274,17 +332,24 @@ function Post({post, rootAdd}:any){
     function onSubmit(e:React.FormEvent<HTMLFormElement>){
         e.preventDefault();
 
+        if(context.length === 0 || context === " "){
 
-        const answer = {
-            no: Number(selectPost?.no),
-            studentid: loginCheck,
-            answercontents: context.replace(/(?:\r\n|\r|\n)/g, '<br/>')
-        } as Ianswer;
+        }else{
+            const answer = {
+                no: Number(selectPost?.no),
+                studentid: loginCheck,
+                answercontents: context.replace(/(?:\r\n|\r|\n)/g, '<br/>')
+            } as Ianswer;
+    
+            createAnswer(answer);
+            setContext("");
+    
+            window.location.reload();
 
-        createAnswer(answer);
-        setContext("");
+        }
 
-        window.location.reload();
+
+        
         
     }
 
@@ -305,9 +370,22 @@ function Post({post, rootAdd}:any){
                                     <div>{selectPost.title}</div>
                                 </TItle>
                                 <Info>
-                                    <div>작성자 {selectPost.divisioncode.split(',')[1]} |</div>
-                                    <div>등록일 {today} |</div>
-                                    <div>조회수 {selectPost.counts+""}</div>
+                                    <div>
+                                        <div>작성자 {loginCheck !== "" ? selectPost.studentid+"" : selectPost.divisioncode.split(',')[1]} |</div>
+                                        <div>등록일 {today} |</div>
+                                        <div>조회수 {selectPost.counts+""}</div>
+
+                                    </div>
+                                    {loginCheck !== "" ?
+                                    <AnimatePresence>
+                                        <FavoriteBtn whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
+                                            {faCheck ? 
+                                            <motion.img layoutId="favorite" src={favoriteB} onClick={favoriteClick} /> 
+                                            : <motion.img layoutId="favorite" src={favorite} onClick={favoriteClick} />}
+                                        </FavoriteBtn>
+                                    </AnimatePresence> : null
+                                    
+                                    }
                                 </Info>
                             
                                 <PostBox>
@@ -327,7 +405,6 @@ function Post({post, rootAdd}:any){
                                     <Btn>
                                         <button onClick={()=> {
                                                 navigate('/');
-                                                window.location.reload();
                                             }}>목록으로</button>
                                         <button>작성하기</button>
                                     </Btn>
@@ -335,7 +412,6 @@ function Post({post, rootAdd}:any){
                                 <Btn>
                                     <button onClick={()=> {
                                                 navigate('/');
-                                                window.location.reload();
                                             }}>목록으로</button>
                                 </Btn>}
                                 
@@ -356,7 +432,7 @@ function Post({post, rootAdd}:any){
 }
 
 function mapStateToProps(state:InewBoard){
-    return {post: state}
+    return {GetPost: state}
 }
 
 function mapDispatchToProps(dispatch:any){

@@ -53,21 +53,32 @@ const PostBox = styled.div`
     }
 `
 
-function TopPost( {divi /*학과*/,category,division}:any){
+const Nodata = styled.div`
+    height: 100%;
+    height: 178px;
+`
+
+function TopPost( {post, divi, /*학과*/category,division}:any){
     const [newBoard, setNewBoard] = useState<InewBoard[]>();
+    const [allPost, setAllpost] = useState<InewBoard[]>();
     const navigate = useNavigate();
 
     useEffect(()=>{
-        
+        setAllpost(post);
+    },[post]);
 
-        getBoad().then((value:InewBoard[]) => {
+    useEffect(()=>{
+        
+        
+        if(allPost){
+
             let getPost = [] as InewBoard[];
 
             if(division === undefined || division.divisionname === "전체"){
                 if(category === "전체"){
-                    getPost.push(...value);
+                    getPost.push(...allPost as InewBoard[]);
                 }else{
-                    value.map((post:InewBoard) => {
+                    allPost?.map((post:InewBoard) => {
                         if(post.category === category){
                             getPost.push(post);
                         }
@@ -76,15 +87,15 @@ function TopPost( {divi /*학과*/,category,division}:any){
             }else{
                 if(divi.divisionname === "전체" || divi === undefined){
                     if(category === "전체"){
-                        value.map((post:InewBoard)=>{
+                        allPost?.map((post:InewBoard)=>{
                             if(post.divisioncode.split(',')[0] === division.divisionname){
                                 getPost.push(post);
                             }
                         })
                     }else{
-                        value.map((post:InewBoard) => {
-                            if(post.divisioncode.split(',')[0] === division.divisionname){
-                                if(post.category === category){
+                        allPost?.map((post:InewBoard) => {
+                            if(post?.divisioncode.split(',')[0] === division.divisionname){
+                                if(post?.category === category){
                                     getPost.push(post);
                                 }
                             }
@@ -93,13 +104,13 @@ function TopPost( {divi /*학과*/,category,division}:any){
                     
                 }else{
                     if(category === "전체"){
-                        value.map((post:InewBoard)=>{
+                        allPost?.map((post:InewBoard)=>{
                             if(post.divisioncode.split(',')[1] === divi.divisionname){
                                 getPost.push(post);
                             }
                         })
                     }else{
-                        value.map((post:InewBoard) => {
+                        allPost?.map((post:InewBoard) => {
                             if(post.divisioncode.split(',')[1] === divi.divisionname){
                                 if(post.category === category){
                                     getPost.push(post);
@@ -145,15 +156,17 @@ function TopPost( {divi /*학과*/,category,division}:any){
                 
             }
             
-            
-        })
+        }else{
+
+        }
+
 
         
-    },[division, divi, category])
+    },[allPost,division, divi, category])
 
  
 
-    console.log(newBoard);
+
 
    
     return(
@@ -164,11 +177,11 @@ function TopPost( {divi /*학과*/,category,division}:any){
                  <PostBox>
                     {newBoard?.map((post:InewBoard) => (
                         <div>
-                            <div>{post.title}</div>
-                            { post.no !== -1 ? <button onClick={()=> navigate(`/post/${post.no}`)}>More</button> : null}
+                            <div>{post?.title}</div>
+                            { post?.no !== -1 ? <button onClick={()=> navigate(`/post/${post.no}`)}>More</button> : null}
                         </div>
                     ))} 
-                </PostBox> : <div>게시물 없음</div>}
+                </PostBox> : <Nodata>게시물 없음</Nodata>}
             
         </Wrapper>
     )

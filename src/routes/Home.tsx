@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { getCategory, getDivision, Icategory, Idivision, InewBoard } from "../service/BoardService";
+import { getBoad, getCategory, getDivision, Icategory, Idivision, InewBoard } from "../service/BoardService";
 import Header from "../component/Header";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -14,6 +14,7 @@ import BannerImg from "../img/main_banner9.png";
 import arrow from "../img/arrow.jpg";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import Footer from "../component/Fotoer";
+import AddPost from "../component/AddPost";
 
 
 const Container = styled.div<{display:boolean}>`
@@ -212,6 +213,7 @@ function Home(){
     const { scrollY } = useViewportScroll();
     const navAnimation = useAnimation();
     const [scroll, setScroll] = useState(false);
+    const [allPost, setAllPost] = useState<InewBoard[]>();
 
     useEffect(()=>{
         scrollY.onChange(() => {
@@ -288,9 +290,12 @@ function Home(){
 
     
 
-    useEffect(() => {
-        setSelectCate("전체");
-    },[selectDivision,selectDivi])
+    useEffect(()=>{
+        getBoad().then( value => {
+            setAllPost([...value]);
+        })
+    },[]);
+
 
 
     return(
@@ -351,7 +356,8 @@ function Home(){
                         
                     </SelectDivi>
 
-                    <TopPost divi={selectDivi} category={selectCate} division={selectDivision} />
+                    <TopPost post = {allPost} divi={selectDivi} category={selectCate} division={selectDivision} />
+                    <AddPost post = {allPost} divi={selectDivi} />
 
                     <AllBox>
                         <AllTitle>전체 게시물 <div /></AllTitle>
@@ -364,7 +370,7 @@ function Home(){
                         </CateBox>
                         
 
-                        <AllPost divi={selectDivi} category={selectCate} division={selectDivision} AllDivision = {division} />
+                        <AllPost post = {allPost} divi={selectDivi} category={selectCate} division={selectDivision} AllDivision = {division} />
 
                         <WriteBtn>
                             {userLogin ? <button onClick={()=> navigate('/write')}>작성하기</button> : null}

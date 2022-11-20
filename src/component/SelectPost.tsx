@@ -1,4 +1,6 @@
-function SelectPost(){
+import { InewBoard } from "../service/BoardService";
+
+function SelectPost({post}:any){
 
     return(
         <div>
