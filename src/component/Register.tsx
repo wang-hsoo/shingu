@@ -63,8 +63,8 @@ const DiviList = styled.ul<{display:boolean}>`
         transition: .3s;
         color: #717171;
         &:hover{
-            color: #95C94A;
-            font-weight: bold;
+            color: white;
+            background-color: #95C94A;
         }
     }
     
@@ -84,8 +84,8 @@ const DList = styled.ul<{display:boolean}>`
         transition: .3s;
         color: #717171;
         &:hover{
-            color: #95C94A;
-            font-weight: bold;
+            color: white;
+            background-color: #95C94A;
         }
     }
     

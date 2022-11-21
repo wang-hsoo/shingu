@@ -6,10 +6,12 @@ import { isSearch } from "../atom";
 import SearchBtn from "../img/search_white.png";
 
 const Wrraper = styled.div`
-    width: 49%;
+    width: 50%;
     text-align: center;
     margin: 0 auto;
     padding-top: 15%;
+    margin-left: 25%;
+    position: fixed;
 
     form{
         width: 90%;

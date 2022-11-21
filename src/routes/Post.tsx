@@ -1,12 +1,12 @@
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { getCategory, getDivision, Icategory, Idivision, InewBoard, selectGetBoad, updateBoard } from "../service/BoardService";
+import { delPost, getCategory, getDivision, Icategory, Idivision, InewBoard, selectGetBoad, updateBoard } from "../service/BoardService";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../component/Header";
 import { createAnswer, getAnswer, Ianswer } from "../service/AnswerService";
-import { useRecoilValue } from "recoil";
-import { isPopUp, isSearch } from "../atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isPopUp, isSearch, isDelete } from "../atom";
 import Login from "../component/Login";
 import Search from "../component/Search";
 import BannerImg from "../img/board_banner.png";
@@ -18,9 +18,9 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const Container = styled.div<{display:boolean}>`
     width: 100%;
-    height: 200vh;
+    height: 100vh;
+    position: fixed;
     background-color: rgba(0,0,0,0.8);
-    position: relative;
     z-index: 1;
     display: ${(props) => props.display ? 'block' : 'none'};
 `
@@ -49,7 +49,6 @@ const Banner = styled.div<{bg:string}>`
     justify-content: center;
     align-items: center;
     overflow: hidden;
-
     & > div{
         color: white;
         margin-top: 40px;
@@ -84,14 +83,11 @@ const Info = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
-
     & > div:nth-child(1){
         width: 100%;
         display: flex;
         justify-content: flex-start;
-
     }
-
     & > div > div{
         color: #7D7D7D;
         font-size: 18px;
@@ -137,7 +133,6 @@ const AnwerCon = styled.div<{answer:boolean}>`
     display: flex;
     margin-top: 50px;
     justify-content: ${(props) => props.answer ? "flex-start" : "flex-end" };;
-
 `
 
 const Form = styled.form`
@@ -158,7 +153,6 @@ const Text = styled.textarea`
 	font-size: 16px;
 	resize: none;
     box-shadow: 2px 4px 4px 1px rgba(0,0,0,0.4); 
-
     &:focus {
         outline: solid 2px #95C94A;
     }
@@ -168,7 +162,6 @@ const Btn = styled.button`
     width: 100%;
     display: flex;
     justify-content: flex-end;
-
     & > button{
             font-size: 14px;
             padding: 8px 20px;
@@ -181,7 +174,6 @@ const Btn = styled.button`
     & > button:nth-child(1){
         background: #95C94A;
     }
-
 `
 const FavoriteBtn = styled(motion.div)`
     width: 40px;
@@ -190,6 +182,43 @@ const FavoriteBtn = styled(motion.div)`
         width: 100%;
         height: 100%;
         cursor: pointer;
+    }
+`
+
+const DeletWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+const DeletBox = styled.div`
+    width: 469px;
+    padding: 45px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    & > h1{
+        margin-bottom: 20px;
+    }
+
+    & > div > button{
+            font-size: 14px;
+            padding: 8px 20px;
+            background-color: #95C94A;
+            color: #ffffff;
+            border-radius: 15px;
+            margin-right: 10px;
+    }
+    & > div > button:nth-child(1){
+        background: #F36700;
     }
 `
 
@@ -205,13 +234,16 @@ function Post({post, GetPost, rootAdd}:any){
     const [admin, setAdmin] = useState<string>();
     const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
+    const deleteClick = useRecoilValue(isDelete);
+    const setPopUp = useSetRecoilState(isDelete);
+    const popUp = () => setPopUp((prev) => !prev);
     const navigate = useNavigate();
     const [faCheck, setFavoriteCheck] = useState(false);
 
     function favoriteClick(){
         setFavoriteCheck((prev) => !prev);
 
-        console.log(faCheck);
+       
 
         if(faCheck){
             //true 빼기
@@ -353,6 +385,11 @@ function Post({post, GetPost, rootAdd}:any){
         
     }
 
+    function deletPost(){
+        popUp();
+
+    }
+
         
     return(
         <>
@@ -407,6 +444,7 @@ function Post({post, GetPost, rootAdd}:any){
                                                 navigate('/');
                                             }}>목록으로</button>
                                         <button>작성하기</button>
+                                        <button onClick={()=>{popUp();}}>삭제하기</button>
                                     </Btn>
                                 </Form> : 
                                 <Btn>
@@ -421,9 +459,23 @@ function Post({post, GetPost, rootAdd}:any){
                         <Footer />
                 </MainCon>
                 
-                <Container display={Pop || search}>
+                <Container display={Pop || search || deleteClick}>
                     {Pop ? <Login /> : null}
                     {search ? <Search />: null}
+
+                    {deleteClick ?
+                    <DeletWrapper>
+                        <DeletBox>
+                            <h1>정말로 삭제하시겠습니까?</h1>
+            
+                            <div>
+                                <button onClick={()=>deletPost()}>삭제하기</button>
+                                <button onClick={()=>popUp()}>아니요</button>
+                            </div>
+                            
+                        </DeletBox>
+                    </DeletWrapper> : null}
+                    
                 </Container>
 
                 </Wrrpaer> : <div>데이터 없음</div>}

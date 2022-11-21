@@ -18,7 +18,7 @@ const Wrapper = styled.div`
 const AllTitle = styled.div`
     width: 100%;
     height: 50px;
-    background-color: #95C94A;
+    background-color: ${(props) => props.theme.greenDark};
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -27,9 +27,10 @@ const AllTitle = styled.div`
 `
 
 const PostBox = styled.div`
+    background-color:  ${(props) => props.theme.whiteGrey};
     width: 100%;
     height: 180px;
-    border: 1px solid #C9C9C9;
+    border: 1px solid ${(props) => props.theme.whiteGrey};;
     border-right: none;
     display: flex;
     justify-content: space-between;
@@ -38,22 +39,29 @@ const PostBox = styled.div`
     & > div{
         width: 25%;
         border-right: solid 1px #C9C9C9;
+        padding-bottom: 20px;
         
         & > div{
+            color: ${(props) => props.theme.blackWhite};
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             font-weight: 500;
             font-size: 18px;
             padding: 30px 20px;
+
+            & > button{
+            color: ${(props) => props.theme.blackWhite};
+        }
             
         }
 
-        & > button{
-            padding-top: 50px;
-            padding-left: 200px
-        }
+        
     }
 `
 
 const Nodata = styled.div`
+
     height: 100%;
     height: 178px;
 `
@@ -178,7 +186,10 @@ function TopPost( {post, divi, /*학과*/category,division}:any){
                     {newBoard?.map((post:InewBoard) => (
                         <div>
                             <div>{post?.title}</div>
-                            { post?.no !== -1 ? <button onClick={()=> navigate(`/post/${post.no}`)}>More</button> : null}
+                            <div>
+                                <div>{post.createdtime?.split('T')[0]}</div>
+                                { post?.no !== -1 ? <button onClick={()=> navigate(`/post/${post.no}`)}>More</button> : null}
+                            </div>
                         </div>
                     ))} 
                 </PostBox> : <Nodata>게시물 없음</Nodata>}

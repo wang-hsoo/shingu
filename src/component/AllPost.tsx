@@ -40,6 +40,7 @@ const Post = styled.div`
     height: 50px;
     border-bottom: 1px solid #C9C9C9;
     justify-content: space-around;
+    color: ${(props) => props.theme.blackWhite};
     cursor: pointer;
     & > h1{
         width: 320px;
@@ -58,6 +59,7 @@ const PageBox = styled.div`
     justify-content: center;
 `
 const Page = styled.div`
+    color: ${(props) => props.theme.blackWhite};
     cursor: pointer;
     margin-right: 13px;
 `

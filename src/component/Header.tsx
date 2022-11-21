@@ -145,7 +145,6 @@ function Header({check}:any){
             <LayOut>
                 <Logo onClick={()=>{
                     navigate('/');
-                    window.location.reload();
                 }}>
                     <img src={scroll ? ShinguBlack : Shingu} style={{width: "100px"}} />
                 </Logo>

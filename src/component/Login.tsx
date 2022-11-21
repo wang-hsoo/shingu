@@ -14,6 +14,7 @@ const Wrraper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    position: fixed;
 `
 const DelBtn = styled.button`
     font-size: 40px;

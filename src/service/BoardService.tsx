@@ -38,6 +38,10 @@ export async function createBoard(board:InewBoard) {
     return data;
 }
 
+export async function delPost(no:number){
+    return axios.delete(BOARD_API_BASE_URL+"/board/" + no);
+}
+
 export interface Icategory{
     category: string
     id: Number

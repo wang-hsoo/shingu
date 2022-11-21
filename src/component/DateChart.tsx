@@ -7,15 +7,84 @@ import { getBoad, getCategory, Icategory, InewBoard } from "../service/BoardServ
 import { connect } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import Footer from "./Fotoer";
 
-const CateDiv = styled.div`
+const Wrapper = styled.div`
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 40px;
     display: flex;
-    div{
-        width: 100px;
-        margin-right: 10px;
-    }
+    flex-direction: column;
+    justify-content: center;
+`
+
+const Chart = styled.div`
+    width: 650px;
+    margin: 0 auto;
+    margin-top: 20px;
 `
 const CatePost = styled(motion.div)`
+`
+const PostBox = styled.div`
+    width: 100%;
+    margin-top: 20px;
+`
+
+const Title = styled.div`
+    width: 100%;
+    height: 50px;
+    background-color: #95C94A;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+
+    & > div:nth-child(1){
+        width: 320px;
+        text-align: center;
+    }
+
+    & > div{
+        width: 100px;
+        text-align: center;
+    }
+`
+
+const Post = styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid #C9C9C9;
+    justify-content: space-around;
+    cursor: pointer;
+    & > h1{
+        width: 320px;
+        text-align: center;
+    }
+    & > div{
+        width: 100px;
+        text-align: center;
+    }
+`
+const PageBox = styled.div`
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+const Page = styled.div`
+    cursor: pointer;
+    margin-right: 13px;
+`
+
+const NoData = styled.div`
+    width: 100%;
+    height: 500px;
+    background-color: #ffffff;
+    text-align: center;
 `
 
 interface IcateBoard{
@@ -34,6 +103,9 @@ function DateChart({post}:any){
     const [category, setCategory] = useState<Icategory[]>([]);
     const [selectPost, setSelectPost] = useState<InewBoard[]>(); // 해당 날짜 게시물
     const [catePost, setCatePost] = useState<IcateBoard>(); // 카테고리 별로 정리
+    const [pages, setPages] = useState<Number[]>([]);
+    const [clickPage, setClickPage] = useState<Number>(1);
+    const navigate = useNavigate();
 
 
     function cateSort(post:InewBoard[]){
@@ -124,14 +196,74 @@ function DateChart({post}:any){
         
     },[selectDate])
 
+    useEffect(()=>{
+        const lastPage = Math.ceil(Number(selectPost?.length) / 10);
+        const pages = [];
+        for(let i = 1; i <= lastPage; i++){
+            pages.push(i);
+        }
+        setPages(pages);
+        
+    },[selectPost])
+
    
     
    
     
     return(
-        <div>
-            일별 차트
-            <DatePicker
+        <Wrapper>
+            <Chart>
+                <ApexChart 
+                            type="donut" 
+                            series={catePost ? [ catePost.cate1.length,catePost.cate2.length, catePost.cate3.length,  catePost.cate4.length, catePost.cate5.length, catePost.cate6.length] : []}
+                            options={{
+                                theme:{
+                                    mode:"light"
+                                },
+                                chart : {
+                                    height: 100,
+                                    width: 100,
+                                    toolbar: {
+                                        show: false
+                                    },
+                                    background: "transparent",
+                                },
+                                
+                                stroke: {
+                                    curve: "smooth",
+                                    width: 3
+                                },
+                                plotOptions:{
+                                    pie:{
+                                        donut:{
+                                            labels:{
+                                                show:true,
+                                                total:{
+                                                    showAlways: true,
+                                                    show:true,
+                                                    label: "총 게시물 수",
+                                                    fontSize:"24px",
+                                                    color: "black"
+                                                },
+                                                value:{
+                                                    color: "black",
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                
+                            
+                                labels:[`${category[1]?.category}`,`${category[2]?.category}`,`${category[3]?.category}`,`${category[4]?.category}`,`${category[5]?.category}`,`${category[6]?.category}`],
+                                
+                                colors:["#006ad5", "#2a92d5" ,"#fae5c7","#abd558","#5b8307","#1d2d0f"],
+                            
+                            }} 
+                        />
+
+                </Chart>
+
+                <DatePicker
                 selected={date}
                 onChange={(date:Date) => {
                     const Date = date.toLocaleDateString();
@@ -142,81 +274,36 @@ function DateChart({post}:any){
                 locale={ko}
                maxDate={new Date()}
             />
-            <div style={{width: "500px"}}>
-            <ApexChart 
-                        type="donut" 
-                        series={catePost ? [ catePost.cate1.length,catePost.cate2.length, catePost.cate3.length,  catePost.cate4.length, catePost.cate5.length, catePost.cate6.length] : []}
-                        options={{
-                            theme:{
-                                mode:"light"
-                            },
-                            chart : {
-                                height: 100,
-                                width: 100,
-                                toolbar: {
-                                    show: false
-                                },
-                                background: "transparent",
-                            },
-                            
-                            stroke: {
-                                curve: "smooth",
-                                width: 3
-                            },
-                            plotOptions:{
-                                pie:{
-                                    donut:{
-                                        labels:{
-                                            show:true,
-                                            total:{
-                                                showAlways: true,
-                                                show:true,
-                                                label: "총 게시물 수",
-                                                fontSize:"24px",
-                                                color: "black"
-                                            },
-                                            value:{
-                                                color: "black",
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            
-                        
-                            labels:[`${category[1]?.category}`,`${category[2]?.category}`,`${category[3]?.category}`,`${category[4]?.category}`,`${category[5]?.category}`,`${category[6]?.category}`],
-                            
-                            colors:["#006ad5", "#2a92d5" ,"#fae5c7","#abd558","#5b8307","#1d2d0f"],
-                        
-                        }} 
-                    />
 
-            </div>
-            <CateDiv>
-                {category.map((category, idx) => (
-                    idx !== 0 && idx < 4 ? 
+                <PostBox>
+                    <Title>
+                        <div>제목</div>
+                        <div>작성 날짜</div>
+                        <div>조회수</div>
+                    </Title>
+                    {selectPost?.length !== 0 ? 
                     <div>
-                        {category.category}
-                    </div> : null
-                ))}
-                {catePost?.cate1.map((post)=>(
-                    <div>{post.title}</div>
-                ))}
-            </CateDiv>
-            <CateDiv>
-                {category.map((category, idx) => (
-                     idx > 3 ? 
-                    <div>
-                        {category.category}
-                    </div> : null
-                ))}
-            </CateDiv>
+                        {selectPost?.map((post, idx)=>(
+                            (Number(clickPage) - 1) * 10 <= idx && Number(clickPage) * 10 - 1 >= idx ?
+                            <Post onClick={() => navigate(`/post/${post.no}`)} key={idx}>
+                                <h1>{post.title}</h1>
+                                <div>{post?.createdtime?.split('T')[0]}</div>
+                                <div>{post?.counts+""}</div>
+                            </Post> : null
+                        ))}
+                        <PageBox>
+                            {pages.map((pages) => (
+                                        <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page>
+                                    ))} 
+                        </PageBox>
+                    </div> : <NoData>데이터 없음</NoData>}
+                </PostBox> 
             
-
-            
-            
-            
-        </div>
+                
+        
+           
+        </Wrapper>
+        
     )
 }
 

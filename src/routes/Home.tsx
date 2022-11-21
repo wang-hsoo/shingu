@@ -19,9 +19,9 @@ import AddPost from "../component/AddPost";
 
 const Container = styled.div<{display:boolean}>`
     width: 100%;
-    height: 200vh;
+    height: 100vh;
     background-color: rgba(0,0,0,0.8);
-    position: relative;
+    position: fixed;
     z-index: 1;
     display: ${(props) => props.display ? 'block' : 'none'};
 `
@@ -69,18 +69,21 @@ const SelectDivi = styled(motion.div)<{scroll:boolean}>`
     width: 100%;
     height: 50px;
     border-bottom: 1px solid #C9C9C9;
-    background-color: white;
+    background-color: ${(props) => props.theme.bgColor};
     position: ${(props) => props.scroll ? "fixed" : "relative"};
 
 `
 
 const SelectBox = styled.div`
+    background-color: ${(props) => props.theme.bgColor};
     width: 60%;
     height: 100%;
     margin: 0 auto;
 `
 
 const Select = styled.select`
+    color: ${(props) => props.theme.blackWhite};
+    background-color: ${(props) => props.theme.bgColor};
     width: 200px;
     height: 100%;
     padding: .8em .5em; 
@@ -118,11 +121,11 @@ const AllTitle = styled.div`
     flex-direction: column;
     align-items: center;
     font-weight: 700;
-    
+    color: ${(props) => props.theme.blackWhite};
     & > div{
         margin-top: 5px;
         width: 100px;
-        border-bottom: 3px solid #333333;
+        border-bottom: 3px solid ${(props) => props.theme.blackWhite};
     }
 `
 
@@ -134,7 +137,7 @@ const CateBox = styled.div`
     & > button{
         width: 100px;
         font-size: 16px;
-        color: #989B9C;
+        color: ${(props) => props.theme.blackWhite};
         font-weight: 600;
 
         &:hover{
@@ -188,12 +191,10 @@ const transition = {
 
   const navVariants = {
     top:{
-        backgroundColor: "rgba(255, 255, 255, 0)",
         boxShadow: "none",
         top: "0"
     },
     scroll:{
-      backgroundColor:"rgba(255, 255, 255, 1)",
       boxShadow: "0 4px 4px -4px black",
       top: "80px"
     }

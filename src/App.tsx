@@ -1,9 +1,11 @@
 import React,{ useEffect } from "react";
 import AppRouter from "./AppRouter";
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { getBoad, InewBoard } from "./service/BoardService";
 import { connect } from "react-redux";
 import { setPost } from "./store";
+import { useRecoilValue } from "recoil";
+import { dark, isTheme, light } from "./atom";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -62,6 +64,7 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
   line-height: 1.2;
   overflow-x:hidden;
+  background-color:  ${(props) => props.theme.bgColor};
 }
 a {
   text-decoration:none;
@@ -76,22 +79,20 @@ button{
 `;
 
 
-function App({add}:any) {
-  
+function App() {
+  const isTh = useRecoilValue(isTheme);
   
 
   return (
     <>
-      <GlobalStyle />
-      <AppRouter />
+      <ThemeProvider theme={ isTh ? dark : light }>
+        <GlobalStyle />
+        <AppRouter />
+      </ThemeProvider>
+    
     </>
   );
 }
 
-function mapDispatchToProps(dispatch:any){
-  return{
-      add: (context:InewBoard[]) => dispatch(setPost(context))
-  }
-}
 
-export default connect(null, mapDispatchToProps) (App);
+export default App;
