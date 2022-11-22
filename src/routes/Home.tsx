@@ -98,6 +98,10 @@ const Select = styled.select`
     cursor: pointer;
     font-weight: bold;
 
+    & > option{
+        background-color: ${(props) => props.theme.whiteGrey};
+    }
+
     &::-ms-expand {
         display: none;
     }

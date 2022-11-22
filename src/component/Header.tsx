@@ -1,7 +1,7 @@
 import Shingu from "../img/shingu_logo_white.png";
 import ShinguBlack from "../img/shingu_logo_black.png";
-import { useSetRecoilState } from "recoil";
-import { isPopUp, isSearch } from "../atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isPopUp, isSearch, isTheme } from "../atom";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation  } from "react-router-dom";
 import styled from "styled-components";
@@ -30,7 +30,7 @@ const Box = styled.div<{scroll:boolean}>`
     align-items: center;
     button{
         margin-left: 5px;
-        color: ${(props) => props.scroll ? '#333333' : '#ffffff'};
+        color: ${(props) => props.scroll ? props.theme.blackWhite : props.theme.white};
     }
     
 `
@@ -65,6 +65,17 @@ const navVariants = {
     }
   }
 
+  const navVariantsDark = {
+    top:{
+        backgroundColor: "rgba(38, 38, 38, 0)",
+        boxShadow: "none",
+    },
+    scroll:{
+      backgroundColor:"rgba(38, 38, 38, 1)",
+      boxShadow: "0 4px 4px -4px black"
+    }
+  }
+
 function Header({check}:any){
     const [login, setLogin] = useState(false);
     const [adminLogIn, setAdminLogin] = useState(false);
@@ -80,6 +91,7 @@ function Header({check}:any){
     const navAnimation = useAnimation();
     const { scrollY } = useViewportScroll();
     const [scroll, setScroll] = useState(false);
+    const isTh = useRecoilValue(isTheme);
 
     useEffect(() => {
         if(check){
@@ -139,21 +151,21 @@ function Header({check}:any){
 
     return(
         <Wraaper 
-            variants={navVariants}
+            variants={isTh ? navVariantsDark : navVariants}
             initial="top" 
             animate={navAnimation} >
             <LayOut>
                 <Logo onClick={()=>{
                     navigate('/');
                 }}>
-                    <img src={scroll ? ShinguBlack : Shingu} style={{width: "100px"}} />
+                    <img src={scroll ? isTh ? Shingu :  ShinguBlack : Shingu} style={{width: "100px"}} />
                 </Logo>
 
                 <Box scroll ={scroll}>
                     {adminLogIn? <button onClick={()=>navigate(btnUrl)} >{btnName}</button> : null}
                     <LoginBtn onClick={Log} scroll ={scroll}>{login ? "LOGOUT" : "LOGIN"}</LoginBtn>
                     {user ? <button onClick={() => navigate('/Mypage')} >내정보</button> : null}
-                    <SearchBtn onClick={search}><img src={scroll ? SearchPNGBlack : SearchPNG} /></SearchBtn>
+                    <SearchBtn onClick={search}><img src={scroll ? isTh ? SearchPNG : SearchPNGBlack : SearchPNG} /></SearchBtn>
                 </Box>
                 
             </LayOut>

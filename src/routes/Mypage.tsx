@@ -19,7 +19,7 @@ const UserInfo = styled.div`
     width: 60%;
     height: 261px;
     margin: 0 auto;
-    background-color:  rgba(149,201,74,0.25);
+    background-color:  ${(props) => props.theme.greenOpa};
     margin-top: 120px;
     display: flex;
     align-items: center;
@@ -29,12 +29,13 @@ const UserInfo = styled.div`
 const User = styled.div`
     width: 30%;
     height: 90%;
-    border-right: solid 1.5px #929292;
+    border-right: solid 1.5px ${(props) => props.theme.greyDark};
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
     padding-left: 80px;
+    color: ${(props) => props.theme.blackWhite};
 
     & > h1{
         font-size: 20px;
@@ -54,6 +55,7 @@ const User = styled.div`
 
 const Theme = styled.form`
     width: 70%;
+    color: ${(props) => props.theme.blackWhite};
 `
 
 const AllTitle = styled.div`
@@ -63,11 +65,12 @@ const AllTitle = styled.div`
     flex-direction: column;
     align-items: center;
     font-weight: 700;
+    color: ${(props) => props.theme.blackWhite};
     
     & > div{
         margin-top: 5px;
         width: 100px;
-        border-bottom: 3px solid #333333;
+        border-bottom: 3px solid ${(props) => props.theme.blackWhite};
     }
 `
 
@@ -100,10 +103,13 @@ const PostBox = styled.div`
     padding: 30px 60px;
     cursor: pointer;
     box-shadow: 2px 4px 4px 0px rgba(0,0,0,0.5);
+    border-radius: 5px;
+    background-color: ${(props) => props.theme.whitePost};
 
     & > h1{
         font-size: 18px;
         margin-bottom: 10px;
+        color: ${(props) => props.theme.blackWhite};
     }
 
     & > div{

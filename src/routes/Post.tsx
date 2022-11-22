@@ -6,13 +6,15 @@ import styled from "styled-components";
 import Header from "../component/Header";
 import { createAnswer, getAnswer, Ianswer } from "../service/AnswerService";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { isPopUp, isSearch, isDelete } from "../atom";
+import { isPopUp, isSearch, isDelete, isTheme } from "../atom";
 import Login from "../component/Login";
 import Search from "../component/Search";
 import BannerImg from "../img/board_banner.png";
 import Footer from "../component/Fotoer";
 import favorite from "../img/favorite_border_black.png"
 import favoriteB from "../img/favorite_fill_black.png"
+import favoriteW from "../img/favorite_border_white.png"
+import favoritefillW from "../img/favorite_fill_white.png"
 import { AnimatePresence, motion } from "framer-motion";
 
 
@@ -71,9 +73,10 @@ const TItle = styled.div`
     width: 100%;
     display: flex;
     justify-content: flex-start;
-    border-bottom: 2px solid rgba(0, 0, 0, 1);
+    border-bottom: 2px solid ${(props) => props.theme.blackWhite};
     margin-bottom: 15px;
     & > div{
+        color: ${(props) => props.theme.blackWhite};
         margin-bottom: 5px;
         font-size: 32px;
     }
@@ -89,7 +92,7 @@ const Info = styled.div`
         justify-content: flex-start;
     }
     & > div > div{
-        color: #7D7D7D;
+        color: ${(props) => props.theme.greyWhite};
         font-size: 18px;
         margin-right: 10px;
     }
@@ -239,6 +242,7 @@ function Post({post, GetPost, rootAdd}:any){
     const popUp = () => setPopUp((prev) => !prev);
     const navigate = useNavigate();
     const [faCheck, setFavoriteCheck] = useState(false);
+    const isTh = useRecoilValue(isTheme);
 
     function favoriteClick(){
         setFavoriteCheck((prev) => !prev);
@@ -416,8 +420,10 @@ function Post({post, GetPost, rootAdd}:any){
                                     {loginCheck !== "" ?
                                     <AnimatePresence>
                                         <FavoriteBtn whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
-                                            {faCheck ? 
+                                            {faCheck ?
+                                            isTh ? <motion.img layoutId="favorite" src={favoritefillW} onClick={favoriteClick} />  : 
                                             <motion.img layoutId="favorite" src={favoriteB} onClick={favoriteClick} /> 
+                                            : isTh ? <motion.img layoutId="favorite" src={favoriteW} onClick={favoriteClick} />  
                                             : <motion.img layoutId="favorite" src={favorite} onClick={favoriteClick} />}
                                         </FavoriteBtn>
                                     </AnimatePresence> : null

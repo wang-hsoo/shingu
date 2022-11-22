@@ -6,5 +6,10 @@ declare module "styled-components" {
     blackWhite: string;
     greenDark: string;
     whiteGrey: string;
+    white: string;
+    greyWhite: string;
+    greenOpa: string;
+    greyDark: string;
+    whitePost: string;
   }
 }

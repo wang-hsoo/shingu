@@ -60,7 +60,7 @@ const Select = styled.select`
     appearance: none;
     cursor: pointer;
     font-weight: bold;
-    color: #333333;
+    color:  ${(props) => props.theme.blackWhite};
 
     &::-ms-expand {
         display: none;
@@ -69,11 +69,11 @@ const Select = styled.select`
 `
 
 const Option = styled.option`
-    
+    background-color:  ${(props) => props.theme.whiteGrey};;
 `
 
 const Input = styled.input`
-    color: #333333;
+    color: ${(props) => props.theme.blackWhite};
     width: 70%;
     height: 8vh;
     background: transparent;
@@ -97,7 +97,7 @@ const Text = styled.textarea`
 	font-size: 16px;
 	resize: none;
     box-shadow: 2px 4px 4px 1px rgba(0,0,0,0.4); 
-    background-color: #EEEEEE;
+    background-color: ${(props) => props.theme.whiteGrey};
     &:focus {
         outline: solid 2px #95C94A;
     }
