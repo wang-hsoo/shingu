@@ -16,6 +16,9 @@ import favoriteB from "../img/favorite_fill_black.png"
 import favoriteW from "../img/favorite_border_white.png"
 import favoritefillW from "../img/favorite_fill_white.png"
 import { AnimatePresence, motion } from "framer-motion";
+import 'react-notifications-component/dist/theme.css'
+import { store } from 'react-notifications-component';
+import ReactNotification from 'react-notifications-component'
 
 
 const Container = styled.div<{display:boolean}>`
@@ -369,6 +372,20 @@ function Post({post, GetPost, rootAdd}:any){
         e.preventDefault();
 
         if(context.length === 0 || context === " "){
+            store.addNotification({
+                title: "게시물 답변 오류!",
+                message: "빈칸없이 입력해 주세요!",
+                type: "danger",
+                insert: "bottom",
+                container: "bottom-center",
+                animationIn: ["animate__animated", "animate__fadeIn"],
+                animationOut: ["animate__animated", "animate__fadeOut"],
+                dismiss: {
+                  duration: 5000,
+                  onScreen: true,
+                },
+                
+              });
 
         }else{
             const answer = {
@@ -417,7 +434,7 @@ function Post({post, GetPost, rootAdd}:any){
                                         <div>조회수 {selectPost.counts+""}</div>
 
                                     </div>
-                                    {loginCheck !== "" ?
+                                    {isNaN(Number(loginCheck)) ?
                                     <AnimatePresence>
                                         <FavoriteBtn whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
                                             {faCheck ?
@@ -483,7 +500,7 @@ function Post({post, GetPost, rootAdd}:any){
                     </DeletWrapper> : null}
                     
                 </Container>
-
+                <ReactNotification />
                 </Wrrpaer> : <div>데이터 없음</div>}
         </>
     )

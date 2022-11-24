@@ -157,6 +157,7 @@ function SelectPost({post}:any){
     return(
         <Wrraper>
             <PostBox>
+                <div>*게시물은 최대 4개까지 표시 가능합니다</div>
                 <Title>
                     <div>제목</div>
                     <div>작성 날짜</div>

@@ -7,6 +7,8 @@ import { isTheme } from "../atom";
 import Footer from "../component/Fotoer";
 import Header from "../component/Header";
 import { getBoad, InewBoard } from "../service/BoardService";
+import Shingu from "../img/shingu_logo_white.png";
+import ShinguBlack from "../img/shingu_logo_black.png";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -56,6 +58,8 @@ const User = styled.div`
 const Theme = styled.form`
     width: 70%;
     color: ${(props) => props.theme.blackWhite};
+    display: flex;
+    justify-content: space-around;
 `
 
 const AllTitle = styled.div`
@@ -119,6 +123,28 @@ const PostBox = styled.div`
     }
 `
 
+const ThemImgBox = styled.div<{black:boolean}>`
+    display: flex;
+    flex-direction: column;
+    width: 217px;
+    height: 144px;
+    background-color: ${(props) => props.black ? "#1D1D1D" : "#ffffff"};
+    align-items: center;
+    margin-top: 20px;
+
+
+    & > div{
+        width: 100%;
+        height: 40px;
+        background-color: #95C94A;
+    }
+
+    & > img{
+        width: 147px;
+        margin-top: 35px;
+    }
+`
+
 
 
 interface IgetUser{
@@ -158,7 +184,7 @@ function Mypage(){
     return(
         <Wrapper>
             <Maincon>
-                <Header />
+                <Header check={false}/>
                 <UserInfo>
                     <User>
                         <h1>{getUser?.division.split(',')[0]}</h1> 
@@ -167,10 +193,25 @@ function Mypage(){
                         <div>힉반 : {getUser?.id}</div>
                     </User>
                     <Theme>
-                        <input type="radio" id="light" value="light" name="them" onClick={ThemeCheck} />
-                        <label>라이트 모드</label>
-                        <input type="radio" id="dark" value="dark" name="them" onClick={ThemeCheck} />
-                        <label>다크 모드</label>
+                        <div>
+                            <input type="radio" id="light" value="light" name="them" onClick={ThemeCheck} />
+                            <label>라이트 모드</label>
+                            <ThemImgBox black={false}>
+                                <div />
+                                <img src={ShinguBlack} />
+                            </ThemImgBox>
+                        </div>
+
+                        <div>
+                            <input type="radio" id="dark" value="dark" name="them" onClick={ThemeCheck} />
+                            <label>다크 모드</label>
+                            <ThemImgBox black={true}>
+                                <div />
+                                <img src={Shingu} />
+                            </ThemImgBox>
+                        </div>
+                        
+                        
                     </Theme>
                 </UserInfo>
 

@@ -106,8 +106,10 @@ function Header({check}:any){
               })
 
         }else{
-            navAnimation.start("scroll");
-            setScroll(true);
+ 
+                navAnimation.start("scroll");
+                setScroll(true);
+         
         }   
         
       },[])
@@ -147,6 +149,10 @@ function Header({check}:any){
             setBtnUrl('/DataChart');
         }
     }, [location])
+
+    useEffect(()=>{
+        // console.log(isTh);
+    },[isTh])
 
 
     return(

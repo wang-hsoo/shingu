@@ -109,6 +109,8 @@ function AddPost({post, divi}:any){
         showPost ? 
             <Wrapper>
                 <AllTitle>추천 게시물</AllTitle>
+
+                
                 
                 {getPost?.length !== 0 ? 
                     <PostBox>

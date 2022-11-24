@@ -3,6 +3,9 @@ import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import arrow from "../img/arrow.jpg";
+import 'react-notifications-component/dist/theme.css'
+import { store } from 'react-notifications-component';
+import ReactNotification from 'react-notifications-component'
 
 const Form = styled.form`
     & > div{
@@ -185,7 +188,8 @@ function Register(){
     function onSubmit(e:React.FormEvent){
         e.preventDefault();
         
-        if(id !== " " && id !== undefined && pw !== " " && pw !== undefined && selectDivi !== " " && selectDivi !== "전체"){
+        console.log(selectDivi,selectDivision);
+        if(id !== " " && id !== undefined && pw !== " " && pw !== undefined && selectDivision?.divisionname !== " " && selectDivi !== "전체" && selectDivi !== undefined && selectDivision !== undefined){
             
             
             const user = {
@@ -197,7 +201,20 @@ function Register(){
             
             getOneMemberFromUserId(Number(id)).then((value:Iuser) => {
                 if(value.studentid === id){
-                    console.log("아이디 있음");
+                    store.addNotification({
+                        title: "회원가입 오류!",
+                        message: "이미 존재하는 학번입니다!",
+                        type: "danger",
+                        insert: "bottom",
+                        container: "bottom-center",
+                        animationIn: ["animate__animated", "animate__fadeIn"],
+                        animationOut: ["animate__animated", "animate__fadeOut"],
+                        dismiss: {
+                          duration: 5000,
+                          onScreen: true,
+                        },
+                        
+                      });
                 }else{
                     createUser(user);
                     setRegiSucess(true);
@@ -209,6 +226,21 @@ function Register(){
             
 
             
+        }else{
+            store.addNotification({
+                title: "회원가입 오류!",
+                message: "빈칸없이 입력해 주세요!",
+                type: "danger",
+                insert: "bottom",
+                container: "bottom-center",
+                animationIn: ["animate__animated", "animate__fadeIn"],
+                animationOut: ["animate__animated", "animate__fadeOut"],
+                dismiss: {
+                  duration: 5000,
+                  onScreen: true,
+                },
+                
+              });
         }
     }
 
@@ -263,6 +295,7 @@ function Register(){
                     
                 </List>
                 <button>가입하기</button>
+                <ReactNotification />
             </div>}
             
             

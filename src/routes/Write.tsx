@@ -10,6 +10,9 @@ import Login from "../component/Login";
 import Search from "../component/Search";
 import Header from "../component/Header";
 import arrow from "../img/arrow.jpg";
+import 'react-notifications-component/dist/theme.css'
+import { store } from 'react-notifications-component';
+import ReactNotification from 'react-notifications-component'
 
 const Wrapper = styled.div`
     width: 100vw;
@@ -166,8 +169,22 @@ function Write({add}:any){
     function onSubmit(e:React.FormEvent){
         //store.js로 데이터를 보냄
         e.preventDefault();
-        if(context?.length === 0 || title?.length === 0 || context === "" || title === ""){
-            console.log("오류");
+        console.log(context, title,context,title)
+        if(context?.length === 0 || title?.length === 0 || context === "" || title === "" || context === undefined || title=== undefined || context === undefined || title === undefined){
+            store.addNotification({
+                title: "게시물 작성 오류!",
+                message: "빈칸없이 입력해 주세요!",
+                type: "danger",
+                insert: "bottom",
+                container: "bottom-center",
+                animationIn: ["animate__animated", "animate__fadeIn"],
+                animationOut: ["animate__animated", "animate__fadeOut"],
+                dismiss: {
+                  duration: 5000,
+                  onScreen: true,
+                },
+                
+              });
         }else{
             add({studentid: id, title: title, contents:context, category: selectCate, divisioncode: division });
             navigate("/post");
@@ -225,6 +242,7 @@ function Write({add}:any){
                     {Pop ? <Login /> : null}
                     {search ? <Search />: null}
             </Container>
+            <ReactNotification />
         </Wrapper>
     )
 }
