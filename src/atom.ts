@@ -21,6 +21,11 @@ export const isTheme = atom({
     default: false
 })
 
+export const isUserChange = atom({
+    key:"change",
+    default: false
+})
+
 
 export const light: DefaultTheme = {
     bgColor: "#ffffff",
