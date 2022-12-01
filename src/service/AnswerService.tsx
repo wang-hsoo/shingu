@@ -8,7 +8,8 @@ export interface Ianswer{
     noanswerboard?:number,
     no: number,
     studentid: string,
-    answercontents: string
+    answercontents: string,
+    lookup: boolean
 }
 
 export async function createAnswer(answer:Ianswer) {

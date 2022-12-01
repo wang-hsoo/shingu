@@ -10,6 +10,7 @@ import SearchPNGBlack from "../img/search_black.png";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import userWhite from "../img/user_white.png";
 import userBlack from "../img/user_black.png";
+import { Ianswer } from "../service/AnswerService";
 
 const Wraaper = styled(motion.div)`
     width: 100vw;
@@ -99,6 +100,8 @@ function Header({check}:any){
     const { scrollY } = useViewportScroll();
     const [scroll, setScroll] = useState(false);
     const isTh = useRecoilValue(isTheme);
+    let httpRequest = new XMLHttpRequest();
+    const [answerBoard, setAnswerBoard] = useState<Ianswer[]>();
 
     useEffect(() => {
         if(check){
@@ -121,6 +124,38 @@ function Header({check}:any){
         
       },[])
 
+      
+
+      useEffect(() => {
+        if(!httpRequest){
+            console.log("오류");
+        }
+
+        httpRequest.onreadystatechange = getAnswerBoard;
+        httpRequest.open('GET','http://localhost:8080/api/answerboard');
+        httpRequest.send();
+        
+      },[]);
+
+      function getAnswerBoard(){
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                const admin = sessionStorage.getItem("admin");
+                const user = sessionStorage.getItem("user");
+                if(admin){
+                    
+                }else if(user){
+                    const whoUser = JSON.parse(user);
+                    const answer = JSON.parse(httpRequest.responseText);
+
+                    
+                }
+            } else {
+              alert('request에 뭔가 문제가 있어요.');
+            }
+          }
+        }
+
     function Log(){
         if(login){
             sessionStorage.removeItem("admin");
@@ -128,8 +163,6 @@ function Header({check}:any){
             setLogin(false);
             setUser(false);
             navigate('/');
-            window.location.reload();
-            
         }else{
             popUp();
         }
@@ -139,10 +172,10 @@ function Header({check}:any){
         const admin = sessionStorage.getItem("admin");
         const user = sessionStorage.getItem("user");
         if(admin){
-            setAdminLogin((prev) => !prev);
-            setLogin((prev) => !prev);
+            setAdminLogin(true);
+            setLogin(true);
         }else if(user){
-            setLogin((prev) => !prev);
+            setLogin(true);
             setUser(true);
         }
     },[])
@@ -159,11 +192,7 @@ function Header({check}:any){
 
     useEffect(()=>{
         if(!check){
-           
-                
-                navAnimation.start("scroll");
-            
-
+            navAnimation.start("scroll");
         }
         
        

@@ -436,7 +436,8 @@ function Post({post, GetPost, rootAdd}:any){
             const answer = {
                 no: Number(selectPost?.no),
                 studentid: loginCheck,
-                answercontents: context.replace(/(?:\r\n|\r|\n)/g, '<br/>')
+                answercontents: context.replace(/(?:\r\n|\r|\n)/g, '<br/>'),
+                lookup: false
             } as Ianswer;
             if(no){
                 createAnswer(answer);
