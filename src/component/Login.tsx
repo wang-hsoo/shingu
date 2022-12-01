@@ -32,6 +32,9 @@ const LoginBox = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    @media screen and (max-width: 850px) {
+        width: 400px;
+    }
 `
 
 const LoginChange = styled.button`

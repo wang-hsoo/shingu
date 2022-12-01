@@ -34,6 +34,15 @@ const ChartMain = styled.div`
     width: 60%;
     padding-top: 120px;
     margin: 0 auto;
+    @media screen and (max-width: 1400px) {
+        width: 80%;
+    }
+    @media screen and (max-width: 850px) {
+        width: 90%;
+    }
+    @media screen and (max-width: 600px) {
+        width: 95%;
+    }
 `
 
 const ChartHeader = styled.div`

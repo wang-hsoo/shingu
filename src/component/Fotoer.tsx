@@ -6,6 +6,14 @@ const Wrraper = styled.div`
     background-color: #353541;
     margin-top: 60px;
 
+    @media screen and (max-width: 850px) {
+        height: 200px;
+    }
+    @media screen and (max-width: 600px) {
+        height: 300px;
+    }
+    
+
 
     ul{
         width: 65%;
@@ -14,6 +22,16 @@ const Wrraper = styled.div`
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid #4a4a54;
+        @media screen and (max-width: 1400px) {
+            width: 80%;
+        }
+        @media screen and (max-width: 850px) {
+            width: 90%;
+        }
+        @media screen and (max-width: 600px) {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
 
         li:nth-child(1){
             color: #f9b656;
@@ -25,6 +43,15 @@ const Wrraper = styled.div`
             font-size: 15px;
             color: #fff;
             letter-spacing: -0.5px;
+            
+            & > a{
+                @media screen and (max-width: 1400px) {
+                    font-size: 13px;
+                }   
+                @media screen and (max-width: 600px) {
+                    font-size: 12px;
+                }
+            }
         }
 
     }
@@ -39,6 +66,12 @@ const Box = styled.div`
     text-transform: uppercase;
     display: flex;
     flex-direction: column;
+    @media screen and (max-width: 1400px) {
+        width: 80%;
+    }
+    @media screen and (max-width: 850px) {
+        width: 90%;
+    }
 
     address > div{
 

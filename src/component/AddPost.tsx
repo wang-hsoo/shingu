@@ -15,6 +15,15 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     box-shadow: 2px 4px 4px 1px black;
+    @media screen and (max-width: 1400px) {
+        width: 80%;
+    }
+    @media screen and (max-width: 850px) {
+        width: 90%;
+    }
+    @media screen and (max-width: 600px) {
+        width: 95%;
+    }
 `
 
 const AllTitle = styled.div`
@@ -35,9 +44,20 @@ const PostBox = styled.div`
     display: flex;
     justify-content: space-between;
     background-color: ${(props) => props.theme.whiteGrey};
+    @media screen and (max-width: 600px) {
+        display: grid ;
+        grid-template-columns: 1fr 1fr;
+        height: 400px;
+    }
     & > div{
         width: 25%;
         border-right: solid 1px #C9C9C9;
+
+        @media screen and (max-width: 600px) {
+            width: 100%;
+            height: 100%;
+            border: solid 1px #C9C9C9;
+        }
         
         & > div{
             display: flex;

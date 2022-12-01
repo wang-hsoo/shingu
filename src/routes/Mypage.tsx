@@ -41,6 +41,18 @@ const UserInfo = styled.div`
     display: flex;
     align-items: center;
 
+    @media screen and (max-width: 1400px) {
+        width : 80%;
+    }
+    @media screen and (max-width: 850px) {
+        width: 90%;
+    }
+    @media screen and (max-width: 600px) {
+        width: 95%;
+
+        height: 500px;
+    }
+
 `
 
 const User = styled.div`
@@ -53,6 +65,13 @@ const User = styled.div`
     justify-content: center;
     padding-left: 80px;
     color: ${(props) => props.theme.blackWhite};
+    @media screen and (max-width: 850px) {
+        padding-left: 50px;
+    }
+    @media screen and (max-width: 850px) {
+
+        width: 50%;
+    }
 
     & > h1{
         font-size: 20px;
@@ -75,6 +94,15 @@ const Theme = styled.form`
     color: ${(props) => props.theme.blackWhite};
     display: flex;
     justify-content: space-around;
+    @media screen and (max-width: 850px) {
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    & > div{
+        margin-bottom: 25px;
+    }
 `
 
 const AllTitle = styled.div`
@@ -106,11 +134,13 @@ const UserPost = styled.div`
 
 
 const PostGroup = styled.div`
-    
     margin-top: 40px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 30px;
+    @media screen and (max-width: 850px) {
+        grid-template-columns: 1fr 1fr;
+    }
 `
 
 
@@ -124,17 +154,26 @@ const PostBox = styled.div`
     box-shadow: 2px 4px 4px 0px rgba(0,0,0,0.5);
     border-radius: 5px;
     background-color: ${(props) => props.theme.whitePost};
+    @media screen and (max-width: 850px) {
+        width: 200px;
+    }
 
     & > h1{
         font-size: 18px;
         margin-bottom: 10px;
         color: ${(props) => props.theme.blackWhite};
+        @media screen and (max-width: 850px) {
+            font-size: 14px;
+        }
     }
 
     & > div{
         font-size: 15px;
         color:  #636363;
         margin-bottom: 10px;
+        @media screen and (max-width: 850px) {
+            font-size: 13px;
+        }
     }
 `
 

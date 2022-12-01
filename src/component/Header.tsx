@@ -186,7 +186,7 @@ function Header({check}:any){
                 <Box scroll ={scroll}>
                     {adminLogIn? <button onClick={()=>navigate(btnUrl)} >{btnName}</button> : null}
                     <LoginBtn onClick={Log} scroll ={scroll}>{login ? "LOGOUT" : "LOGIN"}</LoginBtn>
-                    {user ? <button onClick={() => navigate('/Mypage')} ><img src={isTh ? userWhite : userBlack} /></button> : null}
+                    {user ? <button onClick={() => navigate('/Mypage')} ><img src={scroll ? isTh ? userWhite : userBlack : userWhite} /></button> : null}
                     <SearchBtn onClick={search}><img src={scroll ? isTh ? SearchPNG : SearchPNGBlack : SearchPNG} /></SearchBtn>
                 </Box>
                 

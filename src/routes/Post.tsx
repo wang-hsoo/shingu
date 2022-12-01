@@ -71,6 +71,15 @@ const QnaCon = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    @media screen and (max-width: 1400px) {
+        width: 80%;
+    }
+    @media screen and (max-width: 850px) {
+        width: 90%;
+    }
+    @media screen and (max-width: 600px) {
+        width: 95%;
+    }
 `
 const TItle = styled.div`
     width: 100%;
@@ -138,7 +147,8 @@ const AnwerCon = styled.div<{answer:boolean}>`
     width: 100%;
     display: flex;
     margin-top: 50px;
-    justify-content: ${(props) => props.answer ? "flex-start" : "flex-end" };;
+    justify-content: ${(props) => props.answer ? "flex-start" : "flex-end" };
+    
 `
 
 const Form = styled.form`
@@ -276,6 +286,7 @@ function Post({post, GetPost, rootAdd}:any){
     const navigate = useNavigate();
     const [faCheck, setFavoriteCheck] = useState(false);
     const isTh = useRecoilValue(isTheme);
+    const [loading, setLoading] = useState(false);
 
     function favoriteClick(){
         setFavoriteCheck((prev) => !prev);
@@ -353,6 +364,10 @@ function Post({post, GetPost, rootAdd}:any){
                 setToday(`${year}-${month}-${date}`);
             }
         
+    },[])
+
+    useEffect(()=>{
+        setTimeout(()=>setLoading(true),1000);
     },[])
 
     useEffect(()=>{
@@ -534,12 +549,12 @@ function Post({post, GetPost, rootAdd}:any){
                     
                 </Container>
                 <ReactNotification />
-                </Wrrpaer> : 
+                </Wrrpaer> : loading ?
                 <Nodata>
                     <img src="https://www.shingu.ac.kr/sgu/img/common/ico_error.png" />
                     <div>요청하신 페이지를 찾을 수 없습니다.</div>
                     <button onClick={() => navigate('/')}>메인으로 가기</button>
-                </Nodata>}
+                </Nodata> : null}
         </>
     )
 }

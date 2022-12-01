@@ -46,16 +46,35 @@ const Banner = styled.div<{bg:string}>`
 
 const TextBox =styled.div`
     padding-top: 150px;
+    position: relative;
+    z-index: 1;
+    & > div{
+        &:nth-child(1){
+            @media screen and (max-width: 850px) {
+                margin-top: 150px;
+            }
 
+        }
+    }
 `
 const BannerText = styled(motion.div)`
     width: 1100px;
     margin-left: 100px;
     color: white;
-    font-size: 70px;
+    font-size: 4em;
     font-weight: 800;
     margin-bottom: 10px;
     text-shadow: 4px 2px 2px gray;
+    @media screen and (max-width: 1400px) {
+        width: 800px;
+    }
+    @media screen and (max-width: 850px) {
+        width: 600px;
+        font-size: 3em;
+    }
+    @media screen and (max-width: 600px) {
+        margin-left: 0;
+    }
 `
 const GreenBar = styled(motion.div)`
     width: 120px;
@@ -63,6 +82,10 @@ const GreenBar = styled(motion.div)`
     margin-top: -100px;
     margin-left: 180px;
     background-color: rgba(149, 201, 74, 0.5);
+    @media screen and (max-width: 850px) {
+        position: absolute ;
+        height: 780px;
+    }
 `
 
 const SelectDivi = styled(motion.div)<{scroll:boolean}>`
@@ -79,6 +102,15 @@ const SelectBox = styled.div`
     width: 60%;
     height: 100%;
     margin: 0 auto;
+    @media screen and (max-width: 1400px) {
+        width: 80%;
+    }
+    @media screen and (max-width: 850px) {
+        width: 90%;
+    }
+    @media screen and (max-width: 600px) {
+        width: 95%;
+    }
 `
 
 const Select = styled.select`
@@ -138,6 +170,12 @@ const CateBox = styled.div`
     width: 40%;
     display: flex;
     justify-content: space-around;
+    @media screen and (max-width: 850px) {
+        width: 80%;
+    }
+    @media screen and (max-width: 600px) {
+        width: 95%;
+    }
     & > button{
         width: 100px;
         font-size: 16px;
@@ -147,6 +185,18 @@ const CateBox = styled.div`
         &:hover{
             color: #333333;
             transition: .3s;
+        }
+        @media screen and (max-width: 1400px) {
+            width: 80%;
+            font-size: 15px;
+        }
+        @media screen and (max-width: 850px) {
+            width: 100%;
+        }
+        @media screen and (max-width: 600px) {
+            width: 95%;
+            font-size: 13px;
+            
         }
     }
 `
@@ -163,6 +213,12 @@ const WriteBtn = styled.div`
         color: #ffffff;
         border-radius: 15px;
     }
+    @media screen and (max-width: 1400px) {
+        width: 80%;
+    } 
+    @media screen and (max-width: 850px) {
+        width: 90%;
+    }  
 `
 const transition = {
     duration: 0.8,

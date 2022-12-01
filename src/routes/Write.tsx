@@ -13,6 +13,7 @@ import arrow from "../img/arrow.jpg";
 import 'react-notifications-component/dist/theme.css'
 import { store } from 'react-notifications-component';
 import ReactNotification from 'react-notifications-component'
+import Footer from "../component/Fotoer";
 
 const Wrapper = styled.div`
     width: 100vw;
@@ -238,12 +239,14 @@ function Write({add}:any){
                     
                     
                 </Form>
+                <Footer />
             </MainCon>
             <Container display={Pop || search}>
                     {Pop ? <Login /> : null}
                     {search ? <Search />: null}
             </Container>
             <ReactNotification />
+            
         </Wrapper>
     )
 }

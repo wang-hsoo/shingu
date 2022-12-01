@@ -11,6 +11,15 @@ import { useRecoilValue } from "recoil";
 const Wrraper = styled.div`
     margin-top: 40px;
     width: 60%;
+    @media screen and (max-width: 1400px) {
+        width: 80%;
+    }
+    @media screen and (max-width: 850px) {
+        width: 90% ;
+    }
+    @media screen and (max-width: 600px) {
+        width: 95%;
+    }
 `
 
 const PostBox = styled.div`
