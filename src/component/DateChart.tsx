@@ -9,6 +9,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Fotoer";
+import NullWhite from "../img/null_white.png";
+import NullBlack from "../img/null_black.png";
+import { useRecoilValue } from "recoil";
+import { isTheme } from "../atom";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -85,6 +89,19 @@ const NoData = styled.div`
     height: 500px;
     background-color: #ffffff;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    & > img{
+        width: 100px;
+        height: 100px;
+        margin-bottom: 15px;
+    }
+
+    & > div{
+        color: ${(props) => props.theme.blackWhite};
+    }
 `
 
 interface IcateBoard{
@@ -106,6 +123,7 @@ function DateChart({post}:any){
     const [pages, setPages] = useState<Number[]>([]);
     const [clickPage, setClickPage] = useState<Number>(1);
     const navigate = useNavigate();
+    const isTh = useRecoilValue(isTheme);
 
 
     function cateSort(post:InewBoard[]){
@@ -296,7 +314,11 @@ function DateChart({post}:any){
                                         <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page>
                                     ))} 
                         </PageBox>
-                    </div> : <NoData>데이터 없음</NoData>}
+                    </div> : 
+                    <NoData>
+                        <img src={isTh ? NullWhite : NullBlack} />
+                        <div>작성된 게시물이 없습니다.</div>    
+                    </NoData>}
                 </PostBox> 
             
                 

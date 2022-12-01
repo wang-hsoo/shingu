@@ -3,6 +3,10 @@ import { Idivision, InewBoard } from "../service/BoardService";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import NullWhite from "../img/null_white.png";
+import NullBlack from "../img/null_black.png";
+import { isTheme } from "../atom";
+import { useRecoilValue } from "recoil";
 
 const Wrraper = styled.div`
     margin-top: 40px;
@@ -67,8 +71,22 @@ const Page = styled.div`
 const NoData = styled.div`
     width: 100%;
     height: 500px;
-    background-color: #ffffff;
-    text-align: center;
+    background-color: ${(props) => props.theme.bgColor};
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 4px 4px 1px black;
+    & > img{
+        width: 100px;
+        height: 100px;
+        margin-bottom: 30px;
+    }
+
+    & > div{
+        color: ${(props) => props.theme.blackWhite};
+    }
 `
                                
 function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivision}:any){
@@ -78,6 +96,7 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
     const [clickPage, setClickPage] = useState<Number>(1);
     const navigate = useNavigate();
     const {title} = useParams();
+    const isTh = useRecoilValue(isTheme);
 
     function categpryPost(getPost:InewBoard[], category:string){
         const selPost = [] as InewBoard[];
@@ -211,7 +230,11 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
                                     <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page>
                                 ))} 
                     </PageBox>
-                </div> : <NoData>데이터 없음</NoData>}
+                </div> : 
+                <NoData>
+                    <img src={isTh ?  NullWhite : NullBlack } />
+                    <div>작성된 게시물이 없습니다.</div>    
+                </NoData>}
             </PostBox> 
         
         </Wrraper>

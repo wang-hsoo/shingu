@@ -112,7 +112,7 @@ const Context = styled.div<{answer:boolean}>`
 	background: ${(props) => props.answer ? "#EEEEEE" : "#95C94A" };
 	border-radius: .4em;
     width: 500px;
-    text-align: center;
+
     padding: 30px 50px;
     color: ${(props) => props.answer ? "#333333" : "#ffffff" };
     
@@ -225,6 +225,36 @@ const DeletBox = styled.div`
     }
     & > div > button:nth-child(1){
         background: #F36700;
+    }
+`
+
+const Nodata = styled.div`
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    & > img{
+        width: 300px;
+    }
+
+    & > div{
+        font-size: 40px;
+        font-weight: 700;
+        margin-top: 20px;
+    }
+
+    & > button{
+        font-size: 20px;
+        margin-top: 20px;
+        background-color: #95C94A;
+        padding: 20px 40px;
+        border-radius: 15px;
+        color: #ffffff;
+        font-weight: 500;
     }
 `
 
@@ -393,9 +423,12 @@ function Post({post, GetPost, rootAdd}:any){
                 studentid: loginCheck,
                 answercontents: context.replace(/(?:\r\n|\r|\n)/g, '<br/>')
             } as Ianswer;
+            if(no){
+                createAnswer(answer);
+                setContext("");
+            }
     
-            createAnswer(answer);
-            setContext("");
+            
     
             window.location.reload();
 
@@ -501,7 +534,12 @@ function Post({post, GetPost, rootAdd}:any){
                     
                 </Container>
                 <ReactNotification />
-                </Wrrpaer> : <div>데이터 없음</div>}
+                </Wrrpaer> : 
+                <Nodata>
+                    <img src="https://www.shingu.ac.kr/sgu/img/common/ico_error.png" />
+                    <div>요청하신 페이지를 찾을 수 없습니다.</div>
+                    <button onClick={() => navigate('/')}>메인으로 가기</button>
+                </Nodata>}
         </>
     )
 }

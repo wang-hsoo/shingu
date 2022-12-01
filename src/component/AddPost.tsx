@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { InewBoard } from "../service/BoardService";
+import NullWhite from "../img/null_white.png";
+import NullBlack from "../img/null_black.png";
+import { isTheme } from "../atom";
+import { useRecoilValue } from "recoil";
 
 const Wrapper = styled.div`
     width: 60%;
@@ -36,29 +40,47 @@ const PostBox = styled.div`
         border-right: solid 1px #C9C9C9;
         
         & > div{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             color: ${(props) => props.theme.blackWhite};
             font-weight: 500;
             font-size: 18px;
             padding: 30px 20px;
+
+            & > button{
+                color: ${(props) => props.theme.blackWhite};
+                
+            }
             
         }
-        & > button{
-            color: ${(props) => props.theme.blackWhite};
-            padding-top: 50px;
-            padding-left: 200px
-        }
+        
     }
 `
 
 const Nodata = styled.div`
     height: 100%;
     height: 178px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    & > img{
+        width: 100px;
+        height: 100px;
+        margin-bottom: 15px;
+    }
+
+    & > div{
+        color: ${(props) => props.theme.blackWhite};
+    }
 `
 
 function AddPost({post, divi}:any){
     const [showPost, setShowPost] = useState(false);
     const [getPost, setGetPost] = useState<InewBoard[]>();
     const navigate = useNavigate();
+    const isTh = useRecoilValue(isTheme);
 
     useEffect(()=>{
         if(divi === undefined || divi.divisionname === "전체"){
@@ -117,10 +139,17 @@ function AddPost({post, divi}:any){
                         {getPost?.map((post:InewBoard) => (
                             <div>
                                 <div>{post?.title}</div>
-                                { post?.no !== -1 ? <button onClick={()=> navigate(`/post/${post.no}`)}>More</button> : null}
+                                <div>
+                                    <div>{post.createdtime?.split('T')[0]}</div>
+                                    { post?.no !== -1 ? <button onClick={()=> navigate(`/post/${post.no}`)}>More</button> : null}
+                                </div>
                             </div>
                         ))} 
-                    </PostBox> : <Nodata>게시물 없음</Nodata>}
+                    </PostBox> : 
+                    <Nodata>
+                        <img src={isTh ? NullWhite : NullBlack} />
+                        <div>작성된 게시물이 없습니다.</div>    
+                    </Nodata>}
             
             </Wrapper>: null
     )

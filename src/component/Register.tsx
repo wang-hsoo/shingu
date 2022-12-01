@@ -1,4 +1,5 @@
-import { createUser, getDivision, getOneMemberFromUserId, Idivision, InewBoard, Iuser } from "../service/BoardService";
+import { getDivision, Idivision, InewBoard } from "../service/BoardService";
+import { createUser, getOneMemberFromUserId, getUser, Iuser } from "../service/UserService";
 import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";

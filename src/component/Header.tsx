@@ -8,6 +8,8 @@ import styled from "styled-components";
 import SearchPNG from "../img/search_white.png";
 import SearchPNGBlack from "../img/search_black.png";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
+import userWhite from "../img/user_white.png";
+import userBlack from "../img/user_black.png";
 
 const Wraaper = styled(motion.div)`
     width: 100vw;
@@ -31,6 +33,11 @@ const Box = styled.div<{scroll:boolean}>`
     button{
         margin-left: 5px;
         color: ${(props) => props.scroll ? props.theme.blackWhite : props.theme.white};
+
+        & > img{
+            width: 26px;
+            height: 26px;
+        }
     }
     
 `
@@ -49,8 +56,8 @@ const LoginBtn = styled.button<{scroll:boolean}>`
 `
 const SearchBtn = styled.button`
     img{
-        width: 16px;
-        height: 16px;
+        width: 20px !important;
+        height: 20px !important;
     }
 `
 
@@ -151,13 +158,22 @@ function Header({check}:any){
     }, [location])
 
     useEffect(()=>{
-        // console.log(isTh);
+        if(!check){
+           
+                
+                navAnimation.start("scroll");
+            
+
+        }
+        
+       
     },[isTh])
+
 
 
     return(
         <Wraaper 
-            variants={isTh ? navVariantsDark : navVariants}
+            variants={ isTh ? navVariantsDark : navVariants}
             initial="top" 
             animate={navAnimation} >
             <LayOut>
@@ -170,7 +186,7 @@ function Header({check}:any){
                 <Box scroll ={scroll}>
                     {adminLogIn? <button onClick={()=>navigate(btnUrl)} >{btnName}</button> : null}
                     <LoginBtn onClick={Log} scroll ={scroll}>{login ? "LOGOUT" : "LOGIN"}</LoginBtn>
-                    {user ? <button onClick={() => navigate('/Mypage')} >내정보</button> : null}
+                    {user ? <button onClick={() => navigate('/Mypage')} ><img src={isTh ? userWhite : userBlack} /></button> : null}
                     <SearchBtn onClick={search}><img src={scroll ? isTh ? SearchPNG : SearchPNGBlack : SearchPNG} /></SearchBtn>
                 </Box>
                 

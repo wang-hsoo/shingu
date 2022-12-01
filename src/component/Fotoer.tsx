@@ -6,6 +6,7 @@ const Wrraper = styled.div`
     background-color: #353541;
     margin-top: 60px;
 
+
     ul{
         width: 65%;
         margin: 0 auto;

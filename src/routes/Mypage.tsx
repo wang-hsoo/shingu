@@ -11,6 +11,9 @@ import Shingu from "../img/shingu_logo_white.png";
 import ShinguBlack from "../img/shingu_logo_black.png";
 import Login from "../component/Login";
 import Search from "../component/Search";
+import { getOneMemberFromUserId, Iuser, updateUser } from "../service/UserService";
+import eyeWhite from "../img/eye_white.png";
+import eyeBlack from "../img/eye_black.png";
 
 const Container = styled.div<{display:boolean}>`
     width: 100%;
@@ -189,13 +192,25 @@ const Form = styled.form`
     }
 
 `
+const Count  = styled.div`
+    display: flex;
+    & > div{
+        font-size: 15px;
+    }
 
+    & > img{
+        width: 25px;
+        height: 25px;
+        margin-right: 10px;
+    }
+`
 
 
 interface IgetUser{
     name: string,
     id: string,
-    division: string
+    division: string,
+    darkmode: boolean
 }
 
 function Mypage(){
@@ -208,6 +223,7 @@ function Mypage(){
     const change = useRecoilValue(isUserChange);
     const setChange = useSetRecoilState(isUserChange);
     const useChange = () => setChange((prev) => !prev);
+    const isTh = useRecoilValue(isTheme);
     
  
 
@@ -220,14 +236,57 @@ function Mypage(){
          getBoad().then( value =>{
             setSelectPost([...value]);
          })
+
          
     },[]);
 
     function ThemeCheck(e:any){
+        
+       
         if(e.target.value === "dark"){
             setTheme(true);
+
+            getOneMemberFromUserId(Number(getUser?.id)).then((value:Iuser) =>{
+                const user = {
+                    studentid: value.studentid,
+                    username: value.username,
+                    password: value.password,
+                    divisioncode: value.divisioncode,
+                    darkmode: true
+                }
+                updateUser(Number(value.no),user);
+
+                const user2 = {
+                    name: value.username,
+                    id: value.studentid,
+                    division: value.divisioncode,
+                    darkmode: true
+                }
+                sessionStorage.setItem("user", JSON.stringify(user2));
+                
+            })
+            
         }else{
             setTheme(false);
+            getOneMemberFromUserId(Number(getUser?.id)).then((value:Iuser) =>{
+                const user = {
+                    studentid: value.studentid,
+                    username: value.username,
+                    password: value.password,
+                    divisioncode: value.divisioncode,
+                    darkmode: false
+                }
+
+                updateUser(Number(value.no),user);
+                const user2 = {
+                    name: value.username,
+                    id: value.studentid,
+                    division: value.divisioncode,
+                    darkmode: false
+                }
+                sessionStorage.setItem("user", JSON.stringify(user2));
+                
+            })
         }
     }
 
@@ -276,7 +335,10 @@ function Mypage(){
                                 <PostBox onClick={() => {navigate(`/post/${post.no}`)}}>
                                     <h1>{post.title}</h1>
                                     <div>{post.createdtime?.split('T')[0]}</div>
-                                    <div>{post.counts+""}</div>
+                                    <Count>
+                                        <img src={isTh ? eyeWhite : eyeBlack} />
+                                        <div>{post.counts+""}</div>
+                                    </Count>
                                 </PostBox> : null
                         ))}
                     </PostGroup>

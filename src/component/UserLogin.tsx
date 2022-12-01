@@ -1,4 +1,4 @@
-import { getOneMemberFromUserId, getUser, Iuser } from "../service/BoardService";
+import { getOneMemberFromUserId, getUser, Iuser } from "../service/UserService";
 import React, { useState } from "react";
 import styled from "styled-components";
 import 'react-notifications-component/dist/theme.css'
@@ -78,7 +78,8 @@ function UserLogin(){
                         const user = {
                             name: value.username,
                             id: value.studentid,
-                            division: value.divisioncode
+                            division: value.divisioncode,
+                            darkmode: value?.darkmode
                         };
                         sessionStorage.setItem("user", JSON.stringify(user));
                         window.location.reload();

@@ -4,7 +4,7 @@ import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { getBoad, InewBoard } from "./service/BoardService";
 import { connect } from "react-redux";
 import { setPost } from "./store";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { dark, isTheme, light } from "./atom";
 
 const GlobalStyle = createGlobalStyle`
@@ -81,6 +81,18 @@ button{
 
 function App() {
   const isTh = useRecoilValue(isTheme);
+  const setTheme = useSetRecoilState(isTheme);
+
+
+  useEffect(()=>{ 
+    const user = sessionStorage.getItem("user");
+    
+    if(user){
+      const getUser = JSON.parse(user);
+      setTheme(getUser.darkmode);
+    }
+    
+  },[])
   
 
   return (

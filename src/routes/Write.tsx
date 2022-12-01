@@ -101,6 +101,7 @@ const Text = styled.textarea`
 	resize: none;
     box-shadow: 2px 4px 4px 1px rgba(0,0,0,0.4); 
     background-color: ${(props) => props.theme.whiteGrey};
+    color: ${(props) => props.theme.blackWhite};
     &:focus {
         outline: solid 2px #95C94A;
     }

@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getBoad, Icategory, InewBoard } from "../service/BoardService";
 import AllPost from "./AllPost";
+import NullWhite from "../img/null_white.png";
+import NullBlack from "../img/null_black.png";
+import { isTheme } from "../atom";
+import { useRecoilValue } from "recoil";
 
 const Wrapper = styled.div`
     width: 60%;
@@ -61,15 +65,28 @@ const PostBox = styled.div`
 `
 
 const Nodata = styled.div`
-
     height: 100%;
     height: 178px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    & > img{
+        width: 100px;
+        height: 100px;
+        margin-bottom: 15px;
+    }
+
+    & > div{
+        color: ${(props) => props.theme.blackWhite};
+    }
 `
 
 function TopPost( {post, divi, /*학과*/category,division}:any){
     const [newBoard, setNewBoard] = useState<InewBoard[]>();
     const [allPost, setAllpost] = useState<InewBoard[]>();
     const navigate = useNavigate();
+    const isTh = useRecoilValue(isTheme);
 
     useEffect(()=>{
         setAllpost(post);
@@ -192,7 +209,11 @@ function TopPost( {post, divi, /*학과*/category,division}:any){
                             </div>
                         </div>
                     ))} 
-                </PostBox> : <Nodata>게시물 없음</Nodata>}
+                </PostBox> : 
+                <Nodata>
+                    <img src={isTh ? NullWhite : NullBlack} />
+                    <div>작성된 게시물이 없습니다.</div>    
+                </Nodata>}
             
         </Wrapper>
     )
