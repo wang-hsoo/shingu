@@ -24,20 +24,21 @@ const Form = styled.form`
         margin-bottom: 10px;
         border: 1px solid #ABABAB;
     }
-
     button{
         background-color: #95C94A;
         color: white;
         width: 300px;
         padding: 10px 0;
     }
-
 `
-
+interface Idamin{
+    
+}
 
 function AdminLogin(){
     const [id, setId] = useState<string>();
     const [pw, setPw] = useState<string>();
+    const [loginCheck, setLoginCheck] = useState(false);
     const navigate = useNavigate();
 
     function onChange(event:React.ChangeEvent<HTMLInputElement>){
@@ -73,30 +74,35 @@ function AdminLogin(){
                 
               });
         }else{
+                
                 getAdmin().then(value => {
                     value.map((check:IAdmin) => {
                         if(check.adminid === id && check.adminpwd === pw){
                             sessionStorage.setItem("admin", check.divisioncode+"");
+                            setLoginCheck(true);
                             window.location.reload();
                         }else{
-                            store.addNotification({
-                                title: "로그인 오류!",
-                                message: "아이디 또는 비밀번호가 일치하지 않습니다.",
-                                type: "danger",
-                                insert: "bottom",
-                                container: "bottom-center",
-                                animationIn: ["animate__animated", "animate__fadeIn"],
-                                animationOut: ["animate__animated", "animate__fadeOut"],
-                                dismiss: {
-                                  duration: 5000,
-                                  onScreen: true,
-                                },
-                                
-                              });
-    
                         }
                     })
                 })
+                
+
+                if(!loginCheck){
+                    store.addNotification({
+                        title: "로그인 오류!",
+                        message: "아이디 또는 비밀번호가 일치하지 않습니다.",
+                        type: "danger",
+                        insert: "bottom",
+                        container: "bottom-center",
+                        animationIn: ["animate__animated", "animate__fadeIn"],
+                        animationOut: ["animate__animated", "animate__fadeOut"],
+                        dismiss: {
+                          duration: 5000,
+                          onScreen: true,
+                        },
+                        
+                      });
+                }
         }
     }
 

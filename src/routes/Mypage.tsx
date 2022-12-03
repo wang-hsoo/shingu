@@ -40,7 +40,6 @@ const UserInfo = styled.div`
     margin-top: 120px;
     display: flex;
     align-items: center;
-
     @media screen and (max-width: 1400px) {
         width : 80%;
     }
@@ -49,10 +48,8 @@ const UserInfo = styled.div`
     }
     @media screen and (max-width: 600px) {
         width: 95%;
-
         height: 500px;
     }
-
 `
 
 const User = styled.div`
@@ -69,20 +66,16 @@ const User = styled.div`
         padding-left: 50px;
     }
     @media screen and (max-width: 850px) {
-
         width: 50%;
     }
-
     & > h1{
         font-size: 20px;
         font-weight: 700;
         margin-bottom: 10px;
     }
-
     & >h1:nth-child(2){
         font-size: 18px;
     }
-
     & > div{
         font-size: 16px;
         margin-bottom: 10px;
@@ -99,7 +92,6 @@ const Theme = styled.form`
         align-items: center;
         justify-content: space-around;
     }
-
     & > div{
         margin-bottom: 25px;
     }
@@ -157,7 +149,6 @@ const PostBox = styled.div`
     @media screen and (max-width: 850px) {
         width: 200px;
     }
-
     & > h1{
         font-size: 18px;
         margin-bottom: 10px;
@@ -166,7 +157,6 @@ const PostBox = styled.div`
             font-size: 14px;
         }
     }
-
     & > div{
         font-size: 15px;
         color:  #636363;
@@ -185,14 +175,11 @@ const ThemImgBox = styled.div<{black:boolean}>`
     background-color: ${(props) => props.black ? "#1D1D1D" : "#ffffff"};
     align-items: center;
     margin-top: 20px;
-
-
     & > div{
         width: 100%;
         height: 40px;
         background-color: #95C94A;
     }
-
     & > img{
         width: 147px;
         margin-top: 35px;
@@ -223,20 +210,17 @@ const Form = styled.form`
         margin-bottom: 10px;
         border: 1px solid #ABABAB;
     }
-
     button{
         background-color: #95C94A;
         color: white;
         padding: 10px 130px;
     }
-
 `
 const Count  = styled.div`
     display: flex;
     & > div{
         font-size: 15px;
     }
-
     & > img{
         width: 25px;
         height: 25px;
@@ -246,9 +230,9 @@ const Count  = styled.div`
 
 
 interface IgetUser{
-    name: string,
-    id: string,
-    division: string,
+    username: string,
+    studentid: string,
+    divisioncode: string,
     darkmode: boolean
 }
 
@@ -285,20 +269,20 @@ function Mypage(){
         if(e.target.value === "dark"){
             setTheme(true);
 
-            getOneMemberFromUserId(Number(getUser?.id)).then((value:Iuser) =>{
+            getOneMemberFromUserId(Number(getUser?.studentid)).then((value:Iuser) =>{
                 const user = {
                     studentid: value.studentid,
                     username: value.username,
                     password: value.password,
                     divisioncode: value.divisioncode,
                     darkmode: true
-                }
+                };
                 updateUser(Number(value.no),user);
 
                 const user2 = {
-                    name: value.username,
-                    id: value.studentid,
-                    division: value.divisioncode,
+                    username: value.username,
+                    studentid: value.studentid,
+                    divisioncode: value.divisioncode,
                     darkmode: true
                 }
                 sessionStorage.setItem("user", JSON.stringify(user2));
@@ -307,7 +291,7 @@ function Mypage(){
             
         }else{
             setTheme(false);
-            getOneMemberFromUserId(Number(getUser?.id)).then((value:Iuser) =>{
+            getOneMemberFromUserId(Number(getUser?.studentid)).then((value:Iuser) =>{
                 const user = {
                     studentid: value.studentid,
                     username: value.username,
@@ -318,9 +302,9 @@ function Mypage(){
 
                 updateUser(Number(value.no),user);
                 const user2 = {
-                    name: value.username,
-                    id: value.studentid,
-                    division: value.divisioncode,
+                    username: value.username,
+                    studentid: value.studentid,
+                    divisioncode: value.divisioncode,
                     darkmode: false
                 }
                 sessionStorage.setItem("user", JSON.stringify(user2));
@@ -337,10 +321,10 @@ function Mypage(){
                 <UserInfo>
                     <User>
                         {/* <UserUpdate onClick={useChange}>수정하기</UserUpdate> */}
-                        <h1>{getUser?.division.split(',')[0]}</h1> 
-                        <h1>{getUser?.division.split(',')[1]}</h1>
-                        <div>이름 : {getUser?.name}</div>
-                        <div>힉반 : {getUser?.id}</div>
+                        <h1>{getUser?.divisioncode.split(',')[0]}</h1> 
+                        <h1>{getUser?.divisioncode.split(',')[1]}</h1>
+                        <div>이름 : {getUser?.username}</div>
+                        <div>힉반 : {getUser?.studentid}</div>
                     </User>
                     <Theme>
                         <div>
@@ -370,7 +354,7 @@ function Mypage(){
                     <AllTitle>작성한 게시물 <div /></AllTitle>
                     <PostGroup>
                         {selectPost && selectPost.map((post:InewBoard) => (
-                            post.studentid+"" === getUser?.id ?
+                            post.studentid+"" === getUser?.studentid ?
                                 <PostBox onClick={() => {navigate(`/post/${post.no}`)}}>
                                     <h1>{post.title}</h1>
                                     <div>{post.createdtime?.split('T')[0]}</div>

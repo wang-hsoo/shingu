@@ -26,12 +26,10 @@ const Title = styled.div`
     align-items: center;
     justify-content: space-around;
     color: white;
-
     & > div:nth-child(1){
         width: 320px;
         text-align: center;
     }
-
     & > div{
         width: 100px;
         text-align: center;
@@ -172,13 +170,13 @@ function SelectPost({post}:any){
                             <h1>{post.title}</h1>
                             <div>{post?.createdtime?.split('T')[0]}</div>
                             <div>{post?.counts+""}</div>
-                            <AnimatePresence>
+                           
                                 <FavoriteBtn whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
                                     {faCheck ? 
                                     <motion.img layoutId="favorite" src={favoriteB} onClick={favoriteClick} /> 
                                     : <motion.img layoutId="favorite" src={favorite} onClick={favoriteClick} />}
                                 </FavoriteBtn>
-                            </AnimatePresence>
+                            
                         </Post> : null
                     ))}
                     <PageBox>

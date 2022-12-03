@@ -15,7 +15,6 @@ const Form = styled.form`
         align-items: center;
         justify-content: center;
         padding-top: 50px;
-
     }
     
     
@@ -31,7 +30,6 @@ const Form = styled.form`
         margin-bottom: 10px;
         border: 1px solid #ABABAB;
     }
-
     button{
         width: 300px;
         background-color: #95C94A;
@@ -42,7 +40,6 @@ const Form = styled.form`
 
 const List = styled.ul`
     width: 300px;
-
     & > ul{
         position: absolute;
         z-index: 1;
@@ -107,7 +104,6 @@ const Title = styled.div`
     margin-bottom: 10px;
     color: #717171;
     position: relative;
-
 `
 
 function Register(){
@@ -198,6 +194,7 @@ function Register(){
                 password: pw,
                 divisioncode: `${selectDivision?.divisionname},${selectDivi}`,
                 studentid: id,
+                darkmode: false
             }as Iuser;
             
             getOneMemberFromUserId(Number(id)).then((value:Iuser) => {

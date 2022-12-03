@@ -56,10 +56,8 @@ const ChartHeader = styled.div`
         font-weight: 600;
         margin-right: 20px;
     }
-
     & > button{
         font: 16px;
-
         &:hover{
             font-weight: 800;
             transition: .3s;
@@ -73,8 +71,6 @@ function DataChart(){
     const [allPost, setAllPost] = useState<InewBoard[]>();
     const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
-    console.log(search);
-    
     const navigate = useNavigate();
 
     function onClick(event:React.MouseEvent<HTMLButtonElement>){

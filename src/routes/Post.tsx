@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { delPost, getCategory, getDivision, Icategory, Idivision, InewBoard, selectGetBoad, updateBoard } from "../service/BoardService";
+import { delPost, getAdmin, getCategory, getDivision, Icategory, Idivision, InewBoard, selectGetBoad, updateBoard } from "../service/BoardService";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../component/Header";
@@ -121,7 +121,6 @@ const Context = styled.div<{answer:boolean}>`
 	background: ${(props) => props.answer ? "#EEEEEE" : "#95C94A" };
 	border-radius: .4em;
     width: 500px;
-
     padding: 30px 50px;
     color: ${(props) => props.answer ? "#333333" : "#ffffff" };
     
@@ -220,11 +219,9 @@ const DeletBox = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     & > h1{
         margin-bottom: 20px;
     }
-
     & > div > button{
             font-size: 14px;
             padding: 8px 20px;
@@ -246,17 +243,14 @@ const Nodata = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     & > img{
         width: 300px;
     }
-
     & > div{
         font-size: 40px;
         font-weight: 700;
         margin-top: 20px;
     }
-
     & > button{
         font-size: 20px;
         margin-top: 20px;
@@ -287,6 +281,7 @@ function Post({post, GetPost, rootAdd}:any){
     const [faCheck, setFavoriteCheck] = useState(false);
     const isTh = useRecoilValue(isTheme);
     const [loading, setLoading] = useState(false);
+    let httpRequest = new XMLHttpRequest();
 
     function favoriteClick(){
         setFavoriteCheck((prev) => !prev);
@@ -381,7 +376,8 @@ function Post({post, GetPost, rootAdd}:any){
             if(user){
                 const u = JSON.parse(user);
                 
-                if(u.id === selectPost?.studentid+""){
+                
+                if(u.studentid === selectPost?.studentid+""){
                     setLoginCheck(u.id);
                 }
             }else if(admin){
@@ -401,6 +397,29 @@ function Post({post, GetPost, rootAdd}:any){
         }
 
     },[selectPost]);
+
+    
+
+    function notiClick(board : InewBoard){
+        if(!httpRequest){
+            console.log("오류");
+        }else{
+            httpRequest.open('PUT','http://localhost:8080/api/board/'+board.no);
+            httpRequest.setRequestHeader('Content-Type', 'application/json');
+            const data = {
+                divisioncode: board.divisioncode,
+                category: board.category,
+                title: board.title,
+                contents: board.contents,
+                addboard: board.addboard,
+                studentid: board.studentid,
+                createdtime: board.createdtime,
+                counts: board.counts,
+                lookup: false
+            }
+            httpRequest.send(JSON.stringify(data));
+        }
+    }
 
 
     
@@ -439,9 +458,15 @@ function Post({post, GetPost, rootAdd}:any){
                 answercontents: context.replace(/(?:\r\n|\r|\n)/g, '<br/>'),
                 lookup: false
             } as Ianswer;
+
             if(no){
                 createAnswer(answer);
                 setContext("");
+
+                const admin = sessionStorage.getItem('admin');
+                if(admin){
+                    notiClick(selectPost as InewBoard);
+                }
             }
     
             
@@ -450,10 +475,10 @@ function Post({post, GetPost, rootAdd}:any){
 
         }
 
-
-        
         
     }
+
+    
 
     function deletPost(){
         popUp();

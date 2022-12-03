@@ -25,13 +25,11 @@ const Form = styled.form`
         margin-bottom: 10px;
         border: 1px solid #ABABAB;
     }
-
     button{
         background-color: #95C94A;
         color: white;
         padding: 10px 130px;
     }
-
 `
 
 function UserLogin(){
@@ -76,9 +74,9 @@ function UserLogin(){
                 getOneMemberFromUserId(Number(id)).then((value:Iuser) => {
                     if(value.studentid === id && value.password === pw){
                         const user = {
-                            name: value.username,
-                            id: value.studentid,
-                            division: value.divisioncode,
+                            username: value.username,
+                            studentid: value.studentid,
+                            divisioncode: value.divisioncode,
                             darkmode: value?.darkmode
                         };
                         sessionStorage.setItem("user", JSON.stringify(user));

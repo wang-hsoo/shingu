@@ -52,7 +52,6 @@ const PostBox = styled.div`
     & > div{
         width: 25%;
         border-right: solid 1px #C9C9C9;
-
         @media screen and (max-width: 600px) {
             width: 100%;
             height: 100%;
@@ -67,7 +66,6 @@ const PostBox = styled.div`
             font-weight: 500;
             font-size: 18px;
             padding: 30px 20px;
-
             & > button{
                 color: ${(props) => props.theme.blackWhite};
                 
@@ -90,7 +88,6 @@ const Nodata = styled.div`
         height: 100px;
         margin-bottom: 15px;
     }
-
     & > div{
         color: ${(props) => props.theme.blackWhite};
     }
@@ -131,7 +128,8 @@ function AddPost({post, divi}:any){
                         addboard: false,
                         studentid: 0,
                         createdtime: "",
-                        counts: 0
+                        counts: 0,
+                        lookup: false
                     }
 
                     post.push(a);

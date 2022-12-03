@@ -14,7 +14,8 @@ export interface InewBoard{
     addboard: boolean,
     studentid: Number,
     createdtime?: String,
-    counts: Number
+    counts: Number,
+    lookup: Boolean
 }
  
 export async function createBoard(board:InewBoard) {
@@ -77,6 +78,5 @@ export async function getAdmin() {
     const data = await (await axios.get(BOARD_API_BASE_URL+"/admin")).data;
     return data;
 }
-
 
 

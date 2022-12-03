@@ -36,7 +36,6 @@ const AllTitle = styled.div`
     align-items: center;
     justify-content: space-around;
     color: white;
-
 `
 
 const PostBox = styled.div`
@@ -53,7 +52,6 @@ const PostBox = styled.div`
         height: 400px;
     }
     
-
     & > div{
         width: 25%;
         border-right: solid 1px #C9C9C9;
@@ -72,13 +70,11 @@ const PostBox = styled.div`
             font-weight: 500;
             font-size: 18px;
             padding: 30px 20px;
-
             & > button{
             color: ${(props) => props.theme.blackWhite};
         }
             
         }
-
         
     }
 `
@@ -95,7 +91,6 @@ const Nodata = styled.div`
         height: 100px;
         margin-bottom: 15px;
     }
-
     & > div{
         color: ${(props) => props.theme.blackWhite};
     }
@@ -189,7 +184,8 @@ function TopPost( {post, divi, /*학과*/category,division}:any){
                         addboard: false,
                         studentid: 0,
                         createdtime: "",
-                        counts: 0
+                        counts: 0,
+                        lookup: false
                     }
 
                     post.push(a);
