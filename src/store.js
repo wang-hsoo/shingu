@@ -16,8 +16,10 @@ const post = createSlice({
                 category: action.payload.category,
                 divisioncode: action.payload.divisioncode,
                 counts: 0,
+                lookup: action.payload.lookup
             }
             state.push(writePost);
+            console.log(writePost);
             //데이터베이스 저장
             createBoard(writePost);
         },

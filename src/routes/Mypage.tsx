@@ -31,6 +31,7 @@ const Maincon = styled.div`
     width: 100%;
     margin-top: 40px;
     position: absolute;
+    
 `
 const UserInfo = styled.div`
     width: 60%;
@@ -45,6 +46,7 @@ const UserInfo = styled.div`
     }
     @media screen and (max-width: 850px) {
         width: 90%;
+        height: 500px;
     }
     @media screen and (max-width: 600px) {
         width: 95%;
@@ -130,6 +132,7 @@ const PostGroup = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 30px;
+    
     @media screen and (max-width: 850px) {
         grid-template-columns: 1fr 1fr;
     }

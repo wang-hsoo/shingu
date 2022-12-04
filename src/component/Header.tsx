@@ -65,10 +65,48 @@ const NotiBox = styled.div`
     right: 80px;
     border-radius: 15px;
     padding: 15px;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+    width: 8px;  /* 스크롤바의 너비 */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        height: 30%; /* 스크롤바의 길이 */
+        background: #95C94A; /* 스크롤바의 색상 */
+        border-radius: 15px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+    }
+    @media screen and (max-width: 1140px) {
+        right: 50px;
+    } 
+    @media screen and (max-width: 850px) {
+       
+    } 
+    @media screen and (max-width: 550px) {
+        
+    } 
+`
+const NotiTitle = styled.div`
+    color: ${(props) => props.theme.blackWhite};
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: solid 1px ${(props) => props.theme.blackWhite};
+    font-size: 15px;
+    font: 500;
 `
 const NotiList = styled.div`
-    color: ${(props) => props.theme.blackWhite};
+    /* color: ${(props) => props.theme.blackWhite}; */
+    color: #ffffff;
+    width: 250px;
+    padding: 13px 20px;
     cursor: pointer;
+    margin-top: 10px;
+    border-radius: 10px;
+    background-color: #95C94A;
+   
 `
 const NotiCount = styled.span`
     width: 20px;
@@ -81,8 +119,20 @@ const NotiCount = styled.span`
     justify-content: center;
     color: #ffffff;
     position: absolute;
-    top: 40px;
-    right: 78px;
+    top: 49%;
+    right: 4.1%;
+    @media screen and (max-width: 1500px) {
+        right: 4.5%;
+    }
+    @media screen and (max-width: 1150px) {
+        right: 5%;
+    } 
+    @media screen and (max-width: 850px) {
+        right: 6%;
+    } 
+    @media screen and (max-width: 550px) {
+        right: 8%;
+    } 
 `
 
 const Logo = styled.div`
@@ -332,7 +382,7 @@ function Header({check}:any){
                         <img src={scroll ? isTh ? notifiWhite : notifiBlack : notifiWhite}  onClick={() => setNotiSWow((props) => !props)}/>
                         <NotiCount>{checkBoard?.length}</NotiCount>
                         {notiShow && <NotiBox>
-                            <div>답변이 왔습니다</div>
+                            <NotiTitle>답변이 왔습니다</NotiTitle>
                             { checkBoard ? checkBoard?.map((board:InewBoard) => (
                                 <NotiList> 
                                     <div onClick={() => {

@@ -235,8 +235,8 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
                         </Post> : null
                     ))}
                     <PageBox>
-                        {pages.map((pages) => (
-                                    <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page>
+                        {pages.map((pages,idx) => (
+                                    idx < 6 ?  <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page> : clickPage > 4 ? <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page> : null
                                 ))} 
                     </PageBox>
                 </div> : 

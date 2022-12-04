@@ -171,7 +171,7 @@ function Write({add}:any){
     function onSubmit(e:React.FormEvent){
         //store.js로 데이터를 보냄
         e.preventDefault();
-        console.log(context, title,context,title)
+        
         if(context?.length === 0 || title?.length === 0 || context === "" || title === "" || context === undefined || title=== undefined || context === undefined || title === undefined){
             store.addNotification({
                 title: "게시물 작성 오류!",
@@ -188,7 +188,8 @@ function Write({add}:any){
                 
               });
         }else{
-            add({studentid: id, title: title, contents:context, category: selectCate, divisioncode: division });
+            console.log(division);
+            add({studentid: id, title: title, contents:context, category: selectCate, divisioncode: division, lookup: false });
             navigate("/post");
         }
         
@@ -204,8 +205,9 @@ function Write({add}:any){
 
         const user = sessionStorage.getItem("user");
         if(user){
-            setId(JSON.parse(user).id);
-            setDivision(JSON.parse(user).division);
+            console.log(JSON.parse(user));
+            setId(JSON.parse(user).studentid);
+            setDivision(JSON.parse(user).divisioncode);
             
         }
 

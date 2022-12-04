@@ -193,6 +193,7 @@ function DateChart({post}:any){
         const DATE = `${today[0]}-${month}-${day}`;
         dateSort(DATE);
         
+        
         getCategory().then((value => {
             setCategory(value);
         }));
@@ -206,9 +207,10 @@ function DateChart({post}:any){
 
         }else{
             const selDate = selectDate?.replace(" ","").replace(". ",".").split('.') as string[];
-            const DATE = `${selDate[0]}-${selDate[1]}-${selDate[2]}`;
+            const month = Number(selDate[1]) < 10 ? 0 + `${selDate[1]}` : selDate[1];
+            const day = Number(selDate[2]) < 10 ? 0 + `${selDate[2]}` : selDate[2];
+            const DATE = `${selDate[0]}-${month}-${day}`;
             dateSort(DATE);
-           
             
         }
         

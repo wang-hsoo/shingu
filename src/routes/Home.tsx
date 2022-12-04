@@ -170,6 +170,9 @@ const CateBox = styled.div`
     width: 40%;
     display: flex;
     justify-content: space-around;
+    @media screen and (max-width: 1400px) {
+        width: 80%;
+    }
     @media screen and (max-width: 850px) {
         width: 80%;
     }
@@ -202,10 +205,9 @@ const CateBox = styled.div`
 `
 
 const WriteBtn = styled.div`
-    width: 60%;
-    margin-top: -30px;
-    display: flex;
-    justify-content: flex-end;
+    position: absolute;
+    right: 400px;
+    bottom: 200px;
     & > button{
         font-size: 14px;
         padding: 8px 20px;
@@ -214,10 +216,15 @@ const WriteBtn = styled.div`
         border-radius: 15px;
     }
     @media screen and (max-width: 1400px) {
-        width: 80%;
+        right: 180px;
     } 
     @media screen and (max-width: 850px) {
-        width: 90%;
+        right: 80px;
+        bottom: 250px;
+    }  
+    @media screen and (max-width: 600px) {
+        right: 50px;
+        bottom: 350px;
     }  
 `
 const transition = {

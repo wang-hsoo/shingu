@@ -376,9 +376,9 @@ function Post({post, GetPost, rootAdd}:any){
             if(user){
                 const u = JSON.parse(user);
                 
-                
+     
                 if(u.studentid === selectPost?.studentid+""){
-                    setLoginCheck(u.id);
+                    setLoginCheck(u.studentid);
                 }
             }else if(admin){
                 
