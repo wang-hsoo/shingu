@@ -150,7 +150,7 @@ const AnwerCon = styled.div<{answer:boolean}>`
     
 `
 
-const Form = styled.form`
+const Form = styled.div`
     width: 100%;
     margin-top: 100px;
     flex-direction: column;
@@ -432,8 +432,8 @@ function Post({post, GetPost, rootAdd}:any){
             
     }
 
-    function onSubmit(e:React.FormEvent<HTMLFormElement>){
-        e.preventDefault();
+    function onSubmit(){
+        
 
         if(context.length === 0 || context === " "){
             store.addNotification({
@@ -481,8 +481,11 @@ function Post({post, GetPost, rootAdd}:any){
     
 
     function deletPost(){
+        if(no){
+            delPost(no);
+        }
         popUp();
-
+        navigate('/');
     }
 
         
@@ -534,14 +537,14 @@ function Post({post, GetPost, rootAdd}:any){
                             
 
                                 {loginCheck !== "" ? 
-                                <Form onSubmit={onSubmit}>
+                                <Form>
                                     <Text placeholder="질문하고 싶은것을 입력하세요." onChange={onChange} value={context} />
                                     <Btn>
                                         <button onClick={()=> {
                                                 navigate('/');
                                             }}>목록으로</button>
-                                        <button>작성하기</button>
-                                        <button onClick={()=>{popUp();}}>삭제하기</button>
+                                        <button onClick={()=>{onSubmit()}}>작성하기</button>
+                                        <button onClick={()=>{popUp()}}>삭제하기</button>
                                     </Btn>
                                 </Form> : 
                                 <Btn>
@@ -566,7 +569,7 @@ function Post({post, GetPost, rootAdd}:any){
                             <h1>정말로 삭제하시겠습니까?</h1>
             
                             <div>
-                                <button onClick={()=>deletPost()}>삭제하기</button>
+                                <button onClick={()=>{deletPost()}}>삭제하기</button>
                                 <button onClick={()=>popUp()}>아니요</button>
                             </div>
                             

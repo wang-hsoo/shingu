@@ -173,8 +173,8 @@ function SelectPost({post}:any){
                            
                                 <FavoriteBtn whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
                                     {faCheck ? 
-                                    <motion.img layoutId="favorite" src={favoriteB} onClick={favoriteClick} /> 
-                                    : <motion.img layoutId="favorite" src={favorite} onClick={favoriteClick} />}
+                                    <motion.img  src={favoriteB} onClick={favoriteClick} /> 
+                                    : <motion.img src={favorite} onClick={favoriteClick} />}
                                 </FavoriteBtn>
                             
                         </Post> : null

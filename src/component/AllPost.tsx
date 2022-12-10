@@ -232,11 +232,12 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
                             <h1>{post.title}</h1>
                             <div>{post?.createdtime?.split('T')[0]}</div>
                             <div>{post?.counts+""}</div>
-                        </Post> : null
+                        </Post> : null 
                     ))}
                     <PageBox>
                         {pages.map((pages,idx) => (
-                                    idx < 6 ?  <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page> : clickPage > 4 ? <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page> : null
+                                    clickPage === 3 || clickPage < 2 && idx < 2 ?  <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page> : null ||
+                                    clickPage > 1  && idx > 1 ?  <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page> : null 
                                 ))} 
                     </PageBox>
                 </div> : 

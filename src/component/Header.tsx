@@ -195,6 +195,7 @@ function Header({check}:any){
     const [checkBoard, setCheckBoard] = useState<InewBoard[]>();
     const [notiShow, setNotiSWow] =  useState<boolean>(false);
 
+
     useEffect(() => {
         if(check){
             scrollY.onChange(() => {
@@ -230,39 +231,10 @@ function Header({check}:any){
       function getAnswerBoard(){
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
-                const admin = sessionStorage.getItem("admin");
                 const user = sessionStorage.getItem("user");
                 const answer = JSON.parse(httpRequest.responseText) as InewBoard[];
                 
-                if(admin){
-                    // let checkPost = [] as InewBoard[];
-                    // const whoUser = JSON.parse(admin);
-                    
-                    // answer.map((value:InewBoard) => {
-
-                    //     getDivision().then(divi=>{
-                    //         divi.map((division:Idivision) => {
-   
-                    //             if(whoUser === division.divisioncode){
-                                    
-                    //                 if(division.divisionname === value.divisioncode.split(",")[1] ){
-                                        
-                    //                     if(value.lookup){
-                    //                         checkPost.push(value);
-                    //                         console.log(value)
-                    //                     }
-                    //                 }
-                                    
-                    //             }
-                    //         })
-                    //     })
-              
-                        
-                    // })
-                    
-                    // setCheckBoard(checkPost);
-                    
-                }else if(user){
+                if(user){
                     let checkPost = [] as InewBoard[];
                     const whoUser = JSON.parse(user) as Iuser;
                     answer.map((value:InewBoard) => {
@@ -322,6 +294,10 @@ function Header({check}:any){
             setLogin(false);
             setUser(false);
             navigate('/');
+            if(location.pathname === '/'){
+                window.location.reload();
+            }
+
         }else{
             popUp();
         }

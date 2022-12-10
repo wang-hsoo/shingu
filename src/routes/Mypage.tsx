@@ -29,6 +29,7 @@ const Wrapper = styled.div`
 `
 const Maincon = styled.div`
     width: 100%;
+    height: 80vh;
     margin-top: 40px;
     position: absolute;
     
@@ -123,6 +124,7 @@ const UserPost = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    min-height: 300px;
 `
 
 
@@ -372,6 +374,7 @@ function Mypage(){
                 </UserPost>
 
                 <Footer />
+                
             </Maincon>
             <Container display={Pop || search || change}>
                     {Pop ? <Login /> : null}

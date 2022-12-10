@@ -37,6 +37,7 @@ const MainCon = styled.div`
 
 const Form = styled.form`
     width: 80%;
+    height: 575px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
