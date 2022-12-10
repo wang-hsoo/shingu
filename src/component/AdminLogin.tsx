@@ -38,7 +38,7 @@ interface Idamin{
 function AdminLogin(){
     const [id, setId] = useState<string>();
     const [pw, setPw] = useState<string>();
-    const [loginCheck, setLoginCheck] = useState(false);
+    const [loginCheck, setLoginCheck] = useState<string>();
     const navigate = useNavigate();
 
     function onChange(event:React.ChangeEvent<HTMLInputElement>){
@@ -55,6 +55,10 @@ function AdminLogin(){
                 break;
         }
     }
+
+    
+
+  
 
     function onSubmit(e:React.FormEvent){
         e.preventDefault();
@@ -74,39 +78,40 @@ function AdminLogin(){
                 
               });
         }else{
-                
                 getAdmin().then(value => {
                     value.map((check:IAdmin) => {
                         if(check.adminid === id && check.adminpwd === pw){
-                            sessionStorage.setItem("admin", check.divisioncode+"");
-                            setLoginCheck(true);
-                            window.location.reload();
+                            sessionStorage.setItem("admin", check.divisioncode+"");  
                         }else{
                         }
                     })
-                })
-                
 
-                if(!loginCheck){
-                    store.addNotification({
-                        title: "로그인 오류!",
-                        message: "아이디 또는 비밀번호가 일치하지 않습니다.",
-                        type: "danger",
-                        insert: "bottom",
-                        container: "bottom-center",
-                        animationIn: ["animate__animated", "animate__fadeIn"],
-                        animationOut: ["animate__animated", "animate__fadeOut"],
-                        dismiss: {
-                          duration: 5000,
-                          onScreen: true,
-                        },
-                        
-                      });
-                }
+                    const admin = sessionStorage.getItem("admin");
+                    if(!admin){
+                        store.addNotification({
+                            title: "로그인 오류!",
+                            message: "아이디 또는 비밀번호가 일치하지 않습니다.",
+                            type: "danger",
+                            insert: "bottom",
+                            container: "bottom-center",
+                            animationIn: ["animate__animated", "animate__fadeIn"],
+                            animationOut: ["animate__animated", "animate__fadeOut"],
+                            dismiss: {
+                              duration: 5000,
+                              onScreen: true,
+                            },
+                            
+                          });
+                    }else{
+                        window.location.reload();
+                    }
+                })   
+
+                
         }
     }
 
-
+   
     return(
         <Form onSubmit={onSubmit}>
             <h1>관리자 로그인</h1>
