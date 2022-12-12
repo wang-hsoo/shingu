@@ -214,7 +214,7 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
     
     
 
-    
+   
     return(
         <Wrraper>
             
@@ -236,8 +236,7 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
                     ))}
                     <PageBox>
                         {pages.map((pages,idx) => (
-                                    clickPage === 3 || clickPage < 2 && idx < 2 ?  <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page> : null ||
-                                    clickPage > 1  && idx > 1 ?  <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page> : null 
+                                    <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page>
                                 ))} 
                     </PageBox>
                 </div> : 

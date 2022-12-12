@@ -189,8 +189,8 @@ function Write({add}:any){
                 
               });
         }else{
-            console.log(division);
-            add({studentid: id, title: title, contents:context, category: selectCate, divisioncode: division, lookup: false });
+          
+            add({studentid: id, title: title, contents:context, category: selectCate, divisioncode: division, lookup: true });
             navigate("/post");
         }
         
