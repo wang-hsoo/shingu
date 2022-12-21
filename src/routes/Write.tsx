@@ -5,8 +5,7 @@ import { useNavigate } from "react-router";
 import React, { useEffect, useState } from "react";
 import { Idivision, getCategory, getDivision, Icategory, InewBoard, createBoard, getBoad } from "../service/BoardService";
 import { useRecoilValue } from "recoil";
-import { isPopUp, isSearch } from "../atom";
-import Login from "../component/Login";
+import { isSearch } from "../atom";
 import Search from "../component/Search";
 import Header from "../component/Header";
 import arrow from "../img/arrow.jpg";
@@ -140,7 +139,6 @@ function Write({add}:any){
     const [id, setId] = useState<string>();
     const [division, setDivision] = useState<string>();
     const navigate = useNavigate();
-    const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
     
 
@@ -257,7 +255,7 @@ function Write({add}:any){
                     
             
                     <Btn>
-                        <button onClick={() => navigate('/')}>목록으로</button>
+                        <button onClick={() => navigate('/home')}>목록으로</button>
                         <button>작성하기</button>
                     </Btn>
                     
@@ -265,8 +263,7 @@ function Write({add}:any){
                 </Form>
                 <Footer />
             </MainCon>
-            <Container display={Pop || search}>
-                    {Pop ? <Login /> : null}
+            <Container display={ search}>
                     {search ? <Search />: null}
             </Container>
             <ReactNotification />

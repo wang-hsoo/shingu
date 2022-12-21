@@ -4,8 +4,7 @@ import { getBoad, getCategory, getDivision, Icategory, Idivision, InewBoard } fr
 import Header from "../component/Header";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { isPopUp, isSearch } from "../atom";
-import Login from "../component/Login";
+import { isSearch } from "../atom";
 import Search from "../component/Search";
 import TopPost from "../component/TopPost";
 import AllPost from "../component/AllPost";
@@ -275,7 +274,6 @@ function Home(){
     const [selectDivision, setSelectDivision] = useState<Idivision>();
     const [selectCate, setSelectCate] = useState<string>();
     const [userLogin, setUserLogin] = useState(false);
-    const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
     const navigate = useNavigate();
     const { scrollY } = useViewportScroll();
@@ -450,8 +448,7 @@ function Home(){
                     
                 </MainCon>
                 
-                <Container display={Pop || search}>
-                    {Pop ? <Login /> : null}
+                <Container display={search}>
                     {search ? <Search />: null}
                 </Container>
         </Wrapper>  : null

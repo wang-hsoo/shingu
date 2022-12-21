@@ -2,26 +2,19 @@ import React, { useState } from "react";
 import { getAdmin, IAdmin } from "../service/BoardService";
 import { useSetRecoilState } from "recoil";
 import { isPopUp } from "../atom";
-import UserLogin from "./UserLogin";
-import AdminLogin from "./AdminLogin";
-import Register from "./Register";
+import UserLogin from "../component/UserLogin";
+import AdminLogin from "../component/AdminLogin";
+import Register from "../component/Register";
 import styled from "styled-components";
 
 const Wrraper = styled.div`
-    width: 100%;
-    height: 60vh;
-    padding-top: 15%;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: fixed;
 `
-const DelBtn = styled.button`
-    font-size: 40px;
-    color: white;
-    margin-top: -400px;
-    margin-right: -100px;
-`
+
 
 const LoginBox = styled.div`
     width: 469px;
@@ -54,7 +47,6 @@ function Login(){
     const [admin, setAdmin] = useState<boolean>(false);
     const [user, setUser] = useState<boolean>(true);
     const [register, setRegister] = useState<boolean>(false);
-    const setPopUp = useSetRecoilState(isPopUp);
 
     function reg(){
         setUser(false);
@@ -88,7 +80,6 @@ function Login(){
                 <RegisterBtn onClick = {reg}>회원가입</RegisterBtn>
                 
             </LoginBox>
-            <DelBtn onClick={() => setPopUp((prev) => !prev)}>X</DelBtn>
         </Wrraper>
     )
 }

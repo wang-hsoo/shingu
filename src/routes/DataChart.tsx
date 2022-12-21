@@ -7,9 +7,8 @@ import MonthChart from "../component/MonthChart";
 import SelectPost from "../component/SelectPost";
 import styled from "styled-components";
 import Footer from "../component/Fotoer";
-import { isPopUp, isSearch } from "../atom";
+import {  isSearch } from "../atom";
 import { useRecoilValue } from "recoil";
-import Login from "../component/Login";
 import Search from "../component/Search";
 
 const Container = styled.div<{display:boolean}>`
@@ -69,7 +68,6 @@ function DataChart(){
     const [adminDivision, setadminDivision] = useState<Idivision>();
     const [selectPage, setSelectPage] = useState<String>("일별차트");
     const [allPost, setAllPost] = useState<InewBoard[]>();
-    const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
     const navigate = useNavigate();
 
@@ -116,9 +114,8 @@ function DataChart(){
                 </ChartMain>
                 <Footer />
             </Maincon>
-            <Container display={Pop || search}>
-                    {Pop ? <Login /> : null}
-                    {search ? <Search />: "하이"}
+            <Container display={ search}>
+                    {search ? <Search /> : null}
             </Container>
         </Wrraper>
     )

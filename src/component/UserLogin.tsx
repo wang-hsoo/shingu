@@ -4,6 +4,7 @@ import styled from "styled-components";
 import 'react-notifications-component/dist/theme.css'
 import { store } from 'react-notifications-component';
 import ReactNotification from 'react-notifications-component'
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -35,6 +36,7 @@ const Form = styled.form`
 function UserLogin(){
     const [id, setId] = useState<string>();
     const [pw, setPw] = useState<string>();
+    const navigate = useNavigate();
 
     function onChange(event:React.ChangeEvent<HTMLInputElement>){
         const { value } = event.target as HTMLInputElement;
@@ -80,7 +82,7 @@ function UserLogin(){
                             darkmode: value?.darkmode
                         };
                         sessionStorage.setItem("user", JSON.stringify(user));
-                        window.location.reload();
+                        navigate("/home");
                     }else{
                         store.addNotification({
                             title: "로그인 오류!",

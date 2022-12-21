@@ -6,8 +6,7 @@ import styled from "styled-components";
 import Header from "../component/Header";
 import { createAnswer, getAnswer, Ianswer } from "../service/AnswerService";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { isPopUp, isSearch, isDelete, isTheme } from "../atom";
-import Login from "../component/Login";
+import { isSearch, isDelete, isTheme } from "../atom";
 import Search from "../component/Search";
 import BannerImg from "../img/board_banner.png";
 import Footer from "../component/Fotoer";
@@ -264,7 +263,7 @@ const Nodata = styled.div`
 
 
 
-function Post({post, GetPost, rootAdd}:any){
+function Post(){
     const [selectPost, setSelectPost] = useState<InewBoard>();
     const [today, setToday] = useState<string>();
     const [loginCheck, setLoginCheck] = useState<string>("");
@@ -272,7 +271,6 @@ function Post({post, GetPost, rootAdd}:any){
     const [context, setContext] = useState<string>("");
     const [selectAnswer, setSelectAnswer] = useState<Ianswer[]>();
     const [admin, setAdmin] = useState<string>();
-    const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
     const deleteClick = useRecoilValue(isDelete);
     const setPopUp = useSetRecoilState(isDelete);
@@ -477,7 +475,7 @@ function Post({post, GetPost, rootAdd}:any){
             delPost(no);
         }
         popUp();
-        navigate('/');
+        navigate('/home');
     }
 
         
@@ -533,7 +531,7 @@ function Post({post, GetPost, rootAdd}:any){
                                     <Text placeholder="질문하고 싶은것을 입력하세요." onChange={onChange} value={context} />
                                     <Btn>
                                         <button onClick={()=> {
-                                                navigate('/');
+                                                navigate('/home');
                                             }}>목록으로</button>
                                         <button onClick={()=>{onSubmit()}}>작성하기</button>
                                         <button onClick={()=>{popUp()}}>삭제하기</button>
@@ -541,7 +539,7 @@ function Post({post, GetPost, rootAdd}:any){
                                 </Form> : 
                                 <Btn>
                                     <button onClick={()=> {
-                                                navigate('/');
+                                                navigate('/home');
                                             }}>목록으로</button>
                                 </Btn>}
                                 
@@ -551,8 +549,7 @@ function Post({post, GetPost, rootAdd}:any){
                         <Footer />
                 </MainCon>
                 
-                <Container display={Pop || search || deleteClick}>
-                    {Pop ? <Login /> : null}
+                <Container display={ search || deleteClick}>
                     {search ? <Search />: null}
 
                     {deleteClick ?
@@ -580,16 +577,9 @@ function Post({post, GetPost, rootAdd}:any){
     )
 }
 
-function mapStateToProps(state:InewBoard){
-    return {GetPost: state}
-}
-
-function mapDispatchToProps(dispatch:any){
-    return{
-        
-    }
-}
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (Post);
+
+
+export default Post;

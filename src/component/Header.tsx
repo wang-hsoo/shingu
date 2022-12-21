@@ -320,7 +320,7 @@ function Header({check}:any){
     useEffect(()=>{
         if(location.pathname === '/DataChart'){
             setBtnName("Main");
-            setBtnUrl('/');
+            setBtnUrl('/home');
         }else{
             setBtnName("관리자 페이지");
             setBtnUrl('/DataChart');
@@ -344,7 +344,7 @@ function Header({check}:any){
             animate={navAnimation} >
             <LayOut>
                 <Logo onClick={()=>{
-                    navigate('/');
+                    navigate('/home');
                 }}>
                     <img src={scroll ? isTh ? Shingu :  ShinguBlack : Shingu} style={{width: "100px"}} />
                 </Logo>

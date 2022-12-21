@@ -3,13 +3,12 @@ import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { isPopUp, isSearch, isTheme, isUserChange } from "../atom";
+import {  isSearch, isTheme, isUserChange } from "../atom";
 import Footer from "../component/Fotoer";
 import Header from "../component/Header";
 import { getBoad, InewBoard } from "../service/BoardService";
 import Shingu from "../img/shingu_logo_white.png";
 import ShinguBlack from "../img/shingu_logo_black.png";
-import Login from "../component/Login";
 import Search from "../component/Search";
 import { getOneMemberFromUserId, Iuser, updateUser } from "../service/UserService";
 import eyeWhite from "../img/eye_white.png";
@@ -246,7 +245,6 @@ function Mypage(){
     const [selectPost, setSelectPost] = useState<InewBoard[]>();
     const navigate = useNavigate();
     const setTheme = useSetRecoilState(isTheme);
-    const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
     const change = useRecoilValue(isUserChange);
     const setChange = useSetRecoilState(isUserChange);
@@ -376,8 +374,7 @@ function Mypage(){
                 <Footer />
                 
             </Maincon>
-            <Container display={Pop || search || change}>
-                    {Pop ? <Login /> : null}
+            <Container display={ search || change}>
                     {search ? <Search />: null}
                     {/* {change ? 
                     <Form >
