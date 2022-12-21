@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import { add } from "../store";
 import { useNavigate } from "react-router";
 import React, { useEffect, useState } from "react";
-import { Idivision, getCategory, getDivision, Icategory, InewBoard } from "../service/BoardService";
+import { Idivision, getCategory, getDivision, Icategory, InewBoard, createBoard, getBoad } from "../service/BoardService";
 import { useRecoilValue } from "recoil";
 import { isPopUp, isSearch } from "../atom";
 import Login from "../component/Login";
@@ -142,7 +142,6 @@ function Write({add}:any){
     const navigate = useNavigate();
     const Pop = useRecoilValue(isPopUp);
     const search = useRecoilValue(isSearch);
-    const ff = false as boolean;
     
 
     function onChange(event:React.FormEvent<HTMLElement>){
@@ -173,7 +172,7 @@ function Write({add}:any){
         //store.js로 데이터를 보냄
         e.preventDefault();
         
-        if(context?.length === 0 || title?.length === 0 || context === "" || title === "" || context === undefined || title=== undefined || context === undefined || title === undefined){
+        if(context?.length === 0 || title?.length === 0 || context === "" || title === "" || context === undefined || title=== undefined || context === undefined || title === undefined ){
             store.addNotification({
                 title: "게시물 작성 오류!",
                 message: "빈칸없이 입력해 주세요!",
@@ -190,8 +189,31 @@ function Write({add}:any){
               });
         }else{
           
-            add({studentid: id, title: title, contents:context, category: selectCate, divisioncode: division, lookup: true });
-            navigate("/post");
+            createBoard({
+                studentid: Number(id), 
+                title: title, 
+                contents:context, 
+                category: selectCate, 
+                divisioncode: division+"", 
+                lookup: true,
+                addboard: false,
+                counts: 0
+            });
+
+            setTimeout(()=>{
+                getBoad().then( value => {
+                    console.log(value);
+                    value.map((board:InewBoard) => {
+                        if(board.title === title && board.studentid === Number(id) && board.contents === context){
+                            navigate(`/post/${board.no}`);
+                            
+                        }
+                    })
+                })
+            },500)
+            
+
+            
         }
         
     }
@@ -206,7 +228,6 @@ function Write({add}:any){
 
         const user = sessionStorage.getItem("user");
         if(user){
-            console.log(JSON.parse(user));
             setId(JSON.parse(user).studentid);
             setDivision(JSON.parse(user).divisioncode);
             
@@ -254,10 +275,5 @@ function Write({add}:any){
     )
 }
 
-function mapDispatchToProps(dispatch:any){
-    return{
-        add: (context:InewBoard) => dispatch(add(context))
-    }
-}
 
-export default connect(null, mapDispatchToProps) (Write);
+export default Write;

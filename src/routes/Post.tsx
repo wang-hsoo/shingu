@@ -348,15 +348,7 @@ function Post({post, GetPost, rootAdd}:any){
 
                 })
             }else{
-                setSelectPost(GetPost[GetPost.length - 1])
-    
-                let today = new Date();   
-    
-                let year = today.getFullYear(); // 년도
-                let month = today.getMonth() + 1;  // 월
-                let date = today.getDate();  // 날짜
-    
-                setToday(`${year}-${month}-${date}`);
+                
             }
         
     },[])
@@ -529,7 +521,7 @@ function Post({post, GetPost, rootAdd}:any){
                                     <Context answer={true}>{selectPost?.contents.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n')}</Context>
                                     {selectAnswer ? selectAnswer?.map((answer:Ianswer) => (
                                         <AnwerCon key={answer.noanswerboard} answer={isNaN(Number(answer.studentid)) ? false : true}>
-                                            <Context answer={isNaN(Number(answer.studentid)) ? false : true}>{answer.answercontents}</Context>
+                                            <Context answer={isNaN(Number(answer.studentid)) ? false : true}>{answer.answercontents.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n')}</Context>
                                             <div>{ isNaN(Number(answer.studentid))}</div>
                                         </AnwerCon>
                                     )):  <div> 답변을 기다리는 중 </div>}

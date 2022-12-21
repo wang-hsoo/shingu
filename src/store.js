@@ -19,9 +19,8 @@ const post = createSlice({
                 lookup: action.payload.lookup
             }
             state.push(writePost);
-            console.log(writePost);
             //데이터베이스 저장
-            createBoard(writePost);
+
         },
 
         setPost:(state, action) => {
