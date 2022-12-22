@@ -100,13 +100,12 @@ function AddPost({post, divi}:any){
     const isTh = useRecoilValue(isTheme);
 
     useEffect(()=>{
-        if(divi === undefined || divi.divisionname === "전체"){
-            setShowPost(false);
-        }else{
-            
             let showPost = [] as InewBoard[];
+
             post?.map((post:InewBoard)=>{
-                if(post?.divisioncode?.split(',')[1] === divi.divisionname){
+
+                if(post?.divisioncode?.split(',')[1] === divi){
+                    
                     if(post.addboard === true){
                         showPost.push(post);
                     }
@@ -137,13 +136,13 @@ function AddPost({post, divi}:any){
                     
                 }
                 setGetPost(post);
-                
             }
-            setShowPost(true);
-        }
-    },[divi])
 
-    
+
+            setShowPost(true);
+
+    },[post, divi])
+
 
     return(
         showPost ? 

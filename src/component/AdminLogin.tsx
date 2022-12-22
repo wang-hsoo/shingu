@@ -87,7 +87,7 @@ function AdminLogin(){
                     })
 
                     const admin = sessionStorage.getItem("admin");
-                    console.log(admin);
+                    
                     if(!admin){
                         store.addNotification({
                             title: "로그인 오류!",
@@ -104,7 +104,7 @@ function AdminLogin(){
                             
                           });
                     }else{
-                        window.location.reload();
+                        navigate("/home");
                     }
                 })   
 

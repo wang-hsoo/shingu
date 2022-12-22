@@ -14,6 +14,7 @@ import arrow from "../img/arrow.jpg";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import Footer from "../component/Fotoer";
 import AddPost from "../component/AddPost";
+import ErrorPage from "../component/ErrorPage";
 
 
 const Container = styled.div<{display:boolean}>`
@@ -96,49 +97,6 @@ const SelectDivi = styled(motion.div)<{scroll:boolean}>`
 
 `
 
-const SelectBox = styled.div`
-    background-color: ${(props) => props.theme.bgColor};
-    width: 60%;
-    height: 100%;
-    margin: 0 auto;
-    @media screen and (max-width: 1400px) {
-        width: 80%;
-    }
-    @media screen and (max-width: 850px) {
-        width: 90%;
-    }
-    @media screen and (max-width: 600px) {
-        width: 95%;
-    }
-`
-
-const Select = styled.select`
-    color: ${(props) => props.theme.blackWhite};
-    background-color: ${(props) => props.theme.bgColor};
-    width: 200px;
-    height: 100%;
-    padding: .8em .5em; 
-    border: 1px solid #999;
-    border-bottom: none;
-    font-family: inherit;  
-    background: url(${arrow}) no-repeat 95% 50%; 
-    border-radius: 0px; 
-    -webkit-appearance: none; 
-    -moz-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    font-weight: bold;
-
-    & > option{
-        background-color: ${(props) => props.theme.whiteGrey};
-    }
-
-    &::-ms-expand {
-        display: none;
-    }
-   
-    
-`
 
 const AllBox = styled.div`
     width: 100%;
@@ -165,8 +123,9 @@ const AllTitle = styled.div`
 `
 
 const CateBox = styled.div`
-    margin-top: 20px;
-    width: 40%;
+    width: 60%;
+    height: 100%;
+    margin:  0 auto;
     display: flex;
     justify-content: space-around;
     @media screen and (max-width: 1400px) {
@@ -268,10 +227,8 @@ const transition = {
 
 
 function Home(){
-    const [division, setDivision] = useState<Idivision[]>();
     const [category, setCategory] = useState<Icategory[]>();
-    const [selectDivi, setSelectDivi] = useState<Idivision>();
-    const [selectDivision, setSelectDivision] = useState<Idivision>();
+    const [divi, setDivi] = useState<String>();
     const [selectCate, setSelectCate] = useState<string>();
     const [userLogin, setUserLogin] = useState(false);
     const search = useRecoilValue(isSearch);
@@ -280,6 +237,7 @@ function Home(){
     const navAnimation = useAnimation();
     const [scroll, setScroll] = useState(false);
     const [allPost, setAllPost] = useState<InewBoard[]>();
+    const [loginCheck, setLoginCheck] = useState<Boolean>(false);
 
     useEffect(()=>{
         scrollY.onChange(() => {
@@ -296,35 +254,9 @@ function Home(){
 
     
 
-  
 
-    function divisionChange(event:React.ChangeEvent<HTMLSelectElement>){
-        const division = event.target.value.split(",");
-
-            const selectdivi = {
-                divisionname: division[0],
-                divisioncode: Number(division[1]),
-                upctg: Number(division[2])
-            }
-            setSelectDivision(selectdivi);
-            setSelectDivi({
-                divisionname: "전체",
-                divisioncode: -1,
-                upctg: -1
-            });
-    }
     
-    function diviChange(event:React.ChangeEvent<HTMLSelectElement>){
-        const division = event.target.value.split(",");
-
-            const selectdivi = {
-                divisionname: division[0],
-                divisioncode: Number(division[1]),
-                upctg: Number(division[2])
-            }
-
-            setSelectDivi(selectdivi);
-    }
+    
 
     function selectCategory(event:React.MouseEvent<HTMLButtonElement>){
         setSelectCate(event.currentTarget.value);
@@ -338,34 +270,63 @@ function Home(){
             
         }));
 
-        getDivision().then((value => {
-            const divi = [];
-            divi.push(value);
-            setDivision(divi[0]);
-        }));
-
         setSelectCate("전체");
 
         const admin = sessionStorage.getItem("admin");
         const user = sessionStorage.getItem("user");
         
         if(user){
+            setLoginCheck(true);
             setUserLogin(true);
+            const getUser = JSON.parse(user);
+            setDivi(getUser.divisioncode.split(',')[1]);
+            let getPost = [] as InewBoard[];
+            getBoad().then( (value:InewBoard[]) => {
+                value.map((board:InewBoard) => {
+                    if(board.divisioncode === getUser.divisioncode){
+                        getPost.push(board);
+                        
+    
+                    }
+                })
+                setAllPost(getPost);
+            })
+        }else if (admin){
+            let getPost = [] as InewBoard[];
+            setLoginCheck(true);
+ 
+            getDivision().then((value:Idivision[]) => {
+                value.map((division:Idivision) => {
+                    if(division.divisioncode === Number(admin)){
+                        getBoad().then( (boardValue:InewBoard[]) => {
+                            boardValue.map((board:InewBoard) => {
+                                if(board.divisioncode.split(',')[1] === division.divisionname){
+                                    getPost.push(board);
+                                    setDivi(division.divisionname);
+                                }
+                            })
+                            setAllPost(getPost);
+                        })
+                    }
+                })
+            })
+            
+
         }
+
+       
+
+       
     },[])
 
     
 
-    useEffect(()=>{
-        getBoad().then( value => {
-            setAllPost([...value]);
-        })
-    },[]);
+
 
 
 
     return(
-        true ? 
+        loginCheck ? 
         <Wrapper>
                 <MainCon>
                     
@@ -401,42 +362,22 @@ function Home(){
                         initial="top" 
                         animate={navAnimation}
                         scroll={scroll as boolean} >
-                        <SelectBox>
-                            <Select onChange={divisionChange}>
-                                <option value="전체">전체학부</option>
-                                {division?.map((divi:Idivision) => ( 
-                                    divi.upctg !== 0 ? null : 
-                                    <option key={divi.divisioncode} value={[divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option> 
+                            <CateBox>
+                                {category?.map((category) => (
+                                    <button key={category.category} value={category.category} onClick={selectCategory} >{category.category}</button>
                                 ))}
-                            </Select>
-
-                            <Select onChange={diviChange}>
-                                <option value="전체">전체학과</option>
-                                {division?.map((divi:Idivision) => (
-                                    divi.upctg !== selectDivision?.divisioncode ? null :
-                                    <option key={divi.divisioncode} value={ [divi.divisionname, divi.divisioncode+"",  divi.upctg+""]}>{divi.divisionname}</option>
-                                ))}
-                            </Select>
-
-                        </SelectBox>
-                        
+                            </CateBox>
                     </SelectDivi>
 
-                    <TopPost post = {allPost} divi={selectDivi} category={selectCate} division={selectDivision} />
-                    <AddPost post = {allPost} divi={selectDivi} />
+                    <AddPost post = {allPost}  divi= {divi} />
+
+                    <TopPost post = {allPost} category={selectCate} />
+                    
 
                     <AllBox>
                         <AllTitle>전체 게시물 <div /></AllTitle>
 
-
-                        <CateBox>
-                            {category?.map((category) => (
-                                <button key={category.category} value={category.category} onClick={selectCategory} >{category.category}</button>
-                            ))}
-                        </CateBox>
-                        
-
-                        <AllPost post = {allPost} divi={selectDivi} category={selectCate} division={selectDivision} AllDivision = {division} />
+                        <AllPost post = {allPost}  category={selectCate}  />
 
                         <WriteBtn>
                             {userLogin ? <button onClick={()=> navigate('/write')}>작성하기</button> : null}
@@ -451,7 +392,7 @@ function Home(){
                 <Container display={search}>
                     {search ? <Search />: null}
                 </Container>
-        </Wrapper>  : null
+        </Wrapper>  :  <ErrorPage />
         
     )
 }
