@@ -160,23 +160,18 @@ function SelectPost({post}:any){
                     <div>제목</div>
                     <div>작성 날짜</div>
                     <div>조회수</div>
-                    <div>추천</div>
+                    <div>작성자</div>
                 </Title>
                 {selectPost?.length !== 0 ? 
                 <div>
                     {selectPost?.map((post, idx)=>(
                         (Number(clickPage) - 1) * 10 <= idx && Number(clickPage) * 10 - 1 >= idx ?
-                        <Post onClick={() => navigate(`/post/${post.no}`)} key={idx}>
+                        <Post key={idx} onClick={() => navigate(`/post/${post.no}`)}>
                             <h1>{post.title}</h1>
                             <div>{post?.createdtime?.split('T')[0]}</div>
                             <div>{post?.counts+""}</div>
-                           
-                                <FavoriteBtn whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
-                                    {faCheck ? 
-                                    <motion.img  src={favoriteB} onClick={favoriteClick} /> 
-                                    : <motion.img src={favorite} onClick={favoriteClick} />}
-                                </FavoriteBtn>
-                            
+                            <div>{post?.studentid+""}</div>
+                               
                         </Post> : null
                     ))}
                     <PageBox>
