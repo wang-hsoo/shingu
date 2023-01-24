@@ -20,8 +20,10 @@
     "react-apexcharts": "^1.4.0",
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
+    "react-js-pagination": "^3.0.3",
     "react-notifications": "^1.7.4",
     "react-notifications-component": "^3.0.2",
+    "react-paginate": "^8.1.4",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.0",
     "react-scripts": "5.0.1",
@@ -58,6 +60,7 @@
   "devDependencies": {
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-datepicker": "^4.4.2",
+    "@types/react-js-pagination": "^3.0.4",
     "@types/styled-components": "^5.1.26",
     "file-loader": "^6.2.0",
     "ts-node": "^10.9.1",

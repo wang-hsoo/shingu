@@ -7,6 +7,8 @@ import NullWhite from "../img/null_white.png";
 import NullBlack from "../img/null_black.png";
 import { isTheme } from "../atom";
 import { useRecoilValue } from "recoil";
+import Pagination from "react-js-pagination";
+
 
 const Wrraper = styled.div`
     margin-top: 40px;
@@ -64,18 +66,6 @@ const Post = styled.div`
         text-align: center;
     }
 `
-const PageBox = styled.div`
-    margin-top: 20px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
-const Page = styled.div`
-    color: ${(props) => props.theme.blackWhite};
-    cursor: pointer;
-    margin-right: 13px;
-`
 
 const NoData = styled.div`
     width: 100%;
@@ -97,15 +87,40 @@ const NoData = styled.div`
         color: ${(props) => props.theme.blackWhite};
     }
 `
-                               
+const PaginationBox = styled.div`
+  .pagination { display: flex; justify-content: center; margin-top: 15px;}
+  ul { list-style: none; padding: 0; }
+  ul.pagination li {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #e2e2e2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem; 
+  }
+  ul.pagination li:first-child{ border-radius: 5px 0 0 5px; }
+  ul.pagination li:last-child{ border-radius: 0 5px 5px 0; }
+  ul.pagination li a { text-decoration: none; color: #95C94A; font-size: 1rem; }
+  ul.pagination li.active a { color: white; }
+  ul.pagination li.active { background-color: #95C94A; }
+  ul.pagination li a:hover,
+  ul.pagination li a.active { color: #95C94A; }
+`
+
 function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivision}:any){
     const [selectPost, setPost] = useState<InewBoard[]>();
     const [firstPost, setFirstPost] = useState<InewBoard[]>();
-    const [pages, setPages] = useState<Number[]>([]);
-    const [clickPage, setClickPage] = useState<Number>(1);
     const navigate = useNavigate();
     const {title} = useParams();
     const isTh = useRecoilValue(isTheme);
+    const [page, setPage] = useState<number>(1);
+   
+
+    const handlePageChange = (page:number) => {
+      setPage(page);
+    };
 
     function categpryPost(getPost:InewBoard[], category:string){
         const selPost = [] as InewBoard[];
@@ -200,18 +215,9 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
 
             
         }
-    },[divi])
-
-    useEffect(()=>{
-        const lastPage = Math.ceil(Number(selectPost?.length) / 10);
-        const pages = [];
-        for(let i = 1; i <= lastPage; i++){
-            pages.push(i);
-        }
-        setPages(pages);
-        
-    },[selectPost])
-    
+    },[divi])    
+   
+   
     
 
    
@@ -224,22 +230,32 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
                     <div>작성 날짜</div>
                     <div>조회수</div>
                 </Title>
-                {selectPost?.length !== 0 ? 
-                <div>
-                    {selectPost?.map((post, idx)=>(
-                        (Number(clickPage) - 1) * 10 <= idx && Number(clickPage) * 10 - 1 >= idx ?
-                        <Post onClick={() => navigate(`/post/${post.no}`)} key={idx}>
-                            <h1>{post.title}</h1>
-                            <div>{post?.createdtime?.split('T')[0]}</div>
-                            <div>{post?.counts+""}</div>
-                        </Post> : null 
-                    ))}
-                    <PageBox>
-                        {pages.map((pages,idx) => (
-                                    <Page key={pages+""} onClick={() => setClickPage(pages)}>{pages+""}</Page>
-                                ))} 
-                    </PageBox>
-                </div> : 
+                {selectPost && selectPost?.length != 0 ? 
+                    <div>
+                        {selectPost?.slice(10 * (page-1), 10*(page-1) + 10)?.map((post, idx)=>(
+                            <Post onClick={() => navigate(`/post/${post.no}`)} key={idx}>
+                                <h1>{post.title}</h1>
+                                <div>{post?.createdtime?.split('T')[0]}</div>
+                                <div>{post?.counts+""}</div>
+                            </Post> 
+                        ))}
+                        
+                        <PaginationBox>
+                            <Pagination
+                                // 현제 보고있는 페이지 
+                                activePage={page}
+                                // 한페이지에 출력할 아이템수
+                                itemsCountPerPage={10}
+                                // 총 아이템수
+                                totalItemsCount={selectPost?.length-1}
+                                // 표시할 페이지수
+                                pageRangeDisplayed={5}
+                                // 함수
+                                onChange={handlePageChange} />
+                        </PaginationBox>
+                        
+                        
+                    </div> :
                 <NoData>
                     <img src={isTh ?  NullWhite : NullBlack } />
                     <div>작성된 게시물이 없습니다.</div>    

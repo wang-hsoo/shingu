@@ -284,16 +284,16 @@ function DateChart({post}:any){
                 </Chart>
 
                 <DatePicker
-                selected={date}
-                onChange={(date:Date) => {
-                    const Date = date.toLocaleDateString();
-                    setDate(date);
-                    setSelectDate(Date);
-                }}
-                dateFormat="yyyy-MM-dd (eee)"
-                locale={ko}
-               maxDate={new Date()}
-            />
+                    selected={date}
+                    onChange={(date:Date) => {
+                        const Date = date.toLocaleDateString();
+                        setDate(date);
+                        setSelectDate(Date);
+                    }}
+                    dateFormat="yyyy-MM-dd (eee)"
+                    locale={ko}
+                    maxDate={new Date()}
+                />
 
                 <PostBox>
                     <Title>
