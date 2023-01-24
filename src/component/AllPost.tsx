@@ -8,6 +8,7 @@ import NullBlack from "../img/null_black.png";
 import { isTheme } from "../atom";
 import { useRecoilValue } from "recoil";
 import Pagination from "react-js-pagination";
+import { es } from "date-fns/locale";
 
 
 const Wrraper = styled.div`
@@ -116,6 +117,7 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
     const {title} = useParams();
     const isTh = useRecoilValue(isTheme);
     const [page, setPage] = useState<number>(1);
+    const [postSort, setPostSort] = useState<boolean>(false);
    
 
     const handlePageChange = (page:number) => {
@@ -218,8 +220,26 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
     },[divi])    
    
    
-    
-
+    const sortCountClick = () => {
+        if(postSort){
+            selectPost?.sort((a:InewBoard,b:InewBoard) =>(Number(a.counts )- Number(b.counts)));
+            setPostSort((prev) => !prev);
+        }else{
+            selectPost?.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts)));
+            setPostSort((prev) => !prev);
+        }
+    }
+    const sortDateClick = () => {
+        if(postSort){
+            selectPost?.sort((a:InewBoard,b:InewBoard) =>(new Date(a.createdtime+"").valueOf() - new Date(b.createdtime+"").valueOf()));
+            setPostSort((prev) => !prev);
+        }else{
+            selectPost?.sort((a:InewBoard,b:InewBoard) =>(new Date(b.createdtime+"").valueOf() - new Date(a.createdtime+"").valueOf()));
+            setPostSort((prev) => !prev);
+        }
+        
+        
+    }
    
     return(
         <Wrraper>
@@ -227,8 +247,8 @@ function AllPost({post, divi/*학과*/, division/*학부*/, category, AllDivisio
             <PostBox>
                 <Title>
                     <div>제목</div>
-                    <div>작성 날짜</div>
-                    <div>조회수</div>
+                    <div onClick={sortDateClick}>작성 날짜</div>
+                    <div onClick={sortCountClick}>조회수</div>
                 </Title>
                 {selectPost && selectPost?.length != 0 ? 
                     <div>
