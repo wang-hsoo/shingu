@@ -1,11 +1,11 @@
 import React,{ useEffect } from "react";
 import AppRouter from "./AppRouter";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { getBoad, InewBoard } from "./service/BoardService";
+import { getBoad } from "./service/BoardService";
 import { connect } from "react-redux";
-import { setPost } from "./store";
+import { setPost } from "./store/store";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { dark, isTheme, light } from "./atom";
+import { dark, isTheme, light } from "./store/atom";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');

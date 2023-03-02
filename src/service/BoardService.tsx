@@ -1,22 +1,11 @@
 import axios from 'axios'; 
+import { InewBoard } from './Interface';
 
 
 
-const BOARD_API_BASE_URL = "http://localhost:8080/api"; 
+const BOARD_API_BASE_URL = process.env.REACT_APP_SERVER_URL; 
 
 
-export interface InewBoard{
-    no?: Number,
-    divisioncode: String,
-    category: String,
-    title: String,
-    contents: String,
-    addboard: boolean,
-    studentid: Number,
-    createdtime?: String,
-    counts: Number,
-    lookup: Boolean
-}
  
 export async function createBoard(board:InewBoard) {
     //새로운 게시물 업데이트 
@@ -43,40 +32,10 @@ export async function delPost(no:string){
     return axios.delete(BOARD_API_BASE_URL+"/board/" + no);
 }
 
-export interface Icategory{
-    category: string
-    id: Number
-}
-
- export async function getCategory() {
-    const data = await (await axios.get(BOARD_API_BASE_URL+"/category")).data;
-    return data;
-}
-
-export interface Idivision{
-    divisioncode: number,
-    divisionname: string,
-    upctg: number
-}
-
-export async function getDivision() {
-    const data = await (await axios.get(BOARD_API_BASE_URL+"/division")).data;
-    return data;
-}
 
 export async function updateCount(no:number, board: InewBoard){
     await axios.put(BOARD_API_BASE_URL + "/board/" + no, board);
 }
 
-export interface IAdmin{
-    adminid: string,
-    adminpwd: string,
-    divisioncode: number
-}
-
-export async function getAdmin() {
-    const data = await (await axios.get(BOARD_API_BASE_URL+"/admin")).data;
-    return data;
-}
 
 
