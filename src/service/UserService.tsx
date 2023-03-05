@@ -14,7 +14,7 @@ export async function createUser( user: Iuser){
 }
 
 export async function getOneMemberFromUserId(id:Number) {
-    const data =  await (await axios.get(BOARD_API_BASE_URL + "/member" + "?id=" + id)).data
+    const data =  await (await axios.get(BOARD_API_BASE_URL + "/member/" + id)).data
     return data
 }
 

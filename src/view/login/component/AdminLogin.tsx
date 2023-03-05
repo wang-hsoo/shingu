@@ -1,4 +1,4 @@
-import { Wrapper } from "../../../styles/layout/AppLayout";
+
 
 
 
@@ -7,9 +7,9 @@ function AdminLogin(){
 
 
     return(
-        <Wrapper>
-
-        </Wrapper>
+        <div>
+            관리자
+        </div>
     )
 }
 

@@ -28,8 +28,6 @@ function AppRouter(){
                 <Route path="/dashboard" element = {<Admin />} />    
                 <Route path="/mypage" element = {<Mypage />} />  
                 <Route path="/post/*" element = {<Post />} />
-                    
-                
             </Routes>
        </Router> 
     )

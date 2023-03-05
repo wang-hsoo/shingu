@@ -1,4 +1,4 @@
-import { Wrapper } from "../../../styles/layout/AppLayout";
+
 
 
 
@@ -7,9 +7,9 @@ function Register(){
 
 
     return(
-        <Wrapper>
-
-        </Wrapper>
+        <div>
+            회원가입
+        </div>
     )
 }
 
