@@ -13,6 +13,7 @@ import Login from "./view/login/Login";
 import Mypage from "./view/mypage/Mypage";
 import Post from "./view/post/Post";
 import Write from "./view/write/Write";
+import Navigation from "./component/navigation/Navigation";
 
 
 

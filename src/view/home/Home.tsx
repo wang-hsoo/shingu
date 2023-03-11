@@ -1,19 +1,13 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Navigation from "../../component/navigation/Navigation";
 
 function Home(){
-    const navigate = useNavigate();
 
-    useEffect(()=>{
-        const user = sessionStorage.getItem("userInfo");
-        
-        if(user == null){
-            navigate("/", {replace:true});
-        }
-    }, [])
 
     return(
         <div>
+            <Navigation check={true} />
             home
         </div>
     )
