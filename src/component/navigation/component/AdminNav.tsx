@@ -1,7 +1,10 @@
+import { MyComponentProps } from "../Interface";
 
 
 
-function AdminNav(){
+function AdminNav(props:MyComponentProps){
+    const {customProps} = props;
+    const { scroll } = customProps;
 
     return(
         <div>

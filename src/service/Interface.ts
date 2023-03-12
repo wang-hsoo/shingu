@@ -46,3 +46,7 @@ export interface Iuser{
     darkmode?: Boolean
 }
 
+export interface ICheck{
+    check:boolean
+}
+

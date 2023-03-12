@@ -1,5 +1,5 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation  } from "react-router-dom";
 import { useAnimation, useViewportScroll } from "framer-motion";
 
@@ -12,7 +12,7 @@ import userBlack from "../img/user_black.png";
 import notifiWhite from "../img/notifications_white.png";
 import notifiBlack from "../img/notifications_black.png";
 import Shingu from "../../img/shingu_logo_white.png";
-import ShinguBlack from "../img/shingu_logo_black.png";
+import ShinguBlack from "../../img/shingu_logo_black.png";
 
 
 
@@ -20,18 +20,26 @@ import ShinguBlack from "../img/shingu_logo_black.png";
 import AdminNav from "./component/AdminNav";
 import UserNav from "./component/UserNav";
 
+import { Box, LayOut, Logo, Wrapper } from "./styles";
+import { isTheme } from "../../store/atom";
+import { navVariants, navVariantsDark } from "./Variant";
+import { ICheck } from "../../service/Interface";
 
 
-function Navigation({check}:any){
+
+function Navigation({check}:ICheck){
     const navigate = useNavigate();
     const [Who, setWho] = useState<string>("");
 
     //스크롤 관련
     const { scrollY } = useViewportScroll();
-    const [scroll, setScroll] = useState(false);
+    const [scroll, setScroll] = React.useState<boolean>(false);
     const navAnimation = useAnimation();
 
-    
+    //Theme 관련
+    const isTh = useRecoilValue(isTheme);
+
+    //scroll
     useEffect(() => {
         if(check){
             scrollY.onChange(() => {
@@ -48,6 +56,12 @@ function Navigation({check}:any){
                 setScroll(true);
         }   
     },[])
+    
+    useEffect(()=>{
+        if(!check){
+            navAnimation.start("scroll");
+        }
+    },[isTh])
 
     useEffect(()=>{
         const user = sessionStorage.getItem("userInfo");
@@ -64,15 +78,20 @@ function Navigation({check}:any){
 
 
     return(
-        <div>
-            <div onClick={()=>{navigate("/home")}}>
-                <img src={Shingu} style={{width: "100px"}} />
-            </div>
-            <div>
-                {Who === "admin" ?<AdminNav /> : null}
-                {Who === "user" ? <UserNav /> : null }
-            </div>
-        </div>
+        <Wrapper 
+            variants={ isTh ? navVariantsDark : navVariants }
+            initial="top" 
+            animate={navAnimation}>
+            <LayOut>
+                <Logo onClick={()=>{navigate("/home")}}>
+                    <img src={scroll ? isTh ? Shingu :  ShinguBlack : Shingu} style={{width: "100px"}} />
+                </Logo>
+                <Box>
+                    {Who === "admin" ?<AdminNav customProps={{scroll: scroll}} /> : null}
+                    {Who === "user" ? <UserNav customProps={{scroll: scroll}} /> : null }
+                </Box>
+            </LayOut>
+        </Wrapper>
     )
 
 }
