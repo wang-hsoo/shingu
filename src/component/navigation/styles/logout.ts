@@ -1,14 +1,22 @@
 import styled from "styled-components";
 
 
-export const LogOutBtn = styled.div<{scroll:boolean}>`
-    margin-left: 5px;
-    color: ${(props) => props.scroll ? props.theme.blackWhite : props.theme.white};
+export const UserWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & > div:nth-child(2) > img{
+        width: 25px;
+        height: 25px;
+    }
 `
 
-export const SearchBtn = styled.button`
+export const UserBTN = styled.div`
+    margin-left: 15px;
     img{
-        width: 20px !important;
-        height: 20px !important;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
     }
 `

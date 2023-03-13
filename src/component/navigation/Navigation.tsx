@@ -5,10 +5,7 @@ import { useAnimation, useViewportScroll } from "framer-motion";
 
 
 
-import SearchPNG from "../img/search_white.png";
-import SearchPNGBlack from "../img/search_black.png";
-import userWhite from "../img/user_white.png";
-import userBlack from "../img/user_black.png";
+
 import notifiWhite from "../img/notifications_white.png";
 import notifiBlack from "../img/notifications_black.png";
 import Shingu from "../../img/shingu_logo_white.png";
@@ -17,7 +14,6 @@ import ShinguBlack from "../../img/shingu_logo_black.png";
 
 
 
-import AdminNav from "./component/AdminNav";
 import UserNav from "./component/UserNav";
 
 import { Box, LayOut, Logo, Wrapper } from "./styles";
@@ -87,8 +83,8 @@ function Navigation({check}:ICheck){
                     <img src={scroll ? isTh ? Shingu :  ShinguBlack : Shingu} style={{width: "100px"}} />
                 </Logo>
                 <Box>
-                    {Who === "admin" ?<AdminNav customProps={{scroll: scroll}} /> : null}
-                    {Who === "user" ? <UserNav customProps={{scroll: scroll}} /> : null }
+                    {Who === "admin" ?<UserNav customProps={{scroll: scroll, who:"admin"}} /> : null}
+                    {Who === "user" ? <UserNav customProps={{scroll: scroll, who:"user"}} /> : null }
                 </Box>
             </LayOut>
         </Wrapper>

@@ -1,3 +1,3 @@
 export interface MyComponentProps {
-    customProps: { scroll: boolean };
+    customProps: { scroll: boolean, who: string };
   }

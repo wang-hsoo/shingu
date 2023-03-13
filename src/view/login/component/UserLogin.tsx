@@ -59,7 +59,7 @@ function UserLogin(){
                                 darkmode: false
                     };
 
-                    sessionStorage.setItem("userInfo", JSON.stringify(user));
+                    sessionStorage.setItem("adminInfo", JSON.stringify(user));
                     navigate("/home");
         }
     }
