@@ -1,6 +1,6 @@
 export interface InewBoard{
     no?: Number,
-    divisioncode: String,
+    divisioncode: number,
     category: String,
     title: String,
     contents: String,
@@ -9,6 +9,10 @@ export interface InewBoard{
     createdtime?: String,
     counts: Number,
     lookup: Boolean
+}
+
+export interface IBoardA{
+     postA: InewBoard[] 
 }
 
 export interface Ianswer{

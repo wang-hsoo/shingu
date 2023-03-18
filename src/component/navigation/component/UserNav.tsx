@@ -7,6 +7,7 @@ import SearchPNG from "../../../img/search_white.png";
 import SearchPNGBlack from "../../../img/search_black.png";
 import userWhite from "../../../img/user_white.png";
 import userBlack from "../../../img/user_black.png";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -14,6 +15,7 @@ function UserNav(props:MyComponentProps){
     const {customProps} = props;
     const { scroll } = customProps;
     const { who } = customProps;
+    const navigation = useNavigate();
     
     return(
         <UserWrapper>
@@ -26,7 +28,7 @@ function UserNav(props:MyComponentProps){
             <UserBTN onClick={() => {
                 sessionStorage.removeItem("adminInfo");
                 sessionStorage.removeItem("userInfo");
-                window.location.reload();
+                navigation("/");
             }}>
                    <img src={logout_black} />
             </UserBTN>

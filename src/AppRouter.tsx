@@ -24,7 +24,7 @@ function AppRouter(){
             <Routes>
                 <Route path="/" element={<Login />} />
                 
-                <Route path="/home" element = {<Home />} />
+                <Route path="/home/:division" element = {<Home />} />
                 <Route path="/write" element = {<Write />} />
                 <Route path="/dashboard" element = {<Admin />} />    
                 <Route path="/mypage" element = {<Mypage />} />  

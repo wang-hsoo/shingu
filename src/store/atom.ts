@@ -1,9 +1,10 @@
 import {atom} from "recoil"
 import { DefaultTheme } from "styled-components"
+import { InewBoard } from "../service/Interface"
 
-export const isPopUp = atom({
-    key: "Pop",
-    default: false
+export const isPost = atom({
+    key: "post",
+    default: [] as InewBoard[]
 })
 
 export const isSearch = atom({
@@ -21,10 +22,6 @@ export const isTheme = atom({
     default: false
 })
 
-export const isUserChange = atom({
-    key:"change",
-    default: false
-})
 
 
 export const light: DefaultTheme = {

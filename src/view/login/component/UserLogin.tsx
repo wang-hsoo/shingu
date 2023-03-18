@@ -6,6 +6,7 @@ import { getOneMemberFromUserId } from "../../../service/UserService";
 import { Iuser } from "../../../service/Interface";
 import { LoginError, LoginMatchError } from "../../../utils/errorMessage";
 import 'react-notifications-component/dist/theme.css'
+import { useSetRecoilState } from "recoil";
 
 
 
@@ -57,10 +58,10 @@ function UserLogin(){
                                 studentid: 2018133064,
                                 divisioncode: 24,
                                 darkmode: false
-                    };
+                };
 
                     sessionStorage.setItem("adminInfo", JSON.stringify(user));
-                    navigate("/home");
+                    navigate("/home/24");
         }
     }
 
