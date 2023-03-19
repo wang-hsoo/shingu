@@ -64,7 +64,7 @@ function Navigation({check}:ICheck){
         const admin = sessionStorage.getItem("adminInfo");
         
         if(user === null && admin === null){
-            navigate("/", {replace:true});
+            navigate("/", {replace:false});
         }else if (user === null){
             setWho("admin");
         }else if( admin === null){
@@ -79,7 +79,7 @@ function Navigation({check}:ICheck){
             initial="top" 
             animate={navAnimation}>
             <LayOut>
-                <Logo onClick={()=>{navigate("/home")}}>
+                <Logo onClick={()=>{navigate("/")}}>
                     <img src={scroll ? isTh ? Shingu :  ShinguBlack : Shingu} style={{width: "100px"}} />
                 </Logo>
                 <Box>

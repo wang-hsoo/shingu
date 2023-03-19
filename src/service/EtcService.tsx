@@ -1,6 +1,6 @@
 import axios from 'axios'; 
 
-const BOARD_API_BASE_URL = process.env.REACT_APP_SERVER_URL; 
+const BOARD_API_BASE_URL = process.env.REACT_APP_API_URL; 
 
 export async function getAdmin() {
     const data = await (await axios.get(BOARD_API_BASE_URL+"/admin")).data;

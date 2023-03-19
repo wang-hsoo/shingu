@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import { setPost } from "./store/store";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { dark, isTheme, light } from "./store/atom";
+import ReactNotification from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -97,10 +99,12 @@ function App() {
 
   return (
     <>
-      <ThemeProvider theme={ isTh ? dark : light }>
-        <GlobalStyle />
-        <AppRouter />
-      </ThemeProvider>
+      
+        <ThemeProvider theme={ isTh ? dark : light }>
+          <ReactNotification />
+          <GlobalStyle />
+          <AppRouter />
+        </ThemeProvider>
     
     </>
   );

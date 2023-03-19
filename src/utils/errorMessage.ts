@@ -4,7 +4,7 @@ import ReactNotification from 'react-notifications-component'
 
 
 export const LoginError = ()=> {
-    return store.addNotification({
+    store.addNotification({
         title: "로그인 오류!",
         message: "빈칸을 모두 채워주세요",
         type: "warning",
@@ -21,7 +21,7 @@ export const LoginError = ()=> {
 }
 
 export const LoginMatchError = () => {
-    return store.addNotification({
+    store.addNotification({
         title: "로그인 오류!",
         message: "아이디 또는 비밀번호가 일치하지 않습니다.",
         type: "danger",

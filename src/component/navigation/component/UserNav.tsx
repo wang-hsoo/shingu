@@ -20,17 +20,17 @@ function UserNav(props:MyComponentProps){
     return(
         <UserWrapper>
             <UserBTN>
-                <img src={SearchPNGBlack} />
+                <img src={scroll ? SearchPNGBlack : SearchPNG} />
             </UserBTN>
             <UserBTN>
-                <img src={userBlack} />
+                <img src={scroll ? userBlack : userWhite} />
             </UserBTN>
             <UserBTN onClick={() => {
                 sessionStorage.removeItem("adminInfo");
                 sessionStorage.removeItem("userInfo");
                 navigation("/");
             }}>
-                   <img src={logout_black} />
+                   <img src={scroll ? logout_black : logout_white} />
             </UserBTN>
         </UserWrapper>
     )

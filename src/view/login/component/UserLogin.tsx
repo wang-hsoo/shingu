@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ReactNotification from 'react-notifications-component'
-import { store } from 'react-notifications-component';
 import { getOneMemberFromUserId } from "../../../service/UserService";
-import { Iuser } from "../../../service/Interface";
+import { Idivision, Iuser } from "../../../service/Interface";
 import { LoginError, LoginMatchError } from "../../../utils/errorMessage";
-import 'react-notifications-component/dist/theme.css'
-import { useSetRecoilState } from "recoil";
-
+import { getDivision } from "../../../service/EtcService";
+import { GetDivisionName } from "../../../utils/GetDivisionName";
 
 
 function UserLogin(){
@@ -37,31 +34,37 @@ function UserLogin(){
         if(id === undefined || pw === undefined || id === "" || pw ===""){
             LoginError();     
         }else{
-                // getOneMemberFromUserId(Number(id)).then((value:Iuser) => {
-                //     if(value.studentid === id && value.password === pw){
-                //         const user = {
-                //             username: value.username,
-                //             studentid: value.studentid,
-                //             divisioncode: value.divisioncode,
-                //             darkmode: value?.darkmode
-                //         };
-                //         sessionStorage.setItem("user", JSON.stringify(user));
-                //         navigate("/home");
-                //     }else{
-                //         LoginMatchError();
-                //     }
-                // }, function(reason){
-                //     console.log(reason)
-                // })
-                const user = {
-                                username: "왕현수",
-                                studentid: 2018133064,
-                                divisioncode: 24,
-                                darkmode: false
-                };
+                getOneMemberFromUserId(Number(id)).then((value:Iuser) => {
+                    
+                    if(value.studentid === id && value.password === pw){
+                        if( !value.approve ){
+                            console.log("허용되지 않은 사용자");
+                        }else{
+                            const user = {
+                                username: value.username,
+                                studentid: value.studentid,
+                                divisioncode: value.divisioncode,
+                                darkmode: value?.darkmode,
+                            };
+                            sessionStorage.setItem("userInfo", JSON.stringify(user));
+                            GetDivisionName(user.divisioncode).then((divisionN) => {
+                                navigate(("/home/" + divisionN), {replace:false})
+                            } );
+                            
+                            
+                    
+                        }
+                        
+                    }else{
+                        LoginMatchError();
+                    }
+                }, function(reason){
+                    LoginMatchError();
+                })
+                
 
-                    sessionStorage.setItem("adminInfo", JSON.stringify(user));
-                    navigate("/home/24");
+                    
+                
         }
     }
 
@@ -71,7 +74,6 @@ function UserLogin(){
             <input placeholder="아이디" autoComplete="off" onChange={onChange} name="id" />
             <input type="password" placeholder="비밀번호"  onChange={onChange} name="pw" />
             <button>로그인</button>
-            <ReactNotification />
         </form>
     )
 }

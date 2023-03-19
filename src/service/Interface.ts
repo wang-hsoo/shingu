@@ -1,10 +1,10 @@
 export interface InewBoard{
     no?: Number,
-    divisioncode: number,
+    divisioncode: Number,
     category: String,
     title: String,
     contents: String,
-    addboard: boolean,
+    addboard: Boolean,
     studentid: Number,
     createdtime?: String,
     counts: Number,
@@ -16,28 +16,28 @@ export interface IBoardA{
 }
 
 export interface Ianswer{
-    noanswerboard?:number,
-    no: number,
-    studentid: string,
-    answercontents: string,
-    lookup: boolean
+    noanswerboard?:Number,
+    no: Number,
+    studentid: String,
+    answercontents: String,
+    lookup: Boolean
 }
 
 
 export interface Idivision{
-    divisioncode: number,
-    divisionname: string,
-    upctg: number
+    divisioncode: Number,
+    divisionname: String,
+    upctg: Number
 }
 
 export interface IAdmin{
-    adminid: string,
-    adminpwd: string,
-    divisioncode: number
+    adminid: String,
+    adminpwd: String,
+    divisioncode: Number
 }
 
 export interface Icategory{
-    category: string
+    category: String
     id: Number
 }
 
@@ -45,12 +45,13 @@ export interface Iuser{
     no?: Number,
     studentid: String,
     username: String,
-    password: String,
-    divisioncode: String,
-    darkmode?: Boolean
+    password?: String,
+    divisioncode: Number,
+    darkmode?: Boolean,
+    approve?:Boolean
 }
 
 export interface ICheck{
-    check:boolean
+    check:Boolean
 }
 
