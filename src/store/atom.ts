@@ -22,6 +22,11 @@ export const isTheme = atom({
     default: false
 })
 
+export const isDivision = atom({
+    key: "divisionN",
+    default: ""
+})
+
 
 
 export const light: DefaultTheme = {
