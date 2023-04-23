@@ -5,13 +5,12 @@ import { isDivision } from "../store/atom";
 
 
 
-export const GetDivisionName = (divisionCode: Number) => {
-    const divisionN = useSetRecoilState(isDivision);
+export const GetDivisionName = async(divisionCode: Number) => {
 
     return getDivision().then((value: Idivision[]) => {
       const division = value.find((division: Idivision) => divisionCode === division.divisioncode);
       if (division) {
-        divisionN(division.divisionname as string);
+        sessionStorage.setItem("division", division.divisionname as string );
         return division.divisionname;
       } else {
         throw new Error(`Division not found for code ${divisionCode}`);

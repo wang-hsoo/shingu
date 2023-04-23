@@ -7,6 +7,7 @@ export const AllTitle = styled.div`
     flex-direction: column;
     align-items: center;
     font-weight: 700;
+    margin-top: 40px;
     color: ${(props) => props.theme.blackWhite};
     & > div{
         margin-top: 5px;

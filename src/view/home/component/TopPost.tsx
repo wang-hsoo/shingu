@@ -4,6 +4,8 @@ import { useRecoilValue } from "recoil";
 import { InewBoard } from "../../../service/Interface";
 import { isPost } from "../../../store/atom";
 
+import { AllTitle, PostArea, PostBox, PostWrapper } from "./postStyle";
+
 interface Ititle{
     boardProps:{
         title: String,
@@ -22,7 +24,7 @@ function TopPost(props:Ititle){
     const navigate = useNavigate();
   
     useEffect(()=>{
-        if(title == "인기 게시물"){
+        if(title === "인기 게시물"){
             const sortArray = postA.sort((a:InewBoard,b:InewBoard) =>(Number(b.counts )- Number(a.counts))).slice(0,4);
         
             if(sortArray.length === 0 || sortArray.length === 4){
@@ -89,20 +91,24 @@ function TopPost(props:Ititle){
 
 
     return(
-        <div>
-            <h1>{title}</h1>
+        <PostWrapper>
+            <AllTitle>{title}</AllTitle>
+
 
             {newBoard?.length !== 0 ?  
-                newBoard?.map((post:InewBoard) => (
-                    <div key={post.no+""}>
-                        <div>{post?.title}</div>
-                        <div>
-                            <div>{post.createdtime?.split('T')[0]}</div>
-                            { post?.no !== -1 ? <button onClick={()=> navigate(`/post/${post.no}`)}>More</button> : null}
-                        </div>
-                    </div>
-                )) : null}
-        </div>
+                <PostBox >
+                    {newBoard?.map((post:InewBoard) => (
+                            <div key={post.no+""}>
+                                <div>{post?.title}</div>
+                                <div>
+                                    <div>{post.createdtime?.split('T')[0]}</div>
+                                    { post?.no !== -1 ? <button onClick={()=> navigate(`/post/${post.no}`)}>More</button> : null}
+                                </div>
+                            </div>
+                    
+                    ))}
+                </PostBox> : null}
+        </PostWrapper>
     )
 }
 

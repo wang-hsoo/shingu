@@ -47,7 +47,7 @@ function UserLogin(){
                                 darkmode: value?.darkmode,
                             };
                             sessionStorage.setItem("userInfo", JSON.stringify(user));
-                            GetDivisionName(user.divisioncode).then((divisionN) => {
+                            GetDivisionName(value.divisioncode).then((divisionN) => {
                                 navigate(("/home/" + divisionN), {replace:false})
                             } );
                             

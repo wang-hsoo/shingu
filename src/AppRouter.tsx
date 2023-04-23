@@ -28,7 +28,7 @@ function AppRouter(){
                 <Route path="/write" element = {<Write />} />
                 <Route path="/dashboard" element = {<Admin />} />    
                 <Route path="/mypage" element = {<Mypage />} />  
-                <Route path="/post/*" element = {<Post />} />
+                <Route path="/post/:no" element = {<Post />} />
             </Routes>
        </Router> 
     )
