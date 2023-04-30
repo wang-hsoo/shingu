@@ -6,7 +6,13 @@ import { isTheme } from "../../store/atom";
 import { useRecoilValue } from "recoil";
 import { getAnswer } from "../../service/AnswerService";
 import Navigation from "../../component/navigation/Navigation";
-
+import { Banner, Content, FavoriteBtn, Info, MainCon, PostWrapper, QnaCon, TItle } from "./PostDetailStyle";
+import BannerImg from "../../img/board_banner.png";
+import favorite from "../../img/favorite_border_black.png"
+import favoriteB from "../../img/favorite_fill_black.png"
+import favoriteW from "../../img/favorite_border_white.png"
+import favoritefillW from "../../img/favorite_fill_white.png"
+import { motion, AnimatePresence } from "framer-motion";
 
 
 
@@ -70,35 +76,65 @@ function Post(){
         }
     },[post]);
 
+    function favoriteClick(){
+        setFavoriteCheck((prev) => !prev);
+
+       
+
+        if(faCheck){
+            //true 빼기
+           
+            
+
+            
+        }else{
+            //false 등록
+            
+        }
+    }
+
     return(
         <>
          {post ?
-            <div>
-                <div>
-                    {/* <Navigation check={false}/> */}
-                </div>
+            <PostWrapper>
+                <MainCon>
+                    <Navigation check={false}/>
+                  
 
-                <div>
-                    <div>
-                        <div>{post.category}</div>
-                    </div>
+                    <Content>
+                        <Banner bg={BannerImg}>
+                            <div>{post.category}</div>
+                        </Banner>
 
-                    <div>
-                        <div>
-                            <div>{post.title}</div>
-                        </div>
+                        <QnaCon>
+                            <TItle>
+                                <div>{post.title}</div>
+                            </TItle>
 
-                        <div>
-                            <div>
-                                <div>작성자 {loginCheck !== "" ? post.studentid+"" : post.divisioncode+""} |</div>
-                                <div>등록일 {today} |</div>
-                                <div>조회수 {post.counts+""}</div>
+                            <Info>
+                                <div>
+                                    <div>작성자 {loginCheck !== "" ? post.studentid+"" : post.divisioncode+""} |</div>
+                                    <div>등록일 {today} |</div>
+                                    <div>조회수 {post.counts+""}</div>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                </div>
+                                {isNaN(Number(loginCheck)) ?
+                                    <AnimatePresence>
+                                        <FavoriteBtn whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }}>
+                                            {faCheck ?
+                                            isTh ? <motion.img layoutId="favorite" src={favoritefillW} onClick={favoriteClick} />  : 
+                                            <motion.img layoutId="favorite" src={favoriteB} onClick={favoriteClick} /> 
+                                            : isTh ? <motion.img layoutId="favorite" src={favoriteW} onClick={favoriteClick} />  
+                                            : <motion.img layoutId="favorite" src={favorite} onClick={favoriteClick} />}
+                                        </FavoriteBtn>
+                                    </AnimatePresence> : null
+                                    
+                                    }
+                            </Info>
+                        </QnaCon>
+                    </Content>
+                </MainCon>
+            </PostWrapper>
 
             : null}
         </>
